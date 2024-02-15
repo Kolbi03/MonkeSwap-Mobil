@@ -1,10 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Text, View, TextInput, Button} from 'react-native';
+import {StyleSheet, Text, View, TextInput, Button, Pressable} from 'react-native';
 import React, {useState} from "react";
-import { Pressable } from "react-native";
+import{NavigationContainer} from "@react-navigation/native";
 
-
-const LoginScreen = ({ navigation }) => {
+const RegisterScreen = ({ navigation }) => {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false)
 
@@ -12,15 +11,27 @@ const LoginScreen = ({ navigation }) => {
         <View style={styles.container}>
             <StatusBar style="auto" />
 
-            <Text style={styles.login}>Bejelentkezés</Text>
+            <Text style={styles.header}>Regisztráció</Text>
 
-            {/*Felhasználónév mező*/}
+            {/*Bejelentkezés mező*/}
+            <Text style={styles.text}>Felhasználónév</Text>
+            <TextInput style={styles.textInput}/>
+
+            {/*Email mező*/}
             <Text style={styles.text}>Felhasználónév</Text>
             <TextInput style={styles.textInput}/>
 
             {/*Jelszó mező*/}
             <Text style={styles.text}>Jelszó</Text>
             <TextInput style={styles.textInput}/>
+
+            {/*Jelszó megerősítése mező*/}
+            <Text style={styles.text}>Jelszó megerősítése</Text>
+            <TextInput style={styles.textInput}/>
+
+
+
+
 
             <Pressable onPress={() => {
                 //Ide jön a redirect
@@ -29,22 +40,22 @@ const LoginScreen = ({ navigation }) => {
             </Pressable>
 
             <Pressable onPress={() => {
-                navigation.navigate('Register')
+                navigation.navigate('Login')
             }}>
-                <Text style={styles.pressButton}>Regisztráció</Text>
+                <Text style={styles.pressButton}>Vissza</Text>
             </Pressable>
-
 
         </View>
     );
-}
 
-export default LoginScreen;
+
+}
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFF',
+        backgroundColor: '#fff',
         alignItems: "center",
     },
 
@@ -58,7 +69,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
 
-    login: {
+    header: {
         fontSize: 40,
         padding: 8,
         textAlignVertical: "top",
@@ -68,6 +79,10 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 24,
         padding: 14,
+    },
+
+    button: {
+        padding:10,
     },
 
     pressButton: {
