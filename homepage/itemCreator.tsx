@@ -1,46 +1,44 @@
-import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Text, View, TextInput, Button} from 'react-native';
-import React, {useState} from "react";
-import { Pressable } from "react-native";
-import homepage from "../homepage/homepage";
+import React from "react";
+import {Pressable, StyleSheet, Text, TextInput, View} from "react-native";
+import {StatusBar} from "expo-status-bar";
+import SelectDropdown from 'react-native-select-dropdown'
 
-const LoginScreen = ({ navigation }) => {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-    return (
+const categories = ["1", "2", "3", "4", "5", "6"]
+const ItemCreator = ({ navigation }) => {
+    return(
         <View style={styles.container}>
             <StatusBar style='auto' />
 
-            <Text style={styles.login}>Bejelentkezés</Text>
+            <Text style={styles.login}>Tárgy létrehozása</Text>
 
-            {/*Felhasználónév mező*/}
-            <Text style={styles.text}>Felhasználónév</Text>
+            <Text style={styles.text}>Tárgy neve</Text>
             <TextInput style={styles.textInput}/>
 
-            {/*Jelszó mező*/}
-            <Text style={styles.text}>Jelszó</Text>
+            <Text style={styles.text}>Leírás</Text>
             <TextInput style={styles.textInput}/>
+
+            <Text style={styles.text}>Kategória</Text>
+            <SelectDropdown defaultButtonText={"Válassz egy kategóriát"} searchPlaceHolder={"Válaszd"} data={categories} onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index)
+            }}/>
 
             <Pressable onPress={() => {
                 navigation.navigate('MainPage')
-                //Ide jön a redirect
+                //Ide jön a létrehozás
             }}>
-                <Text style={styles.pressButton}>Bejelentkezés</Text>
+                <Text style={styles.pressButton}>Tárgy létrehozása</Text>
             </Pressable>
 
             <Pressable onPress={() => {
-                navigation.navigate('Register')
+                navigation.navigate('Homepage')
             }}>
-                <Text style={styles.pressButton}>Regisztráció</Text>
+                <Text style={styles.pressButton}>Vissza a főoldalra</Text>
             </Pressable>
-
-
         </View>
-    );
-}
+)}
 
-export default LoginScreen;
+export default ItemCreator;
 
 const styles = StyleSheet.create({
     container: {
@@ -61,8 +59,8 @@ const styles = StyleSheet.create({
     },
 
     login: {
-        fontSize: 40,
-        padding: 8,
+        fontSize: 34,
+        padding: 4,
         textAlignVertical: "top",
         marginTop: 10,
     },

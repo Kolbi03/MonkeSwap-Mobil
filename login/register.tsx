@@ -29,10 +29,12 @@ const RegisterScreen = ({ navigation }) => {
             <Text style={styles.text}>Jelszó megerősítése</Text>
             <TextInput style={styles.textInput}/>
 
+            <Text style={{padding: 12}}>A regisztrációval elfogadod az ÁSZF-et</Text>
+
             <Pressable onPress={() => {
                 //Ide jön a redirect
             }}>
-                <Text style={styles.pressButton}>Bejelentkezés</Text>
+                <Text style={styles.pressButton}>Regisztráció</Text>
             </Pressable>
 
             <Pressable onPress={() => {
