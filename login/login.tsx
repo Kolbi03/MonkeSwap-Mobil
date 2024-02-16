@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, TextInput, Button} from 'react-native';
 import React, {useState} from "react";
 import { Pressable } from "react-native";
-
+import homepage from "../homepage/homepage";
 
 const LoginScreen = ({ navigation }) => {
 
@@ -10,7 +10,7 @@ const LoginScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <StatusBar style="auto" />
+            <StatusBar style='auto' />
 
             <Text style={styles.login}>Bejelentkezés</Text>
 
@@ -23,6 +23,7 @@ const LoginScreen = ({ navigation }) => {
             <TextInput style={styles.textInput}/>
 
             <Pressable onPress={() => {
+
                 //Ide jön a redirect
             }}>
                 <Text style={styles.pressButton}>Bejelentkezés</Text>
@@ -56,6 +57,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10,
         fontSize: 20,
+
     },
 
     login: {

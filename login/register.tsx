@@ -18,7 +18,7 @@ const RegisterScreen = ({ navigation }) => {
             <TextInput style={styles.textInput}/>
 
             {/*Email mező*/}
-            <Text style={styles.text}>Felhasználónév</Text>
+            <Text style={styles.text}>Email</Text>
             <TextInput style={styles.textInput}/>
 
             {/*Jelszó mező*/}
@@ -28,10 +28,6 @@ const RegisterScreen = ({ navigation }) => {
             {/*Jelszó megerősítése mező*/}
             <Text style={styles.text}>Jelszó megerősítése</Text>
             <TextInput style={styles.textInput}/>
-
-
-
-
 
             <Pressable onPress={() => {
                 //Ide jön a redirect
