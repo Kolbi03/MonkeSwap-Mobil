@@ -1,24 +1,6 @@
-import React from "react";
-import {Pressable, StyleSheet, Text, View} from "react-native";
+import {StyleSheet} from "react-native";
 
-
-const Homepage = ({ navigation }) => {
-    return(
-        <View style={styles.container}>
-        <Text>Homepage</Text>
-
-    <Pressable onPress={() => {
-        navigation.navigate('Login')
-        //Ide jön a redirect
-    }}>
-        <Text style={styles.pressButton}>Bejelentkezés</Text>
-    </Pressable>
-        </View>
-    )
-}
-export default Homepage;
-
-const styles = StyleSheet.create({
+const Styles = StyleSheet.create ({
     container: {
         flex: 1,
         backgroundColor: '#FFF',
@@ -28,12 +10,11 @@ const styles = StyleSheet.create({
     textInput: {
         height: 50,
         minWidth:300,
-        borderColor: 'grey',
+        borderColor: '#cccccc',
         borderWidth: 1,
         borderRadius: 20,
         padding: 10,
         fontSize: 20,
-
     },
 
     login: {
@@ -58,5 +39,8 @@ const styles = StyleSheet.create({
         textAlignVertical: "center",
         color: 'black',
         marginTop: 15,
-    }
+        minWidth: 200,
+    },
 });
+
+export default Styles;

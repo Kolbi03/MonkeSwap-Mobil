@@ -1,10 +1,10 @@
-import LoginScreen from "./login/login";
-import RegisterScreen from "./login/register";
+import LoginScreen from "./screens/login/login";
+import RegisterScreen from "./screens/login/register";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import { createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import Homepage from "./homepage/homepage";
-import ItemCreator from "./homepage/itemCreator";
+import Homepage from "./screens/homepage/homepage";
+import ItemCreator from "./screens/homepage/itemCreator";
 
 const Stack = createNativeStackNavigator();
 
