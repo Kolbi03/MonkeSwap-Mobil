@@ -14,7 +14,7 @@ const LoginScreen = ({ navigation }) => {
         <View style={styles.container}>
             <StatusBar style='auto' />
 
-            <Text style={styles.login}>Login</Text>
+            <Text style={styles.header}>Login</Text>
 
             {/*Username mező*/}
             <Text style={styles.text}>Username</Text>
@@ -22,7 +22,6 @@ const LoginScreen = ({ navigation }) => {
             <View style={styles.textInput}>
                 <TextInput placeholder='Bob' placeholderTextColor={'gray'}/>
             </View>
-
 
             {/*Jelszó mező*/}
             <Text style={styles.text}>Password</Text>
@@ -44,8 +43,6 @@ const LoginScreen = ({ navigation }) => {
             }}>
                 <Text style={styles.pressButton}>Register</Text>
             </Pressable>
-
-
         </View>
     );
 }

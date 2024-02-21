@@ -20,7 +20,7 @@ const Styles = StyleSheet.create ({
         fontSize: 20,
     },
 
-    login: {
+    header: {
         fontSize: 40,
         padding: 8,
         textAlignVertical: "top",

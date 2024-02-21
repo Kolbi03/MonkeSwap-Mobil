@@ -20,6 +20,7 @@ const Homepage = ({ navigation }) => {
                             <Text>Monke for sale</Text>
                         </Card.Content>
                     </Card>
+
                     <Card mode={"elevated"} style={styles.card}>
                         <Card.Title title='Monke'/>
                         <Card.Cover source={require('../../assets/monke.jpg')}/>
