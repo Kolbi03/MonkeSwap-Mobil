@@ -4,7 +4,7 @@ import {StatusBar} from "expo-status-bar";
 import SelectDropdown from 'react-native-select-dropdown'
 import Styles from "../../Stylesheet";
 import { Dimensions } from "react-native";
-import { Modal, Portal, Text, Button, PaperProvider } from 'react-native-paper';
+import {Modal, Portal, Text, Button, PaperProvider, Provider} from 'react-native-paper';
 
 
 const categories = ["1", "2", "3", "4", "5", "6"]
@@ -15,9 +15,16 @@ const screenWidth = Dimensions.get('window').width;
 const ItemCreator = ({ navigation }) => {
     const styles = Styles;
 
-    return(
-        <View style={styles.container}>
+    const [visible, setVisible] = React.useState(false);
 
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
+    const containerStyle = {backgroundColor: 'white', padding: 20};
+
+    return(
+        <Provider>
+
+            <View style={styles.container}>
             <StatusBar style='auto' />
 
             <Text style={styles.header}>Item creation</Text>
@@ -42,10 +49,14 @@ const ItemCreator = ({ navigation }) => {
             <View style={{flexDirection: "row", padding: 10}}>
                 <Text style={{fontSize: 24, textAlignVertical: "top"}}>Price category</Text>
 
-                <Pressable onPress={() => {
-                    console.log('info pressed')
-                }}>
-                    <Image source={require('../../assets/monke.jpg')} style={localStyles.infoImage}/>
+                <Portal>
+                    <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+                        <Text>Price categories placeholder</Text>
+                    </Modal>
+                </Portal>
+
+                <Pressable onPress={showModal}>
+                    <Image source={require('../../assets/placeholderMonkeicon.jpg')} style={localStyles.infoImage}/>
                 </Pressable>
             </View>
 
@@ -93,7 +104,9 @@ const ItemCreator = ({ navigation }) => {
             }}>
                 <Text style={styles.pressButton}>Back to homepage</Text>
             </Pressable>
-        </View>
+            </View>
+
+        </Provider>
 )}
 
 export default ItemCreator;

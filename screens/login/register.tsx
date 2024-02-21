@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, TextInput, Button, Pressable} from 'react-native
 import React, {useState} from "react";
 import{NavigationContainer} from "@react-navigation/native";
 import Styles from "../../Stylesheet";
+import {Modal, Portal, Provider} from "react-native-paper";
 
 const RegisterScreen = ({ navigation }) => {
     const styles = Styles;
@@ -56,7 +57,6 @@ const RegisterScreen = ({ navigation }) => {
             }}>
                 <Text style={styles.pressButton}>Back</Text>
             </Pressable>
-
         </View>
     );
 
