@@ -1,14 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, TextInput, StyleSheet } from 'react-native';
-import React, {useState} from "react";
+import { Text, View, TextInput } from 'react-native';
+import React from "react";
 import { Pressable } from "react-native";
-import Homepage from "../homepage/homepage";
+
 import Styles from "../../Stylesheet";
 
 const LoginScreen = ({ navigation }) => {
     const styles = Styles;
-
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     return (
         <View style={styles.container}>

@@ -4,7 +4,7 @@ import {StatusBar} from "expo-status-bar";
 import SelectDropdown from 'react-native-select-dropdown'
 import Styles from "../../Stylesheet";
 import { Dimensions } from "react-native";
-import {Modal, Portal, Text, Button, PaperProvider, Provider} from 'react-native-paper';
+import {Modal, Portal, Text, Provider} from 'react-native-paper';
 
 
 const categories = ["1", "2", "3", "4", "5", "6"]

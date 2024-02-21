@@ -1,14 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Text, View, TextInput, Button, Pressable} from 'react-native';
-import React, {useState} from "react";
-import{NavigationContainer} from "@react-navigation/native";
+import { Text, View, TextInput, Pressable} from 'react-native';
 import Styles from "../../Stylesheet";
-import {Modal, Portal, Provider} from "react-native-paper";
 
 const RegisterScreen = ({ navigation }) => {
     const styles = Styles;
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     return (
         <View style={styles.container}>

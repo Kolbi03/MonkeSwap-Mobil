@@ -1,11 +1,7 @@
 import React from "react";
-import {Dimensions, Image, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
+import { ScrollView, Text, View} from "react-native";
 import Styles from "../../Stylesheet";
 import {Card} from "react-native-paper";
-
-
-const screenHeight = Dimensions.get('window').height;
-const screenWidth = Dimensions.get('window').width;
 
 const Homepage = ({ navigation }) => {
     const styles = Styles;
