@@ -21,12 +21,11 @@ const Styles = StyleSheet.create ({
         fontSize: 40,
         padding: 8,
         textAlignVertical: "top",
-        marginTop: 10,
     },
 
     text: {
         fontSize: 24,
-        padding: 14,
+        padding: 10,
     },
 
     pressButton: {
