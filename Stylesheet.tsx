@@ -1,4 +1,7 @@
-import {StyleSheet} from "react-native";
+import {Dimensions, StyleSheet} from "react-native";
+
+const screenHeight = Dimensions.get('window').height;
+const screenWidth = Dimensions.get('window').width;
 
 const Styles = StyleSheet.create ({
     container: {
@@ -40,6 +43,12 @@ const Styles = StyleSheet.create ({
         marginTop: 15,
         minWidth: 200,
     },
+
+    card: {
+        width: screenWidth * 0.45,
+        height: screenHeight * 0.384,
+        margin: screenWidth * 0.01,
+    }
 });
 
 export default Styles;
