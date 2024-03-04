@@ -13,6 +13,7 @@ const LoginScreen = ({ navigation }) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const data = {
         email: email,
@@ -39,12 +40,15 @@ const LoginScreen = ({ navigation }) => {
                 <TextInput placeholder='********' onChangeText={password => setPassword(password)} placeholderTextColor={'gray'}/>
             </View>
 
+            <Text>{error}</Text>
+
 
             <Pressable onPress={() => {
                  axios.post(baseUrl + '/auth/login', data)
                     .then((response) => {
                     console.log(response.data);
-                }).catch(error => console.log(error));
+                    navigation.navigate('MainPage')
+                }).catch(error => setError(error));
             }}>
                 <Text style={styles.pressButton}>Login</Text>
             </Pressable>

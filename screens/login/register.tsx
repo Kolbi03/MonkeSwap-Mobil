@@ -3,6 +3,7 @@ import { Text, View, TextInput, Pressable} from 'react-native';
 import Styles from "../../Stylesheet";
 import axios from "axios";
 import {useState} from "react";
+import {red} from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 
 const baseUrl = 'http://192.168.11.70:8080'
 
@@ -11,7 +12,13 @@ const RegisterScreen = ({ navigation }) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [conPassword, setConPassword] = useState('')
     const [username, setUsername] = useState('');
+    const [error, setError] = useState('');
+
+    function passwordCheck () {
+        return conPassword === password;
+    }
 
 
     return (
@@ -38,19 +45,20 @@ const RegisterScreen = ({ navigation }) => {
             <Text style={styles.text}>Password</Text>
 
             <View style={styles.textInput}>
-                <TextInput placeholder='********' onChangeText={password => setPassword(password)} placeholderTextColor={'gray'}/>
+                <TextInput placeholder='********' secureTextEntry={true} onChangeText={password => setPassword(password)} placeholderTextColor={'gray'}/>
             </View>
 
             {/*Jelszó megerősítése mező*/}
             <Text style={styles.text}>Confirm password</Text>
 
             <View style={styles.textInput}>
-                <TextInput placeholder='********' placeholderTextColor={'gray'}/>
+                <TextInput placeholder='********' secureTextEntry={true} onChangeText={password => setConPassword(password)} placeholderTextColor={'gray'}/>
             </View>
 
             <Text style={{padding: 12, textAlign: "center"}}>When you create you account you accept the EULA and Privacy Policy</Text>
 
             <Pressable onPress={() => {
+                passwordCheck() ?
                 axios({
                     method: 'post',
                     url: `${baseUrl}/auth/register`,
@@ -61,7 +69,8 @@ const RegisterScreen = ({ navigation }) => {
                     }
                 }).then((response) => {
                     console.log(response.data);
-                }).catch(error => {console.log(error)})
+                }).catch(error => {console.log(error)}) :
+                    setError('The confirmation must be the same as the password')
             }}>
                 <Text style={styles.pressButton}>Create</Text>
             </Pressable>
@@ -71,6 +80,7 @@ const RegisterScreen = ({ navigation }) => {
             }}>
                 <Text style={styles.pressButton}>Back</Text>
             </Pressable>
+            <Text style={{marginTop: 20, color:'#FF0000'}}>{error}</Text>
         </View>
     );
 
