@@ -5,6 +5,7 @@ import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import { createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import Homepage from "./screens/homepage/homepage";
 import ItemCreator from "./screens/homepage/itemCreator";
+import Profile from "./screens/homepage/profile";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ function MainPage() {
         }}>
             <BottomNav.Screen name="Homepage" component={Homepage}/>
             <BottomNav.Screen name="ItemCreator" component={ItemCreator}/>
+            <BottomNav.Screen name={"Profile"} component={Profile}/>
         </BottomNav.Navigator>
     )}
 
