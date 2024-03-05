@@ -47,8 +47,8 @@ const LoginScreen = ({ navigation }) => {
                  axios.post(baseUrl + '/auth/login', data)
                     .then((response) => {
                     console.log(response.data);
-                    navigation.navigate('MainPage')
-                }).catch(error => setError(error));
+                    //navigation.navigate('MainPage')
+                }).catch(error => console.log(error));
             }}>
                 <Text style={styles.pressButton}>Login</Text>
             </Pressable>
