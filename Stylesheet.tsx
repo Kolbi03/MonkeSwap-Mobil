@@ -36,7 +36,7 @@ const Styles = StyleSheet.create ({
     },
 
     pressButton: {
-        fontSize: 20,
+        fontSize: 18,
         borderWidth: 10,
         borderColor: '#ffda39',
         backgroundColor: '#ffda39',
@@ -44,7 +44,7 @@ const Styles = StyleSheet.create ({
         textAlign: "center",
         textAlignVertical: "center",
         color: 'black',
-        marginTop: 15,
+        marginTop: 18,
         width: screenWidth * 0.9,
     },
 

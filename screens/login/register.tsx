@@ -1,9 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, TextInput, Pressable} from 'react-native';
+import {Text, View, TextInput, Pressable, ScrollView, KeyboardAvoidingView} from 'react-native';
 import Styles from "../../Stylesheet";
 import axios from "axios";
 import {useState} from "react";
-import {red} from "react-native-reanimated/lib/typescript/reanimated2/Colors";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 const baseUrl = 'http://192.168.11.70:8080'
 
@@ -16,13 +16,14 @@ const RegisterScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [error, setError] = useState('');
 
-    function passwordCheck () {0
+    function passwordCheck () {
         return conPassword === password;
     }
 
 
     return (
-        <View style={styles.container}>
+        <KeyboardAwareScrollView style={{backgroundColor: '#FFFFFF'}}>
+            <View style={styles.container}>
             <StatusBar style="auto" />
 
             <Text style={styles.header}>Account creation</Text>
@@ -82,9 +83,8 @@ const RegisterScreen = ({ navigation }) => {
                 <Text style={styles.pressButton}>Back</Text>
             </Pressable>
             <Text style={{marginTop: 20, color:'#FF0000'}}>{error}</Text>
-        </View>
+            </View>
+        </KeyboardAwareScrollView>
     );
-
-
 }
 export default RegisterScreen;
