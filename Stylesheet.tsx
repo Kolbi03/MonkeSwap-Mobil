@@ -7,28 +7,32 @@ const Styles = StyleSheet.create ({
     container: {
         flex: 1,
         backgroundColor: '#FFF',
-        alignItems: "center",
+        alignItems: "flex-start",
+        padding: 20,
     },
 
     textInput: {
-        height: 50,
-        minWidth:300,
+        height: 45,
+        width: '100%',
         borderColor: '#cccccc',
         borderWidth: 1,
-        borderRadius: 20,
+        borderRadius: 10,
         padding: 10,
         fontSize: 20,
     },
 
     header: {
-        fontSize: 40,
+        fontSize: 26,
         padding: 8,
+        paddingLeft: 0,
         textAlignVertical: "top",
     },
 
     text: {
-        fontSize: 24,
+        fontSize: 18,
         padding: 10,
+        color: '#444444',
+        paddingLeft: 0,
     },
 
     pressButton: {
@@ -36,18 +40,18 @@ const Styles = StyleSheet.create ({
         borderWidth: 10,
         borderColor: '#ffda39',
         backgroundColor: '#ffda39',
-        borderRadius: 20,
+        borderRadius: 14,
         textAlign: "center",
         textAlignVertical: "center",
         color: 'black',
         marginTop: 15,
-        minWidth: 200,
+        width: screenWidth * 0.9,
     },
 
     card: {
-        width: screenWidth * 0.45,
+        width: screenWidth * 0.432,
         height: screenHeight * 0.384,
-        margin: screenWidth * 0.01,
+        margin: screenWidth * 0.01
     }
 });
 

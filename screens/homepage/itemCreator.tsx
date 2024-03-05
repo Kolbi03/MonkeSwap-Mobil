@@ -7,6 +7,7 @@ import { Dimensions } from "react-native";
 import {Modal, Portal, Text, Provider} from 'react-native-paper';
 
 
+
 const categories = ["1", "2", "3", "4", "5", "6"]
 
 const screenHeight = Dimensions.get('window').height;
@@ -68,25 +69,25 @@ const ItemCreator = ({ navigation }) => {
                 </Pressable>
 
                 <Pressable onPress={() => {
-                    console.log('image 1 pressed')
+                    console.log('image 2 pressed')
                 }}>
                     <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
                 </Pressable>
 
                 <Pressable onPress={() => {
-                    console.log('image 1 pressed')
+                    console.log('image 3 pressed')
                 }}>
                     <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
                 </Pressable>
 
                 <Pressable onPress={() => {
-                    console.log('image 1 pressed')
+                    console.log('image 4 pressed')
                 }}>
                     <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
                 </Pressable>
 
                 <Pressable onPress={() => {
-                    console.log('image 1 pressed')
+                    console.log('image 5 pressed')
                 }}>
                     <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
                 </Pressable>

@@ -16,7 +16,7 @@ const RegisterScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [error, setError] = useState('');
 
-    function passwordCheck () {
+    function passwordCheck () {0
         return conPassword === password;
     }
 
@@ -26,6 +26,7 @@ const RegisterScreen = ({ navigation }) => {
             <StatusBar style="auto" />
 
             <Text style={styles.header}>Account creation</Text>
+            <Text style={{fontSize: 18, paddingBottom: 8, color: '#444444',}}>Start trading today!</Text>
 
             {/*Username mező*/}
             <Text style={styles.text}>Username</Text>

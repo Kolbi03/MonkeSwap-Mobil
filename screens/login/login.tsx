@@ -4,8 +4,9 @@ import React, {useState} from "react";
 import { Pressable } from "react-native";
 import Styles from "../../Stylesheet";
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseUrl = 'http://192.168.11.70:8080'
+const baseUrl = 'http://192.168.208.132:8080'
 
 const LoginScreen = ({ navigation }) => {
 
@@ -30,25 +31,28 @@ const LoginScreen = ({ navigation }) => {
             <Text style={styles.text}>Email</Text>
 
             <View style={styles.textInput}>
-                <TextInput placeholder='Bob@monke.com' onChangeText={email => setEmail(email)} placeholderTextColor={'gray'}/>
+                <TextInput placeholder='Bob@monke.com' keyboardType="email-address" onChangeText={email => setEmail(email)} placeholderTextColor={'gray'}/>
             </View>
 
             {/*Jelszó mező*/}
             <Text style={styles.text}>Password</Text>
 
             <View style={styles.textInput}>
-                <TextInput placeholder='********' onChangeText={password => setPassword(password)} placeholderTextColor={'gray'}/>
+                <TextInput placeholder='********' secureTextEntry={true} onChangeText={password => setPassword(password)} placeholderTextColor={'gray'}/>
             </View>
 
             <Text>{error}</Text>
 
 
             <Pressable onPress={() => {
-                 axios.post(baseUrl + '/auth/login', data)
-                    .then((response) => {
+                 /*axios.post(baseUrl + '/auth/login', data)
+                    .then(async(response) => {
                     console.log(response.data);
-                    //navigation.navigate('MainPage')
-                }).catch(error => console.log(error));
+                    await AsyncStorage.setItem('token', JSON.stringify(response.data));
+                    console.log(await AsyncStorage.getItem('token'))
+                    navigation.navigate('MainPage')
+                }).catch(error => console.log(error));*/
+                navigation.navigate('MainPage');
             }}>
                 <Text style={styles.pressButton}>Login</Text>
             </Pressable>
