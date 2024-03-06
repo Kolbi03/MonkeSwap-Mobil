@@ -5,8 +5,9 @@ import { Pressable } from "react-native";
 import Styles from "../../Stylesheet";
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import loginDataDTO from '../../interfaces/loginDataDTO';
 
-const baseUrl = 'http://192.168.208.132:8080'
+const baseUrl = 'http://192.168.11.70:8080'
 
 const LoginScreen = ({ navigation }) => {
 
@@ -16,7 +17,7 @@ const LoginScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const data = {
+    const data: loginDataDTO = {
         email: email,
         password: password,
     }
@@ -42,7 +43,6 @@ const LoginScreen = ({ navigation }) => {
             </View>
 
             <Text>{error}</Text>
-
 
             <Pressable onPress={() => {
                  /*axios.post(baseUrl + '/auth/login', data)

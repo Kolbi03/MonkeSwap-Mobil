@@ -29,6 +29,7 @@ const ItemCreator = ({ navigation }) => {
             <StatusBar style='auto' />
 
             <Text style={styles.header}>Item creation</Text>
+                <Text style={{fontSize: 14, color:'#777'}}>You can create new items for trade</Text>
 
             <Text style={styles.text}>Title</Text>
 

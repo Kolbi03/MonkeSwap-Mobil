@@ -18,13 +18,13 @@ const Styles = StyleSheet.create ({
         borderWidth: 1,
         borderRadius: 10,
         padding: 10,
-        fontSize: 20,
     },
 
     header: {
         fontSize: 26,
         padding: 8,
         paddingLeft: 0,
+        paddingTop: 0,
         textAlignVertical: "top",
     },
 

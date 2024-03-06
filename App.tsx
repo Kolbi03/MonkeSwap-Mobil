@@ -6,6 +6,7 @@ import { createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import Homepage from "./screens/homepage/homepage";
 import ItemCreator from "./screens/homepage/itemCreator";
 import Profile from "./screens/homepage/profile";
+import {Icon} from "react-native-paper";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,9 +17,12 @@ function MainPage() {
         <BottomNav.Navigator screenOptions={{
             headerShown: false,
         }}>
-            <BottomNav.Screen name="Homepage" component={Homepage}/>
-            <BottomNav.Screen name="ItemCreator" component={ItemCreator}/>
-            <BottomNav.Screen name={"Profile"} component={Profile}/>
+            <BottomNav.Screen options={{tabBarLabel: 'Home', tabBarIcon: ({ color, size }) => (
+                    <Icon source="home" color={color} size={size} />)}} name="Homepage" component={Homepage}/>
+            <BottomNav.Screen options={{tabBarLabel: 'Item Creation', tabBarIcon: ({ color, size }) => (
+                    <Icon source="plus" color={color} size={size} />)}} name="ItemCreator" component={ItemCreator} />
+            <BottomNav.Screen options={{tabBarLabel: 'Profile', tabBarIcon: ({ color, size }) => (
+                    <Icon source="star" color={color} size={size} />)}} name={"Profile"} component={Profile}/>
         </BottomNav.Navigator>
     )}
 

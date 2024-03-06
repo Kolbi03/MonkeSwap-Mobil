@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import {Text, View, TextInput, Pressable, ScrollView, KeyboardAvoidingView} from 'react-native';
+import {Text, View, TextInput, Pressable} from 'react-native';
 import Styles from "../../Stylesheet";
 import axios from "axios";
 import {useState} from "react";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import registerDataDTO from "../../interfaces/registerDataDTO";
 
 const baseUrl = 'http://192.168.11.70:8080'
 
@@ -16,10 +17,17 @@ const RegisterScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [error, setError] = useState('');
 
+    const data: registerDataDTO = {
+        email: email,
+        username: username,
+        password: password,
+    }
+
     function passwordCheck () {
         return conPassword === password;
     }
 
+    //-----------PAGE STARTS HERE--------------
 
     return (
         <KeyboardAwareScrollView style={{backgroundColor: '#FFFFFF'}}>
@@ -64,11 +72,8 @@ const RegisterScreen = ({ navigation }) => {
                 axios({
                     method: 'post',
                     url: `${baseUrl}/auth/register`,
-                    data: {
-                        username: username,
-                        email: email,
-                        password: password,
-                    }
+                    data: data,
+
                 }).then((response) => {
                     console.log(response.data);
                 }).catch(error => {console.log(error)}) :
