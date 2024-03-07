@@ -1,16 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import { Text, View, TextInput } from 'react-native';
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import { Pressable } from "react-native";
 import Styles from "../../Stylesheet";
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import loginDataDTO from '../../interfaces/loginDataDTO';
 import {baseURL} from "../../backendURL";
+import {AuthContext} from "../../contexts/authContext";
 
 const LoginScreen = ({ navigation }) => {
 
     const styles = Styles;
+
+    const {login} = useContext(AuthContext)
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -46,11 +49,7 @@ const LoginScreen = ({ navigation }) => {
             <Text>{error}</Text>
 
             <Pressable onPress={() => {
-                 axios.post(baseUrl + '/auth/login', data)
-                    .then(async(response) => {
-                        await AsyncStorage.setItem('token', response.data.token).catch((e)=>{console.log(e)});
-                    navigation.navigate('MainPage')
-                }).catch(error => console.log(error));
+                login({email: data.email, password: data.password})
                 navigation.navigate('MainPage');
             }}>
                 <Text style={styles.pressButton}>Login</Text>

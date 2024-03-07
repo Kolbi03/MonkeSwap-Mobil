@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import {Dimensions, Image, Pressable, StyleSheet, TextInput, View} from "react-native";
+import {Dimensions, Image, Pressable, StyleSheet, TextInput, ToastAndroid, View} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import SelectDropdown from 'react-native-select-dropdown'
 import Styles from "../../Stylesheet";
@@ -10,7 +10,6 @@ import itemDataDTO from "../../interfaces/itemDataDTO";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthContext} from "../../contexts/authContext";
-import * as string_decoder from "string_decoder";
 
 const baseUrl = baseURL;
 
@@ -45,7 +44,7 @@ const ItemCreator = ({ navigation }) => {
 
     const config = {
         headers: {
-            Authorization: 'Bearer: ' + token?.token
+            Authorization: 'Bearer ' + token?.token
         }
     }
 
@@ -127,13 +126,11 @@ const ItemCreator = ({ navigation }) => {
                 </Pressable>
             </View>
 
+
             <Pressable onPress={() => {
-                console.log("token = " + token?.token);
-                console.log(config);
-                console.log(data)
                 axios.post(baseUrl + '/item', data, config)
                     .then((response) =>
-                    console.log(response.data))
+                    ToastAndroid.showWithGravity('Item created!', 2000, ToastAndroid.CENTER))
                     .catch(error => console.log(error))
             }}>
                 <Text style={styles.pressButton}>Create</Text>
