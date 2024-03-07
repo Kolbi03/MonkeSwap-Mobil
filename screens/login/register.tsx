@@ -5,8 +5,8 @@ import axios from "axios";
 import {useState} from "react";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import registerDataDTO from "../../interfaces/registerDataDTO";
+import {baseURL} from "../../backendURL";
 
-const baseUrl = 'http://192.168.11.70:8080'
 
 const RegisterScreen = ({ navigation }) => {
     const styles = Styles;
@@ -16,6 +16,8 @@ const RegisterScreen = ({ navigation }) => {
     const [conPassword, setConPassword] = useState('')
     const [username, setUsername] = useState('');
     const [error, setError] = useState('');
+
+    const baseUrl = baseURL;
 
     const data: registerDataDTO = {
         email: email,
@@ -68,16 +70,11 @@ const RegisterScreen = ({ navigation }) => {
             <Text style={{padding: 12, textAlign: "center"}}>When you create you account you accept the EULA and Privacy Policy</Text>
 
             <Pressable onPress={() => {
-                passwordCheck() ?
-                axios({
-                    method: 'post',
-                    url: `${baseUrl}/auth/register`,
-                    data: data,
-
-                }).then((response) => {
-                    console.log(response.data);
-                }).catch(error => {console.log(error)}) :
-                    setError('The confirmation must be the same as the password')
+                axios.post(baseUrl + '/auth/register', data)
+                    .then(async(response) => {
+                        console.log(response.data);
+                        navigation.navigate('MainPage')
+                    }).catch(error => console.log(error))
             }}>
                 <Text style={styles.pressButton}>Create</Text>
             </Pressable>

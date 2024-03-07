@@ -6,8 +6,7 @@ import Styles from "../../Stylesheet";
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import loginDataDTO from '../../interfaces/loginDataDTO';
-
-const baseUrl = 'http://192.168.11.70:8080'
+import {baseURL} from "../../backendURL";
 
 const LoginScreen = ({ navigation }) => {
 
@@ -21,6 +20,8 @@ const LoginScreen = ({ navigation }) => {
         email: email,
         password: password,
     }
+
+    const baseUrl = baseURL;
 
     return (
         <View style={styles.container}>
@@ -45,13 +46,11 @@ const LoginScreen = ({ navigation }) => {
             <Text>{error}</Text>
 
             <Pressable onPress={() => {
-                 /*axios.post(baseUrl + '/auth/login', data)
+                 axios.post(baseUrl + '/auth/login', data)
                     .then(async(response) => {
-                    console.log(response.data);
-                    await AsyncStorage.setItem('token', JSON.stringify(response.data));
-                    console.log(await AsyncStorage.getItem('token'))
+                        await AsyncStorage.setItem('token', response.data.token).catch((e)=>{console.log(e)});
                     navigation.navigate('MainPage')
-                }).catch(error => console.log(error));*/
+                }).catch(error => console.log(error));
                 navigation.navigate('MainPage');
             }}>
                 <Text style={styles.pressButton}>Login</Text>

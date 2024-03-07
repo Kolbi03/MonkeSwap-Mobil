@@ -7,6 +7,7 @@ import Homepage from "./screens/homepage/homepage";
 import ItemCreator from "./screens/homepage/itemCreator";
 import Profile from "./screens/homepage/profile";
 import {Icon} from "react-native-paper";
+import AuthContextProvider from "./provider/authContextProvider";
 
 const Stack = createNativeStackNavigator();
 
@@ -14,6 +15,7 @@ const BottomNav = createBottomTabNavigator();
 
 function MainPage() {
     return(
+        <AuthContextProvider>
         <BottomNav.Navigator screenOptions={{
             headerShown: false,
         }}>
@@ -24,11 +26,13 @@ function MainPage() {
             <BottomNav.Screen options={{tabBarLabel: 'Profile', tabBarIcon: ({ color, size }) => (
                     <Icon source="star" color={color} size={size} />)}} name={"Profile"} component={Profile}/>
         </BottomNav.Navigator>
+        </AuthContextProvider>
     )}
 
 
 export default function App() {
   return (
+      <AuthContextProvider>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerStyle: {
                 backgroundColor: '#B5651D',
@@ -40,4 +44,5 @@ export default function App() {
           <Stack.Screen name="MainPage" component={MainPage}/>
         </Stack.Navigator>
       </NavigationContainer>
+      </AuthContextProvider>
   )}

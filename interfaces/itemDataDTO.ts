@@ -1,7 +1,7 @@
 export  default interface itemDataDTO {
-    name: string,
+    title: string,
+    itemPicture: string,
     description: string,
     category: string,
-    priceCategory: string,
-    image: string,
+    priceTier: string,
 }
