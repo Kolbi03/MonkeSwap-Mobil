@@ -1,11 +1,11 @@
 import React, {ReactNode, useEffect, useState} from "react";
 import authToken from "../interfaces/authToken";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthContext } from '../contexts/authContext';
-import axios, {constructor} from "axios";
+import {AuthContext} from '../contexts/authContext';
+import axios from "axios";
 import {ToastAndroid} from "react-native";
 import loginDataDTO from '../interfaces/loginDataDTO'
-import {baseURL} from'../backendURL'
+import {baseURL} from '../backendURL'
 import userDataDTO from "../interfaces/userDataDTO";
 
 interface authContextProviderProps {
@@ -15,6 +15,7 @@ interface authContextProviderProps {
 const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: authContextProviderProps) => {
 
     const [token, setToken] = useState<authToken | null>(null);
+    const [userData, setUserData] = useState<userDataDTO>();
     const [init, setInit] = useState<boolean>(false);
 
     const config = {
@@ -23,22 +24,22 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
         }
     }
 
-    useEffect(()=>{
+    const setTokenIfExists = async ()=> {
 
-
-        const setTokenIfExists= async ()=>{
-
-            const token = await AsyncStorage.getItem('token').catch((e)=>{console.log(e)});
-            console.log('At start: ' + token)
-            if(token!=null){
-                setToken({token: token});
-                console.log('finished: ' + token)
-            }
-            setInit(true);
+        const token = await AsyncStorage.getItem('token').catch((e)=>{console.log(e)});
+        console.log('At start: ' + token)
+        if(token!=null){
+            setToken({token: token});
+            console.log('finished: ' + token)
         }
+        setInit(true);
+    }
+
+    useEffect(()=>{
 
         setTokenIfExists();
     },[])
+
 
     const login = async (user: loginDataDTO) => {
 
@@ -59,10 +60,13 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
 
     const getUserData = async () => {
         await axios.get(baseURL + '/user', config)
-            .then(async(response) => {
+            .then((response) => {
                 console.log(response.data)
+                setUserData(response.data)
             })
-            .catch((e) => console.log(e))
+            .catch((e) => console.log(e));
+
+        return userData;
     }
 
     const logout = async () => {

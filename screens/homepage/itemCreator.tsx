@@ -18,6 +18,7 @@ const categories = ["OTHER", "2", "3", "4", "5", "6"]
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
+// @ts-ignore
 const ItemCreator = ({ navigation }) => {
     const styles = Styles;
 

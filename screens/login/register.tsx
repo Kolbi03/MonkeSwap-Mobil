@@ -8,6 +8,7 @@ import registerDataDTO from "../../interfaces/registerDataDTO";
 import {baseURL} from "../../backendURL";
 
 
+// @ts-ignore
 const RegisterScreen = ({ navigation }) => {
     const styles = Styles;
 
@@ -50,7 +51,7 @@ const RegisterScreen = ({ navigation }) => {
             <Text style={styles.text}>Email</Text>
 
             <View style={styles.textInput}>
-                <TextInput placeholder='Monke@swap.com' placeholderTextColor={'gray'} onChangeText={email => setEmail(email)}/>
+                <TextInput keyboardType='email-address' placeholder='Monke@swap.com' placeholderTextColor={'gray'} onChangeText={email => setEmail(email)}/>
             </View>
 
             {/*Jelszó mező*/}

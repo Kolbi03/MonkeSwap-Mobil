@@ -9,6 +9,7 @@ import loginDataDTO from '../../interfaces/loginDataDTO';
 import {baseURL} from "../../backendURL";
 import {AuthContext} from "../../contexts/authContext";
 
+// @ts-ignore
 const LoginScreen = ({ navigation }) => {
 
     const styles = Styles;
