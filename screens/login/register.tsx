@@ -74,7 +74,6 @@ const RegisterScreen = ({ navigation }) => {
                 axios.post(baseUrl + '/auth/register', data)
                     .then(async(response) => {
                         console.log(response.data);
-                        navigation.navigate('MainPage')
                     }).catch(error => console.log(error))
             }}>
                 <Text style={styles.pressButton}>Create</Text>

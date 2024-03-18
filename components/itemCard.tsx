@@ -12,9 +12,7 @@ function ItemCard(item: itemDataDTO) {
             <Card.Title title={item.title}/>
             <Card.Cover source={require('../assets/placeholderMonkeicon.jpg')}/>
             <Card.Content>
-                <Text>{item.priceTier}</Text>
-                <Text>{item.category}</Text>
-                <Text>{item.description}</Text>
+                    <Text>{item.priceTier}</Text>
             </Card.Content>
         </Card>
     )

@@ -64,9 +64,11 @@ const Profile = ({navigation}) => {
     }, []);
 
     function updateUser() {
-        if(phoneNumber === undefined) {
-
-        }
+        /*if (phoneNumber !== undefined) {
+        } else {
+            ToastAndroid.showWithGravity('Profile data updated!', 2000, ToastAndroid.CENTER)
+        )
+        }*/
         axios.put(baseUrl + '/user', updateUserData, config)
             .then((response) =>
                 ToastAndroid.showWithGravity('Profile data updated!', 2000, ToastAndroid.CENTER))
@@ -98,10 +100,6 @@ const Profile = ({navigation}) => {
         </View>
 
         <Text style={styles.text}>Date Of Birth</Text>
-
-        {/*<View style={styles.textInput}>
-            <TextInput defaultValue={'DATE PLACEHOLDER'}  onChangeText={date => setDateOfBirth()} placeholderTextColor={'gray'}/>
-        </View>*/}
 
             <Pressable onPress={() => setOpen(true)}>
                 <Text style={styles.pressButton}>Edit date of birth</Text>
