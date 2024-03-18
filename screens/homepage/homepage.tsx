@@ -6,16 +6,16 @@ import {baseURL} from "../../backendURL";
 import {AuthContext} from "../../contexts/authContext";
 import itemDataDTO from "../../interfaces/itemDataDTO";
 import ItemCard from "../../components/itemCard";
-import {Icon} from "react-native-paper";
 
 const baseUrl = baseURL
+
+let itemCards: React.JSX.Element[] | undefined;
 
 // @ts-ignore
 const Homepage = ({ navigation }) => {
 
     const {token} = useContext(AuthContext);
-
-    const [itemList, setItemList] = useState<Array<itemDataDTO>>();
+    const [itemList, setItemList] = useState<itemDataDTO[]>();
 
     const config = {
         headers: {
@@ -23,23 +23,30 @@ const Homepage = ({ navigation }) => {
         }
     }
 
-    async function loadCards() {
-            await axios.get(baseUrl + '/items', config)
-                .then((response) => {
-                    setItemList(response.data);
-                    console.log(response.data)
-                })
-                .catch((e) => console.log(e))
-
-            itemList?.map((item) => {
-                <ItemCard title={item.title} itemPicture={item.itemPicture} description={item.description}
-                          category={item.category} priceTier={item.priceTier}/>
-
+    function loadCards() {
+        axios.get(baseUrl + '/items', config)
+            .then((response) => {
+                console.log(response.data);
+                setItemList(response.data);
+                console.log('itemList: ' + itemList)
             })
+            .catch((e) => console.log(e))
+
+        if(itemList === undefined) {} else {
+
+            itemCards = itemList.map((item, i) =>
+
+                <ItemCard key={i} title={item.title} itemPicture={item.itemPicture} description={item.description}
+                          category={item.category} priceTier={item.priceTier}/>);
+
+            console.log('itemCards: ' + itemCards)
+        }
     }
 
+
     useEffect(() => {
-        //loadCards();
+        loadCards()
+        loadCards()
     }, []);
 
     const styles = Styles;
@@ -48,8 +55,11 @@ const Homepage = ({ navigation }) => {
             <ScrollView>
                 <View style={{flexDirection: "row"}}>
                     <Pressable onPress={loadCards}>
-                        <Text style={styles.pressButton}>Register</Text>
+                        <Text style={styles.pressButton}>Load Cards</Text>
                     </Pressable>
+                </View>
+                <View style={{flexDirection: "row"}}>
+                {itemCards}
                 </View>
             </ScrollView>
         </View>

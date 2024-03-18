@@ -1,22 +1,22 @@
-/*
-import LoginScreen from "./screens/login/login";
-import RegisterScreen from "./screens/login/register";
+import LoginScreen from "../screens/login/login";
+import RegisterScreen from "../screens/login/register";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import { createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import Homepage from "./screens/homepage/homepage";
-import ItemCreator from "./screens/homepage/itemCreator";
-import Profile from "./screens/homepage/profile";
-import {Icon} from "react-native-paper";
-import AuthContextProvider from "./provider/authContextProvider";
+import Homepage from "../screens/homepage/homepage";
+import ItemCreator from "../screens/homepage/itemCreator";
+import Profile from "../screens/homepage/profile";
+import {ActivityIndicator, Icon} from "react-native-paper";
+import AuthContextProvider from "../provider/authContextProvider";
+import {useContext} from "react";
+import {AuthContext} from "../contexts/authContext";
+import {View} from "react-native";
 
 const Stack = createNativeStackNavigator();
-
 const BottomNav = createBottomTabNavigator();
 
 function MainPage() {
     return(
-        <AuthContextProvider>
             <BottomNav.Navigator screenOptions={{
                 headerShown: false,
             }}>
@@ -27,23 +27,42 @@ function MainPage() {
                 <BottomNav.Screen options={{tabBarLabel: 'Profile', tabBarIcon: ({ color, size }) => (
                         <Icon source="star" color={color} size={size} />)}} name={"Profile"} component={Profile}/>
             </BottomNav.Navigator>
-        </AuthContextProvider>
     )}
+const Login = () => (
+    <Stack.Navigator screenOptions={{ headerStyle: {
+            backgroundColor: '#B5651D',
+        },
+    }}>
+        <Stack.Screen name="Login" component={LoginScreen}/>
+        <Stack.Screen name="Register" component={RegisterScreen}/>
+    </Stack.Navigator>
+)
 
+export default function Navigation() {
 
-function App() {
+    const {token, init} = useContext(AuthContext);
     return (
-        <AuthContextProvider>
-            <NavigationContainer>
-                <Stack.Navigator screenOptions={{ headerStyle: {
-                        backgroundColor: '#B5651D',
-                    },
-                    //tabBarStyle: {backgroundColor: '#B5651D'}
-                }}>
-                    <Stack.Screen name="Login" component={LoginScreen}/>
-                    <Stack.Screen name="Register" component={RegisterScreen}/>
-                    <Stack.Screen name="MainPage" component={MainPage}/>
-                </Stack.Navigator>
-            </NavigationContainer>
-        </AuthContextProvider>
-    )}*/
+        <>
+            {init ?
+                <NavigationContainer>
+                    {!token ? <Login/> : (
+                        <Stack.Navigator screenOptions={{
+                            headerStyle: {
+                                backgroundColor: '#B5651D',
+                            },
+                            //tabBarStyle: {backgroundColor: '#B5651D'}
+                        }}>
+                            <Stack.Screen name="MainPage" component={MainPage}/>
+                        </Stack.Navigator>
+                    )
+                    }
+
+
+                </NavigationContainer> :
+                <View style={{flex:1,justifyContent:'center',alignItems:'center', backgroundColor: '#121212'}}>
+                    <ActivityIndicator color='#999999' size="large"/>
+                </View>
+            }
+        </>
+    )
+}

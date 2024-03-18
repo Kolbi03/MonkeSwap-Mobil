@@ -12,7 +12,7 @@ interface authContextProviderProps {
     children: ReactNode;
 }
 
-const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: authContextProviderProps) => {
+const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: authContextProviderProps, {navigation}) => {
 
     const [token, setToken] = useState<authToken | null>(null);
     const [userData, setUserData] = useState<userDataDTO>();
@@ -35,20 +35,20 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
         setInit(true);
     }
 
-    useEffect(()=>{
+    useEffect(()=> {
 
-        setTokenIfExists();
+        setTokenIfExists().then()
     },[])
 
 
-    const login = async (user: loginDataDTO) => {
+    const login =(user: loginDataDTO) => {
 
-        await axios.post(baseURL + '/auth/login', {email: user.email, password: user.password})
-            .then(async (response) => {
+        axios.post(baseURL + '/auth/login', {email: user.email, password: user.password})
+            .then((response) => {
                 setToken({token: response.data.token})
                 //console.log('received token: ' + response.data.token)
                 ToastAndroid.showWithGravity('Logged in!', 2000, ToastAndroid.CENTER)
-                await AsyncStorage.setItem('token', response.data.token).catch((e) => {
+                AsyncStorage.setItem('token', response.data.token).catch((e) => {
                     console.log(e)
                 });
             })
@@ -58,8 +58,8 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
             })
     };
 
-    const getUserData = async () => {
-        await axios.get(baseURL + '/user', config)
+    const getUserData = () => {
+        axios.get(baseURL + '/user', config)
             .then((response) => {
                 console.log(response.data)
                 setUserData(response.data)

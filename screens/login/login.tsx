@@ -3,10 +3,7 @@ import { Text, View, TextInput } from 'react-native';
 import React, {useContext, useState} from "react";
 import { Pressable } from "react-native";
 import Styles from "../../Stylesheet";
-import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import loginDataDTO from '../../interfaces/loginDataDTO';
-import {baseURL} from "../../backendURL";
 import {AuthContext} from "../../contexts/authContext";
 
 // @ts-ignore
@@ -18,14 +15,11 @@ const LoginScreen = ({ navigation }) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
 
     const data: loginDataDTO = {
         email: email,
         password: password,
     }
-
-    const baseUrl = baseURL;
 
     return (
         <View style={styles.container}>
@@ -47,11 +41,8 @@ const LoginScreen = ({ navigation }) => {
                 <TextInput placeholder='********' secureTextEntry={true} onChangeText={password => setPassword(password)} placeholderTextColor={'gray'}/>
             </View>
 
-            <Text>{error}</Text>
-
             <Pressable onPress={() => {
                 login({email: data.email, password: data.password})
-                navigation.navigate('MainPage');
             }}>
                 <Text style={styles.pressButton}>Login</Text>
             </Pressable>

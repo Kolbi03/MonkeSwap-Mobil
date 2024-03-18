@@ -1,5 +1,5 @@
 import authToken from "../interfaces/authToken";
-import {createContext, useContext} from "react";
+import {createContext} from "react";
 import loginDataDTO from '../interfaces/loginDataDTO'
 
 interface authContextProps {
