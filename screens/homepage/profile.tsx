@@ -64,11 +64,6 @@ const Profile = ({navigation}) => {
     }, []);
 
     function updateUser() {
-        /*if (phoneNumber !== undefined) {
-        } else {
-            ToastAndroid.showWithGravity('Profile data updated!', 2000, ToastAndroid.CENTER)
-        )
-        }*/
         axios.put(baseUrl + '/user', updateUserData, config)
             .then((response) =>
                 ToastAndroid.showWithGravity('Profile data updated!', 2000, ToastAndroid.CENTER))

@@ -1,14 +1,13 @@
 import React, {useContext, useState} from "react";
-import {Dimensions, Image, Pressable, StyleSheet, TextInput, ToastAndroid, View} from "react-native";
+import {Dimensions, Image, Pressable, StyleSheet, TextInput, ToastAndroid, View, Modal, Alert} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import SelectDropdown from 'react-native-select-dropdown'
 import Styles from "../../Stylesheet";
-import {Modal, Portal, Provider, Text} from 'react-native-paper';
+import { Portal, Provider, Text} from 'react-native-paper';
 import {baseURL} from "../../backendURL";
 import axios from "axios";
 import itemDataDTO from "../../interfaces/itemDataDTO";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthContext} from "../../contexts/authContext";
 
 const baseUrl = baseURL;
@@ -39,8 +38,6 @@ const ItemCreator = ({ navigation }) => {
         priceTier: price,
     }
 
-    const showModal = () => setVisible(true);
-    const hideModal = () => setVisible(false);
     const containerStyle = {backgroundColor: 'white', padding: 20};
 
     const config = {
@@ -84,13 +81,27 @@ const ItemCreator = ({ navigation }) => {
             <View style={{flexDirection: "row", padding: 10}}>
                 <Text style={{fontSize: 24, textAlignVertical: "top"}}>Price category</Text>
 
-                <Portal>
-                    <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-                        <Text>Price categories placeholder</Text>
-                    </Modal>
-                </Portal>
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    presentationStyle={"overFullScreen"}
+                    visible={visible}
+                    onRequestClose={() => {
+                        setVisible(!visible);
+                    }}>
+                    <View style={styles.container}>
+                        <View>
+                        <Text style={styles.text}>Price categories placeholder</Text>
+                        <Pressable
+                            style={[styles.pressButton, styles.pressButton]}
+                            onPress={() => setVisible(!visible)}>
+                            <Text style={styles.text}>Back</Text>
+                        </Pressable>
+                        </View>
+                    </View>
+                </Modal>
 
-                <Pressable onPress={showModal}>
+                <Pressable onPress={() => setVisible(!visible)}>
                     <Image source={require('../../assets/placeholderMonkeicon.jpg')} style={localStyles.infoImage}/>
                 </Pressable>
             </View>
