@@ -41,7 +41,7 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
     },[])
 
 
-    const login =(user: loginDataDTO) => {
+    const login = (user: loginDataDTO) => {
 
         axios.post(baseURL + '/auth/login', {email: user.email, password: user.password})
             .then((response) => {

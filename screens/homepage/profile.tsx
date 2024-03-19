@@ -49,7 +49,7 @@ const Profile = ({navigation}) => {
     }
 
     const getUserData  = async () => {
-        axios.get(baseUrl + '/user', config)
+        await axios.get(baseUrl + '/user', config)
             .then((response) => {
                 //console.log(response.data);
                 setUserData(response.data)
