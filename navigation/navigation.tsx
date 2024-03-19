@@ -7,7 +7,6 @@ import Homepage from "../screens/homepage/homepage";
 import ItemCreator from "../screens/homepage/itemCreator";
 import Profile from "../screens/homepage/profile";
 import {ActivityIndicator, Icon} from "react-native-paper";
-import AuthContextProvider from "../provider/authContextProvider";
 import {useContext} from "react";
 import {AuthContext} from "../contexts/authContext";
 import {View} from "react-native";

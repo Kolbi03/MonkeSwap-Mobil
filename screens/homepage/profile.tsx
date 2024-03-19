@@ -20,8 +20,7 @@ interface updateUserDTO {
     profilePicture: string |undefined,
 }
 
-// @ts-ignore
-const Profile = ({navigation}) => {
+const Profile = () => {
 
     const {token} = useContext(AuthContext);
     const {logout} = useContext(AuthContext);
@@ -65,7 +64,7 @@ const Profile = ({navigation}) => {
 
     function updateUser() {
         axios.put(baseUrl + '/user', updateUserData, config)
-            .then((response) =>
+            .then(() =>
                 ToastAndroid.showWithGravity('Profile data updated!', 2000, ToastAndroid.CENTER))
             .catch((e) => console.log(e))
         console.log(updateUserData)

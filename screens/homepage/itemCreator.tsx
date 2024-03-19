@@ -1,9 +1,9 @@
 import React, {useContext, useState} from "react";
-import {Dimensions, Image, Pressable, StyleSheet, TextInput, ToastAndroid, View, Modal, Alert} from "react-native";
+import {Dimensions, Image, Pressable, StyleSheet, TextInput, ToastAndroid, View, Modal} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import SelectDropdown from 'react-native-select-dropdown'
 import Styles from "../../Stylesheet";
-import { Portal, Provider, Text} from 'react-native-paper';
+import { Provider, Text} from 'react-native-paper';
 import {baseURL} from "../../backendURL";
 import axios from "axios";
 import itemDataDTO from "../../interfaces/itemDataDTO";
@@ -37,8 +37,6 @@ const ItemCreator = ({ navigation }) => {
         category: category,
         priceTier: price,
     }
-
-    const containerStyle = {backgroundColor: 'white', padding: 20};
 
     const config = {
         headers: {
@@ -74,7 +72,7 @@ const ItemCreator = ({ navigation }) => {
             </View>
 
             <Text style={styles.text}>Categories</Text>
-            <SelectDropdown defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories} onSelect={(selectedItem, index) => {
+            <SelectDropdown defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories} onSelect={(selectedItem) => {
                 setCategory(selectedItem);
             }}/>
 
@@ -141,7 +139,7 @@ const ItemCreator = ({ navigation }) => {
 
             <Pressable onPress={() => {
                 axios.post(baseUrl + '/item', data, config)
-                    .then((response) =>
+                    .then(() =>
                     ToastAndroid.showWithGravity('Item created!', 2000, ToastAndroid.CENTER))
                     .catch(error => console.log(error))
             }}>

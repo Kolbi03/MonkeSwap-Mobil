@@ -11,8 +11,7 @@ const baseUrl = baseURL
 
 let itemCards: React.JSX.Element[] | undefined;
 
-// @ts-ignore
-const Homepage = ({ navigation }) => {
+const Homepage = () => {
 
     const {token} = useContext(AuthContext);
     const [itemList, setItemList] = useState<itemDataDTO[]>();
