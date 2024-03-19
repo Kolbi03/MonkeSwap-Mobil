@@ -40,12 +40,27 @@ const Styles = StyleSheet.create ({
         borderWidth: 10,
         borderColor: '#ffda39',
         backgroundColor: '#ffda39',
-        borderRadius: 14,
+        borderRadius: 12,
         textAlign: "center",
         textAlignVertical: "center",
         color: 'black',
         marginTop: 18,
         width: screenWidth * 0.9,
+    },
+
+    pressButtonSmall: {
+        fontSize: 14,
+        borderWidth: 10,
+        borderColor: '#ffda39',
+        backgroundColor: '#ffda39',
+        borderRadius: 12,
+        textAlign: "center",
+        textAlignVertical: "center",
+        color: 'black',
+        marginTop: 18,
+        marginRight: 8,
+        marginLeft: 8,
+        width: screenWidth * 0.3,
     },
 
     card: {
