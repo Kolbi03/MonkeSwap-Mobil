@@ -3,14 +3,17 @@ import {Dimensions, Image, Modal, Pressable, Text, TextInput, ToastAndroid, View
 import React, {useContext, useEffect, useReducer, useState} from "react";
 import {AuthContext} from "../../contexts/authContext";
 import userDataDTO from "../../interfaces/userDataDTO";
-import axios from "axios";
+import axios from "../../axios";
 import {baseURL} from "../../backendURL";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import RNDateTimePicker from '@react-native-community/datetimepicker';
+import itemDataDTO from "../../interfaces/itemDataDTO";
+import ItemCard from "../../components/itemCard";
 
 const styles = Styles;
 
 const baseUrl = baseURL;
+let itemCards: React.JSX.Element[] | undefined;
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -27,6 +30,7 @@ const Profile = () => {
 
     const {token} = useContext(AuthContext);
     const {logout} = useContext(AuthContext);
+    const [itemList, setItemList] = useState<itemDataDTO[]>();
 
     const [userData, setUserData] = useState<userDataDTO>();
     const [fullName, setFullName] = useState(userData?.fullName)
@@ -58,6 +62,26 @@ const Profile = () => {
         forceUpdate();
     }
 
+    function loadCards() {
+        axios.get('/user/items', config)
+            .then((response) => {
+                console.log(response.data);
+                setItemList(response.data);
+                console.log('itemList: ' + itemList)
+            })
+            .catch((e) => console.log(e))
+
+        if(itemList === undefined) {} else {
+
+            itemCards = itemList.map((item, i) =>
+
+                <ItemCard key={i} title={item.title} itemPicture={item.itemPicture} description={item.description}
+                          category={item.category} priceTier={item.priceTier}/>);
+
+            console.log('itemCards: ' + itemCards)
+        }
+    }
+
     const getUserData  = async () => {
         await axios.get(baseUrl + '/user', config)
             .then((response) => {
@@ -68,7 +92,7 @@ const Profile = () => {
     }
 
     useEffect(() => {
-
+        loadCards();
         getUserData().then();
 
     }, []);
@@ -82,8 +106,8 @@ const Profile = () => {
     }
 
     return (
-        <View>
-        <View style={{height: height * 0.3, borderColor: '#FFF', borderWidth: 1}}>
+        <View style={{backgroundColor: '#FFF'}}>
+            <View style={{height: height * 0.3}}>
                 <Text style={{fontSize: 22, alignSelf: "center", marginTop: 10}}>{userData?.username}</Text>
                 <Image source={require('../../assets/monke.jpg')} style={{alignSelf: "center", height: height * 0.14, width: width * 0.28, margin: width * 0.02, borderRadius: 100}}/>
                 <View style={{flex: 1, flexDirection: "row", alignSelf: "center"}}>
@@ -92,6 +116,10 @@ const Profile = () => {
                     </Pressable>
                     <Pressable onPress={logout}>
                         <Text style={styles.pressButtonSmall}>Logout</Text>
+                    </Pressable>
+
+                    <Pressable onPress={loadCards}>
+                        <Text style={styles.pressButtonSmall}>Load Cards</Text>
                     </Pressable>
                 </View>
             </View>
@@ -162,6 +190,11 @@ const Profile = () => {
                         </View>
                     </View>
                 </Modal>
+                <View style={styles.container}>
+                    <View style={{flexDirection: "row"}}>
+                        {itemCards}
+                    </View>
+                </View>
             </View>
         </View>
     )};

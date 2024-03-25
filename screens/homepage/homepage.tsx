@@ -1,11 +1,11 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Pressable, ScrollView, Text, View} from "react-native";
 import Styles from "../../Stylesheet";
-import axios from "axios";
 import {baseURL} from "../../backendURL";
 import {AuthContext} from "../../contexts/authContext";
 import itemDataDTO from "../../interfaces/itemDataDTO";
 import ItemCard from "../../components/itemCard";
+import axios from "../../axios";
 
 const baseUrl = baseURL
 
@@ -23,7 +23,7 @@ const Homepage = () => {
     }
 
     function loadCards() {
-        axios.get(baseUrl + '/items', config)
+        axios.get('/items', config)
             .then((response) => {
                 console.log(response.data);
                 setItemList(response.data);

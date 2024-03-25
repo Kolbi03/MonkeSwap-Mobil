@@ -10,10 +10,6 @@ interface authContextProps {
     init: boolean
 }
 
-export const AuthContext = createContext<authContextProps>({
-    token: null,
-    login: () =>{},
-    logout: () => {},
-    getUserData: () => {},
-    init: false
-})
+export const AuthContext = createContext<authContextProps>(
+    null as any
+)
