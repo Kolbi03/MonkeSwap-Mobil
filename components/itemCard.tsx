@@ -8,6 +8,8 @@ const styles = Styles;
 
 function ItemCard(item: itemDataDTO) {
 
+    const id = item.id;
+
     const [pressed, setPressed] = useState(true);
     return (
         <Card onPress={() => setPressed(!pressed)} mode={"elevated"} style={styles.card}>
@@ -25,7 +27,7 @@ function ItemCard(item: itemDataDTO) {
                     <Card.Content>
                         <Text style={styles.text}>{item.description}</Text>
                         <Pressable>
-                            <Text style={styles.pressButtonSmall}>PRESS ME</Text>
+                            <Text style={styles.pressButtonSmall} onPress={() => item.buttonPressFunction()}>PRESS ME</Text>
                         </Pressable>
                     </Card.Content>
                 </View>}

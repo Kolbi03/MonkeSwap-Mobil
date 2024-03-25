@@ -75,12 +75,14 @@ const Profile = () => {
 
             itemCards = itemList.map((item, i) =>
 
-                <ItemCard key={i} title={item.title} itemPicture={item.itemPicture} description={item.description}
-                          category={item.category} priceTier={item.priceTier}/>);
+                <ItemCard key={i} id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
+                          category={item.category} priceTier={item.priceTier} buttonPressFunction={placeholderFunc}/>);
 
             console.log('itemCards: ' + itemCards)
         }
     }
+
+    function placeholderFunc() {}
 
     const getUserData  = async () => {
         await axios.get(baseUrl + '/user', config)
