@@ -1,13 +1,10 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Pressable, ScrollView, Text, View} from "react-native";
 import Styles from "../../Stylesheet";
-import {baseURL} from "../../backendURL";
 import {AuthContext} from "../../contexts/authContext";
 import itemDataDTO from "../../interfaces/itemDataDTO";
 import ItemCard from "../../components/itemCard";
 import axios from "../../axios";
-
-const baseUrl = baseURL
 
 let itemCards: React.JSX.Element[] | undefined;
 

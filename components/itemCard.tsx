@@ -3,7 +3,6 @@ import {Pressable, Text, View} from "react-native";
 import React, {useState} from "react";
 import Styles from '../Stylesheet';
 import itemDataDTO from "../interfaces/itemDataDTO";
-import axios from "../axios";
 
 const styles = Styles;
 
