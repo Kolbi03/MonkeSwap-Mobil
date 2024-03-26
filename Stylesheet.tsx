@@ -64,7 +64,7 @@ const Styles = StyleSheet.create ({
     },
 
     card: {
-        width: screenWidth * 0.432,
+        width: screenWidth * 0.431,
         height: screenHeight * 0.384,
         margin: screenWidth * 0.01
     }

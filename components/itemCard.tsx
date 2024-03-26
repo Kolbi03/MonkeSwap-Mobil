@@ -11,6 +11,7 @@ function ItemCard(item: itemDataDTO) {
     const id = item.id;
 
     const [pressed, setPressed] = useState(true);
+
     return (
         <Card onPress={() => setPressed(!pressed)} mode={"elevated"} style={styles.card}>
             {pressed ?
@@ -30,7 +31,8 @@ function ItemCard(item: itemDataDTO) {
                             <Text style={styles.pressButtonSmall} onPress={() => item.buttonPressFunction()}>PRESS ME</Text>
                         </Pressable>
                     </Card.Content>
-                </View>}
+                </View>
+            }
         </Card>
     )
 }

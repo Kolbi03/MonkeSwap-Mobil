@@ -82,6 +82,7 @@ const Homepage = () => {
         } else {
             setOfferedItemId(id)
             console.log(offeredItemId)
+            ToastAndroid.showWithGravity('Trade offer sent!', 2000, 1)
         }
 
         console.log('offeredItem: '  + offeredItemId + 'incomingItem: ' + incomingItemId)
@@ -137,7 +138,7 @@ const Homepage = () => {
                         <View style={styles.container}>{ownCards}</View>
                     </Modal>
                 </View>
-                <View style={{flexDirection: "row"}}>
+                <View style={{flexDirection: "row", flexWrap: "wrap"}}>
                     {itemCards}
                 </View>
             </ScrollView>
