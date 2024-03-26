@@ -12,7 +12,7 @@ interface authContextProviderProps {
     children: ReactNode;
 }
 
-const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: authContextProviderProps, {navigation}) => {
+const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: authContextProviderProps) => {
 
     const [token, setToken] = useState<authToken | null>(null);
     const [userData, setUserData] = useState<userDataDTO>();

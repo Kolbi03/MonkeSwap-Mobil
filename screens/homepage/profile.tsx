@@ -1,5 +1,5 @@
 import Styles from "../../Stylesheet";
-import {Dimensions, Image, Modal, Pressable, Text, TextInput, ToastAndroid, View} from "react-native";
+import {Dimensions, Image, Modal, Pressable, ScrollView, Text, TextInput, ToastAndroid, View} from "react-native";
 import React, {useContext, useEffect, useReducer, useState} from "react";
 import {AuthContext} from "../../contexts/authContext";
 import userDataDTO from "../../interfaces/userDataDTO";
@@ -109,95 +109,97 @@ const Profile = () => {
 
     return (
         <View style={{backgroundColor: '#FFF'}}>
-            <View style={{height: height * 0.3}}>
-                <Text style={{fontSize: 22, alignSelf: "center", marginTop: 10}}>{userData?.username}</Text>
-                <Image source={require('../../assets/monke.jpg')} style={{alignSelf: "center", height: height * 0.14, width: width * 0.28, margin: width * 0.02, borderRadius: 100}}/>
-                <View style={{flex: 1, flexDirection: "row", alignSelf: "center"}}>
-                    <Pressable onPress={() => setVisible(true)}>
-                        <Text style={styles.pressButtonSmall}>Edit profile</Text>
-                    </Pressable>
-                    <Pressable onPress={logout}>
-                        <Text style={styles.pressButtonSmall}>Logout</Text>
-                    </Pressable>
+            <ScrollView>
+                <View style={{height: height * 0.3}}>
+                    <Text style={{fontSize: 22, alignSelf: "center", marginTop: 10}}>{userData?.username}</Text>
+                    <Image source={require('../../assets/monke.jpg')} style={{alignSelf: "center", height: height * 0.14, width: width * 0.28, margin: width * 0.02, borderRadius: 100}}/>
+                    <View style={{flex: 1, flexDirection: "row", alignSelf: "center"}}>
+                        <Pressable onPress={() => setVisible(true)}>
+                            <Text style={styles.pressButtonSmall}>Edit profile</Text>
+                        </Pressable>
+                        <Pressable onPress={logout}>
+                            <Text style={styles.pressButtonSmall}>Logout</Text>
+                        </Pressable>
 
-                    <Pressable onPress={loadCards}>
-                        <Text style={styles.pressButtonSmall}>Load Cards</Text>
-                    </Pressable>
+                        <Pressable onPress={loadCards}>
+                            <Text style={styles.pressButtonSmall}>Load Cards</Text>
+                        </Pressable>
+                    </View>
                 </View>
-            </View>
-            <View>
-                <Modal
-                    animationType="slide"
-                    transparent={false}
-                    presentationStyle={"overFullScreen"}
-                    visible={visible}
-                    onRequestClose={() => {
-                        setVisible(!visible);
-                    }}>
-                    <View style={styles.container}>
+                <View>
+                    <Modal
+                        animationType="slide"
+                        transparent={false}
+                        presentationStyle={"overFullScreen"}
+                        visible={visible}
+                        onRequestClose={() => {
+                            setVisible(!visible);
+                        }}>
+                        <View style={styles.container}>
 
-                        <View>
-                            <KeyboardAwareScrollView>
-                            <Text style={styles.header}>Profile</Text>
+                            <View>
+                                <KeyboardAwareScrollView>
+                                <Text style={styles.header}>Profile</Text>
 
-                            <Text style={styles.text}>PROFILE PIC PLACEHOLDER</Text>
-
-                            <View style={styles.textInput}>
-                                <TextInput defaultValue={'PROFILE PIC PLACEHOLDER'} placeholderTextColor={'gray'} onChangeText={text => setProfilePicture(text)}/>
-                            </View>
-
-                            <Text style={styles.text}>Full Name</Text>
-
-                            <View style={styles.textInput}>
-                                <TextInput placeholder={'No full name yet'} defaultValue={userData?.fullName} onChangeText={text => setFullName(text)} placeholderTextColor={'gray'}/>
-                            </View>
-
-                            <Text style={styles.text}>Username</Text>
-
-                            <View style={styles.textInput}>
-                                <TextInput defaultValue={userData?.username} onChangeText={text => setUsername(text)} placeholderTextColor={'gray'}/>
-                            </View>
-
-                                <View style={{flex: 1, flexDirection: "row"}}>
-                                    <Text style={{ verticalAlign: "middle", fontSize: 18}}>Date Of Birth</Text>
-
-                                    <Pressable onPress={() => setOpen(true)}>
-                                        <Text style={styles.pressButtonSmall}>Edit</Text>
-                                    </Pressable>
-                                </View>
-
-                                {open && <RNDateTimePicker value={new Date()} onChange={(_event, date) =>
-                                {if(date === undefined) {
-                                    setOpen(false)
-                                } else {
-                                    setDateOfBirth(date)
-                                    setOpen(false)
-                                }}}/>}
-
-                                <Text style={styles.text}>Phone Number</Text>
+                                <Text style={styles.text}>PROFILE PIC PLACEHOLDER</Text>
 
                                 <View style={styles.textInput}>
-                                    <TextInput placeholder={'No phone number yet'} defaultValue={userData?.phoneNumber} keyboardType="phone-pad" onChangeText={num => setPhoneNumber(num)} placeholderTextColor={'gray'}/>
+                                    <TextInput defaultValue={'PROFILE PIC PLACEHOLDER'} placeholderTextColor={'gray'} onChangeText={text => setProfilePicture(text)}/>
                                 </View>
 
-                                <Pressable onPress={handleUpdateUser}>
-                                    <Text style={styles.pressButton}>Update Profile</Text>
-                                </Pressable>
+                                <Text style={styles.text}>Full Name</Text>
 
-                                <Pressable onPress={() => setVisible(!visible)}>
-                                    <Text style={styles.pressButton}>Close</Text>
-                                </Pressable>
+                                <View style={styles.textInput}>
+                                    <TextInput placeholder={'No full name yet'} defaultValue={userData?.fullName} onChangeText={text => setFullName(text)} placeholderTextColor={'gray'}/>
+                                </View>
 
-                            </KeyboardAwareScrollView>
+                                <Text style={styles.text}>Username</Text>
+
+                                <View style={styles.textInput}>
+                                    <TextInput defaultValue={userData?.username} onChangeText={text => setUsername(text)} placeholderTextColor={'gray'}/>
+                                </View>
+
+                                    <View style={{flex: 1, flexDirection: "row"}}>
+                                        <Text style={{ verticalAlign: "middle", fontSize: 18}}>Date Of Birth</Text>
+
+                                        <Pressable onPress={() => setOpen(true)}>
+                                            <Text style={styles.pressButtonSmall}>Edit</Text>
+                                        </Pressable>
+                                    </View>
+
+                                    {open && <RNDateTimePicker value={new Date()} onChange={(_event, date) =>
+                                    {if(date === undefined) {
+                                        setOpen(false)
+                                    } else {
+                                        setDateOfBirth(date)
+                                        setOpen(false)
+                                    }}}/>}
+
+                                    <Text style={styles.text}>Phone Number</Text>
+
+                                    <View style={styles.textInput}>
+                                        <TextInput placeholder={'No phone number yet'} defaultValue={userData?.phoneNumber} keyboardType="phone-pad" onChangeText={num => setPhoneNumber(num)} placeholderTextColor={'gray'}/>
+                                    </View>
+
+                                    <Pressable onPress={handleUpdateUser}>
+                                        <Text style={styles.pressButton}>Update Profile</Text>
+                                    </Pressable>
+
+                                    <Pressable onPress={() => setVisible(!visible)}>
+                                        <Text style={styles.pressButton}>Close</Text>
+                                    </Pressable>
+
+                                </KeyboardAwareScrollView>
+                            </View>
+                        </View>
+                    </Modal>
+                    <View style={{padding: 20, backgroundColor: '#FFF'}}>
+                        <View style={{flexDirection: "row", flexWrap: "wrap"}}>
+                            {itemCards}
                         </View>
                     </View>
-                </Modal>
-                <View style={styles.container}>
-                    <View style={{flexDirection: "row"}}>
-                        {itemCards}
-                    </View>
                 </View>
-            </View>
+            </ScrollView>
         </View>
     )};
 

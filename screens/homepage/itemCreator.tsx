@@ -6,13 +6,12 @@ import Styles from "../../Stylesheet";
 import { Provider, Text} from 'react-native-paper';
 import {baseURL} from "../../backendURL";
 import axios from "axios";
-import itemDataDTO from "../../interfaces/itemDataDTO";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {AuthContext} from "../../contexts/authContext";
 
 const baseUrl = baseURL;
 
-const categories = ["OTHER", "2", "3", "4", "5", "6"]
+const categories = ["OTHER", "VEHICLE", "HOME", "HOUSEHOLD", "ELECTRONICS", "FREETIME", "SPORT", "FASHION", "COLLECTIBLES", "PETS" ]
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -30,7 +29,15 @@ const ItemCreator = ({ navigation }) => {
     const [category, setCategory] = useState('');
     const [price, setPrice] = useState('');
 
-    const data: itemDataDTO = {
+    interface newItemDataDTO {
+        title: string,
+        itemPicture: string,
+        description: string,
+        category: string,
+        priceTier: string,
+    }
+
+    const data: newItemDataDTO = {
         title: name,
         itemPicture: image,
         description: description,
@@ -91,7 +98,7 @@ const ItemCreator = ({ navigation }) => {
                         <View>
                         <Text style={styles.text}>Price categories placeholder</Text>
                         <Pressable
-                            style={[styles.pressButton, styles.pressButton]}
+                            style={styles.pressButton}
                             onPress={() => setVisible(!visible)}>
                             <Text style={styles.text}>Back</Text>
                         </Pressable>
@@ -174,6 +181,4 @@ const localStyles = StyleSheet.create({
         height: screenHeight * 0.04,
         width: screenWidth * 0.08,
     }
-
-
 })

@@ -115,7 +115,7 @@ const Homepage = () => {
     useEffect(() => {
         loadCards();
         getUserData().then();
-        //loadOwnCards()
+        loadOwnCards()
     }, []);
 
     const styles = Styles;
@@ -135,7 +135,11 @@ const Homepage = () => {
                         onRequestClose={() => {
                             setVisible(!visible);
                         }}>
-                        <View style={styles.container}>{ownCards}</View>
+                        <View style={styles.container}>
+                            <View style={{flexDirection: "row", flexWrap: "wrap"}}>
+                                {ownCards}
+                            </View>
+                        </View>
                     </Modal>
                 </View>
                 <View style={{flexDirection: "row", flexWrap: "wrap"}}>

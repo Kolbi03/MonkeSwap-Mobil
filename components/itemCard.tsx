@@ -1,5 +1,5 @@
 import {Card} from "react-native-paper";
-import {Pressable, Text, View} from "react-native";
+import {Pressable, ScrollView, Text, View} from "react-native";
 import React, {useState} from "react";
 import Styles from '../Stylesheet';
 import itemDataDTO from "../interfaces/itemDataDTO";
@@ -7,8 +7,6 @@ import itemDataDTO from "../interfaces/itemDataDTO";
 const styles = Styles;
 
 function ItemCard(item: itemDataDTO) {
-
-    const id = item.id;
 
     const [pressed, setPressed] = useState(true);
 
@@ -25,12 +23,20 @@ function ItemCard(item: itemDataDTO) {
                 :
                 <View>
                     <Card.Title style={{alignSelf: "center"}} title={'Details'}/>
+                    <ScrollView>
                     <Card.Content>
-                        <Text style={styles.text}>{item.description}</Text>
-                        <Pressable>
+                        <Text style={{fontSize: 14,
+                            padding: 10,
+                            color: '#444444',
+                            paddingLeft: 0,
+                            textAlign: "justify"}}>
+                            {item.description}
+                        </Text>
+                        <Pressable style={{alignSelf: "baseline"}}>
                             <Text style={styles.pressButtonSmall} onPress={() => item.buttonPressFunction()}>PRESS ME</Text>
                         </Pressable>
                     </Card.Content>
+                    </ScrollView>
                 </View>
             }
         </Card>
