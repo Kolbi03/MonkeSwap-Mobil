@@ -6,6 +6,7 @@ import { createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import Homepage from "../screens/homepage/homepage";
 import ItemCreator from "../screens/homepage/itemCreator";
 import Profile from "../screens/homepage/profile";
+import Notifications from "../screens/homepage/notifications";
 import {ActivityIndicator, Icon} from "react-native-paper";
 import {useContext} from "react";
 import {AuthContext} from "../contexts/authContext";
@@ -23,6 +24,8 @@ function MainPage() {
                         <Icon source="home" color={color} size={size} />)}} name="Homepage" component={Homepage}/>
                 <BottomNav.Screen options={{tabBarLabel: 'Item Creation', tabBarIcon: ({ color, size }) => (
                         <Icon source="plus" color={color} size={size} />)}} name="ItemCreator" component={ItemCreator} />
+                <BottomNav.Screen options={{tabBarLabel: 'Notifications', tabBarIcon: ({ color, size }) => (
+                        <Icon source="plus" color={color} size={size} />)}} name="Notifications" component={Notifications} />
                 <BottomNav.Screen options={{tabBarLabel: 'Profile', tabBarIcon: ({ color, size }) => (
                         <Icon source="star" color={color} size={size} />)}} name={"Profile"} component={Profile}/>
             </BottomNav.Navigator>

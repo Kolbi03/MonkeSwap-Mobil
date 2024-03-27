@@ -75,7 +75,7 @@ const Profile = () => {
 
             itemCards = itemList.map((item, i) =>
 
-                <ItemCard key={i} id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
+                <ItemCard key={i} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
                           category={item.category} priceTier={item.priceTier} buttonPressFunction={placeholderFunc}/>);
 
             console.log('itemCards: ' + itemCards)
