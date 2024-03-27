@@ -1,6 +1,6 @@
 import Styles from "../../Stylesheet";
 import {Dimensions, Image, Modal, Pressable, ScrollView, Text, TextInput, ToastAndroid, View} from "react-native";
-import React, {useContext, useEffect, useReducer, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../contexts/authContext";
 import userDataDTO from "../../interfaces/userDataDTO";
 import axios from "../../axios";
@@ -40,7 +40,6 @@ const Profile = () => {
     const [profilePicture, setProfilePicture] = useState(userData?.profilePicture);
     const [open, setOpen] = useState(false);
     const [visible, setVisible]= useState(false);
-    const [, forceUpdate] = useReducer(x => x + 1, 0);
 
     const config = {
         headers: {
@@ -59,7 +58,6 @@ const Profile = () => {
     function handleUpdateUser() {
         updateUser();
         setVisible(!visible);
-        forceUpdate();
     }
 
     function loadCards() {
@@ -69,7 +67,7 @@ const Profile = () => {
                 setItemList(response.data);
                 console.log('itemList: ' + itemList)
             })
-            .catch((e) => console.log(e))
+            .catch((e) => console.log(e.response.data))
 
         if(itemList === undefined) {} else {
 

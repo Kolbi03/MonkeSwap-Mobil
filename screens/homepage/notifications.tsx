@@ -34,7 +34,7 @@ const Notifications = () => {
             })
             .catch((e) => console.log(e.response.data))
 
-        if (notificationList === undefined) {console.log('NOTIFICATION LIS IS UNDEFINED')} else {
+        if (notificationList === undefined) {} else {
             notifications = notificationList.map((notification, i ) =>
                 <NotificationComponent key={i} message={notification.message} id={notification.id} type={notification.type}/>)
 
@@ -43,7 +43,9 @@ const Notifications = () => {
     }
 
     function deleteNotifications() {
-        axios.delete('/notification', config).then((response) => console.log(response.data)).catch((e) => console.log(e.response.data))
+        axios.delete('/notification', config)
+            .then((response) => console.log(response.data))
+            .catch((e) => console.log(e.response.data))
     }
 
     useEffect(() => {
