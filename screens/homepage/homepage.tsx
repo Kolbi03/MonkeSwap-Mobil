@@ -1,11 +1,10 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Image, ImageComponent, Modal, Pressable, ScrollView, Text, TextInput, ToastAndroid, View} from "react-native";
+import {Image, Modal, Pressable, ScrollView, Text, TextInput, ToastAndroid, View} from "react-native";
 import Styles from "../../Stylesheet";
 import {AuthContext} from "../../contexts/authContext";
 import itemDataDTO from "../../interfaces/itemDataDTO";
 import ItemCard from "../../components/itemCard";
 import axios from "../../axios";
-import {List} from "react-native-paper";
 
 let itemCards: React.JSX.Element[] | undefined;
 let ownCards: React.JSX.Element[] | undefined;
@@ -85,7 +84,7 @@ const Homepage = () => {
 
         console.log('offeredItem: '  + offeredItemId + 'incomingItem: ' + incomingItemId)
 
-        axios.post('/tradeoffer', {offeredItem: offeredItemId, incomingItem: incomingItemId} , config)
+        axios.post('/tradeoffer', {offeredItem: offeredItemId, incomingItem: incomingItemId, comment: tradeOfferComment} , config)
             .then((response) => {
                 console.log('offeredItem: '  + offeredItemId + 'incomingItem: ' + incomingItemId)
                 console.log(response.data)

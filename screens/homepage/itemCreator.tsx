@@ -107,7 +107,7 @@ const ItemCreator = ({ navigation }) => {
                 </Modal>
 
                 <Pressable onPress={() => setVisible(!visible)}>
-                    <Image source={require('../../assets/placeholderMonkeicon.jpg')} style={localStyles.infoImage}/>
+                    <Image source={require('../../assets/monke.jpg')} style={localStyles.infoImage}/>
                 </Pressable>
             </View>
 
