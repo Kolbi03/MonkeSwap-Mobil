@@ -5,12 +5,15 @@ import {AuthContext} from "../../contexts/authContext";
 import itemDataDTO from "../../interfaces/itemDataDTO";
 import ItemCard from "../../components/itemCard";
 import axios from "../../axios";
+import SelectDropdown from "react-native-select-dropdown";
 
 let itemCards: React.JSX.Element[] | undefined;
 let ownCards: React.JSX.Element[] | undefined;
 let incomingItemComponent: React.JSX.Element | undefined;
 
 const Homepage = () => {
+
+    const categories = ["OTHER", "VEHICLE", "HOME", "HOUSEHOLD", "ELECTRONICS", "FREETIME", "SPORT", "FASHION", "COLLECTIBLES", "PETS" ]
 
     const {token} = useContext(AuthContext);
 
@@ -23,6 +26,7 @@ const Homepage = () => {
     const [username, setUsername] = useState('');
     const [userId, setUserId] = useState('');
     const [tradeOfferComment, setTradeOfferComment] = useState('')
+    const [category, setCategory] = useState('');
 
     const config = {
         headers: {
@@ -30,8 +34,8 @@ const Homepage = () => {
         }
     }
 
-    const getUserData  = () => {
-        axios.get('/user', config)
+    const getUserData  = async () => {
+        await axios.get('/user', config)
             .then((response) => {
                 //console.log('username: ' + response.data.username);
                 setUsername(response.data.username)
@@ -117,6 +121,29 @@ const Homepage = () => {
         }
     }
 
+    const searchByCategory = () => {
+        if(category === '') {
+            ToastAndroid.showWithGravity('You have to chose a category!', 2000, 1)
+        } else {
+            axios.get('/items/' + category, config)
+                .then((response) => {
+                    setItemList(response.data)
+                })
+                .catch((e) => console.log(e.response.data))
+
+            if(itemList === undefined) {} else {
+
+                itemCards = itemList.map((item, i) =>
+
+                    <ItemCard key={i} buttonPressFunction={() => modalHandler(item)} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
+                              category={item.category} priceTier={item.priceTier}/>);
+
+                //console.log('itemCards: ' + itemCards)
+            }
+
+        }
+    }
+
     function placeholderFunc() {    }
 
     function cardFlipHandler() {
@@ -125,7 +152,7 @@ const Homepage = () => {
 
     useEffect(() => {
         loadCards()
-        getUserData()
+        getUserData().then()
         loadOwnCards()
     }, []);
 
@@ -134,10 +161,17 @@ const Homepage = () => {
     return(
         <View style={styles.container}>
             <ScrollView>
-                <View style={{flexDirection: "row"}}>
+                <View style={{flexDirection: "column"}}>
                     <Pressable onPress={loadCards}>
-                        <Text style={styles.pressButton}>Load Cards</Text>
+                        <Text style={styles.pressButtonSmall}>Load Cards</Text>
                     </Pressable>
+                    <Pressable onPress={searchByCategory}>
+                        <Text style={styles.pressButtonSmall}>Search</Text>
+                    </Pressable>
+                    <Text style={styles.text}>Categories</Text>
+                    <SelectDropdown defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories} onSelect={(selectedItem) => {
+                        setCategory(selectedItem);
+                    }}/>
                     <Modal
                         animationType="slide"
                         transparent={false}
