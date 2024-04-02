@@ -7,7 +7,6 @@ import ItemCard from "../../components/itemCard";
 import axios from "../../axios";
 import SelectDropdown from "react-native-select-dropdown";
 
-let itemCards: React.JSX.Element[] | undefined;
 let ownCards: React.JSX.Element[] | undefined;
 let incomingItemComponent: React.JSX.Element | undefined;
 
@@ -17,6 +16,7 @@ const Homepage = () => {
 
     const {token} = useContext(AuthContext);
 
+    const [itemCards, setItemCards] = useState<React.JSX.Element[] | undefined>();
     const [itemList, setItemList] = useState<itemDataDTO[]>();
     const [ownItemList, setOwnItemList] = useState<itemDataDTO[]>();
     const [visible, setVisible] = useState(false);
@@ -52,10 +52,10 @@ const Homepage = () => {
 
         if(itemList === undefined) {} else {
 
-            itemCards = itemList.map((item, i) =>
+            setItemCards(itemList.map((item, i) =>
 
                 <ItemCard key={i} buttonPressFunction={() => modalHandler(item)} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
-                          category={item.category} priceTier={item.priceTier}/>);
+                          category={item.category} priceTier={item.priceTier}/>));
 
             //console.log('itemCards: ' + itemCards)
         }
@@ -92,15 +92,22 @@ const Homepage = () => {
             .then((response) => {
                 console.log('offeredItem: '  + offeredItemId + 'incomingItem: ' + incomingItemId)
                 console.log(response.data)
+                setTradeOfferComment('');
+                axios.post('/notification', {message: username + ' sent you a trade request!', type: 'NOTIFICATION', userId: userId}, config)
+                    .then((response) => {
+                        console.log(response.data)
+                        console.log(username + ' ' + userId)
+                    })
+                    .catch((e) => console.log('Notification error: ' + e.response.data))
             })
-            .catch((e) => console.log(e.response.data))
+            .catch((e) => console.log('Tradeoffer error:' + e.response.data))
 
-        axios.post('/notification', {message: username + ' sent you a trade request!', type: 'NOTIFICATION', userId: userId}, config)
+        /*axios.post('/notification', {message: username + ' sent you a trade request!', type: 'NOTIFICATION', userId: userId}, config)
             .then((response) => {
                 console.log(response.data)
                 console.log(username + ' ' + userId)
             })
-            .catch((e) => console.log(e.response.data))
+            .catch((e) => console.log('Notification error: ' + e.response.data))*/
     }
 
     function modalHandler(item: itemDataDTO) {
@@ -113,10 +120,10 @@ const Homepage = () => {
             incomingItemComponent = <ItemCard id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
                                               category={item.category} priceTier={item.priceTier} userId={item.userId}
                                               buttonPressFunction={placeholderFunc}/>
-            setUserId(userId)
+            setUserId(item.userId)
             axios.put('/item/views/' + incomingItemId, {} , config)
                 .then((response) => console.log(response.data))
-                .catch((e) => console.log(e.response.data))
+                .catch((e) => console.log('Incoming item error:' + e.response.data))
             console.log(incomingItemId)
         }
     }
@@ -133,12 +140,12 @@ const Homepage = () => {
 
             if(itemList === undefined) {} else {
 
-                itemCards = itemList.map((item, i) =>
+                setItemCards(itemList.map((item, i) =>
 
                     <ItemCard key={i} buttonPressFunction={() => modalHandler(item)} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
-                              category={item.category} priceTier={item.priceTier}/>);
+                              category={item.category} priceTier={item.priceTier}/>));
 
-                //console.log('itemCards: ' + itemCards)
+                console.log('itemCards: ' + itemCards)
             }
 
         }
