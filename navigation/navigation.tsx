@@ -7,6 +7,7 @@ import Homepage from "../screens/homepage/homepage";
 import ItemCreator from "../screens/homepage/itemCreator";
 import Profile from "../screens/homepage/profile";
 import Notifications from "../screens/homepage/notifications";
+import TradeOffers from "../screens/homepage/tradeOffers";
 import {ActivityIndicator, Icon} from "react-native-paper";
 import {useContext} from "react";
 import {AuthContext} from "../contexts/authContext";
@@ -22,6 +23,8 @@ function MainPage() {
             }}>
                 <BottomNav.Screen options={{tabBarLabel: 'Home', tabBarIcon: ({ color, size }) => (
                         <Icon source="home" color={color} size={size} />)}} name="Homepage" component={Homepage}/>
+                <BottomNav.Screen options={{tabBarLabel: 'TradeOffers', tabBarIcon: ({ color, size }) => (
+                        <Icon source="star" color={color} size={size} />)}} name={"TradeOffers"} component={TradeOffers}/>
                 <BottomNav.Screen options={{tabBarLabel: 'Item Creation', tabBarIcon: ({ color, size }) => (
                         <Icon source="plus" color={color} size={size} />)}} name="ItemCreator" component={ItemCreator} />
                 <BottomNav.Screen options={{tabBarLabel: 'Notifications', tabBarIcon: ({ color, size }) => (
