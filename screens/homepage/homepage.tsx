@@ -6,6 +6,7 @@ import itemDataDTO from "../../interfaces/itemDataDTO";
 import ItemCard from "../../components/itemCard";
 import axios from "../../axios";
 import SelectDropdown from "react-native-select-dropdown";
+import {HttpContext} from "../../provider/httpProvider";
 
 let ownCards: React.JSX.Element[] | undefined;
 let incomingItemComponent: React.JSX.Element | undefined;
@@ -15,6 +16,7 @@ const Homepage = () => {
     const categories = ["OTHER", "VEHICLE", "HOME", "HOUSEHOLD", "ELECTRONICS", "FREETIME", "SPORT", "FASHION", "COLLECTIBLES", "PETS" ]
 
     const {token} = useContext(AuthContext);
+    const axios = useContext(HttpContext)
 
     const [itemCards, setItemCards] = useState<React.JSX.Element[] | undefined>();
     const [itemList, setItemList] = useState<itemDataDTO[]>();
@@ -43,8 +45,9 @@ const Homepage = () => {
             .catch((e) => console.log(e))
     }
 
-    const loadCards = () => {
-        axios.get('/items', config)
+    function loadCards() {
+        console.log(token)
+        axios.get('/items')
             .then((response) => {
                 setItemList(response.data);
             })
@@ -62,7 +65,7 @@ const Homepage = () => {
     }
 
     const loadOwnCards = () => {
-        axios.get('/user/items', config)
+        axios.get('/user/items')
             .then((response) => {
                 setOwnItemList(response.data)
             })
@@ -151,7 +154,7 @@ const Homepage = () => {
         }
     }
 
-    function placeholderFunc() {    }
+    function placeholderFunc() { }
 
     function cardFlipHandler() {
         setVisible(!visible);
@@ -161,7 +164,7 @@ const Homepage = () => {
         loadCards()
         getUserData().then()
         loadOwnCards()
-    }, []);
+    }, [axios]);
 
     const styles = Styles;
 
