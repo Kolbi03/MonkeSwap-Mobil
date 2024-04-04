@@ -1,8 +1,9 @@
-import {Pressable, Text, View} from "react-native";
+import {Image, Modal, Pressable, ScrollView, Text, ToastAndroid, View} from "react-native";
 import TradeOfferDTO from "../interfaces/tradeOfferDTO";
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {HttpContext} from "../provider/httpProvider";
 import itemDataDTO from "../interfaces/itemDataDTO";
+import Styles from "../Stylesheet";
 
 const TradeOfferComponent = (item: TradeOfferDTO) => {
 
@@ -10,6 +11,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
 
     const [incomingItemData, setIncomingItemData] = useState<itemDataDTO>()
     const [offeredItemData, setOfferedItemData] = useState<itemDataDTO>()
+    const [visible, setVisible] = useState<boolean>(false)
     const [type] = useState(item.type)
 
     function getIncomingItemData() {
@@ -36,18 +38,48 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
     }, []);
 
     return (
-        <View className="h-14 border-b-2 border-amber-400">
-            <Pressable onPress={()=> console.log(incomingItemData)}>
+        <View className="h-20 border-b-2 border-amber-400">
+            <Pressable onPress={()=> setVisible(!visible)}>
                 {!type ?
                 <View>
-                    <Text>
+                    <Text className="text-lg">
                         Your {offeredItemData?.title} has a pending trade for {incomingItemData?.title}!
                     </Text>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        //presentationStyle={"overFullScreen"}
+                        visible={visible}
+                        onRequestClose={() => {
+                            ToastAndroid.showWithGravity('You must choose the type of offers!', 2000, 1)
+                        }}>
+                        <ScrollView style={{backgroundColor: "#FFF", borderRadius: 0, flex: 1}}>
+                            <Image style={{width: "70%", borderRadius: 10}} source={require('../assets/placeholderMonkeicon.jpg')} />
+                            <Text className="text-xl"> Name: {incomingItemData?.title}</Text>
+                            <Text className="text-xl"> Description: {incomingItemData?.description}</Text>
+                            <Text className="text-xl"> Category: {incomingItemData?.category}</Text>
+                            <Text className="text-xl"> Price Tier: {incomingItemData?.priceTier}</Text>
+
+                            <Image style={{width: "70%", borderRadius: 10}} source={require('../assets/placeholderMonkeicon.jpg')} />
+                            <Text className="text-xl"> Name: {offeredItemData?.title}</Text>
+                            <Text className="text-xl"> Description: {offeredItemData?.description}</Text>
+                            <Text className="text-xl"> Category: {offeredItemData?.category}</Text>
+                            <Text className="text-xl"> Price Tier: {offeredItemData?.priceTier}</Text>
+
+
+                            <Pressable onPress={() => setVisible(!visible)}>
+                                <Text style={Styles.pressButton}>Accept Offer</Text>
+                            </Pressable>
+                            <Pressable onPress={() => setVisible(!visible)}>
+                                <Text style={Styles.pressButton}>Decline Offer</Text>
+                            </Pressable>
+                        </ScrollView>
+                    </Modal>
                 </View>
                     :
                     <View>
                         <Text>
-                        You have offered a {incomingItemData?.title} for a {offeredItemData?.title}!
+                            You have offered a {incomingItemData?.title} for a {offeredItemData?.title}!
                         </Text>
                     </View>
                 }

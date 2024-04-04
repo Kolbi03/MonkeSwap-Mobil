@@ -1,4 +1,4 @@
-import {Dimensions, Modal, Pressable, Text, ToastAndroid, View} from "react-native";
+import {Modal, Pressable, ScrollView, Text, ToastAndroid, View} from "react-native";
 import TradeOfferComponent from "../../components/tradeOfferComponent";
 import React, {useContext, useEffect, useState} from "react";
 import Styles from "../../Stylesheet";
@@ -17,6 +17,7 @@ const TradeOffers = () => {
     const [offeredOffers, setOfferedOffers] = useState<TradeOfferDTO[]>()
     const [offerList, setOfferList] = useState<React.JSX.Element[] | undefined>()
 
+
     const config = {
         headers: {
             Authorization: 'Bearer ' + token?.token
@@ -25,29 +26,28 @@ const TradeOffers = () => {
 
 
     function getIncoming() {
-        ///setOfferList(undefined)
         axios.get('tradeoffer/incoming')
             .then((response) => {
-                setIncomingOffers(response.data)
-                console.log(response.data)
                 setTradeOfferType(true)
+                setIncomingOffers(response.data)
+                //console.log(response.data)
             })
             .catch((e) => console.log(e))
         setVisible(!visible)
 
-        setOfferList(incomingOffers?.map((item, i) =>
+        setOfferList(list => incomingOffers?.map((item, i) =>
             <TradeOfferComponent key={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
                                  comment={item.comment} type={tradeOfferType}/>
         ))
+        console.log(offerList)
     }
 
     function getOffered() {
-        //setOfferList(undefined)
         axios.get('tradeoffer/offered')
             .then((response) => {
-                setOfferedOffers(response.data)
-                console.log(response.data)
                 setTradeOfferType(false)
+                setOfferedOffers(response.data)
+                //console.log(response.data)
             })
             .catch((e) => console.log(e))
         setVisible(!visible)
@@ -56,11 +56,13 @@ const TradeOffers = () => {
             <TradeOfferComponent key={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
                                  comment={item.comment} type={tradeOfferType}/>
         ))
+        console.log(offerList)
     }
 
     useEffect(() => {
         setVisible(true)
     }, []);
+
 
     return (
         <View className="backdrop:bg-white">
@@ -68,7 +70,9 @@ const TradeOffers = () => {
             <Pressable onPress={() => setVisible(!visible)}>
                 <Text style={Styles.pressButton}>Open</Text>
             </Pressable>
-            {offerList}
+                <ScrollView>
+                    {offerList}
+                </ScrollView>
                 <Modal
                     animationType="slide"
                     transparent={true}
