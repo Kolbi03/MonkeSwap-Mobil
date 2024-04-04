@@ -2,13 +2,11 @@ import {Modal, Pressable, ScrollView, Text, ToastAndroid, View} from "react-nati
 import TradeOfferComponent from "../../components/tradeOfferComponent";
 import React, {useContext, useEffect, useState} from "react";
 import Styles from "../../Stylesheet";
-import {AuthContext} from "../../contexts/authContext";
 import TradeOfferDTO from "../../interfaces/tradeOfferDTO";
 import {HttpContext} from "../../provider/httpProvider";
 
 const TradeOffers = () => {
 
-    const {token} = useContext(AuthContext)
     const axios = useContext(HttpContext)
 
     const [visible, setVisible] = useState(true);
@@ -16,14 +14,6 @@ const TradeOffers = () => {
     const [incomingOffers, setIncomingOffers] = useState<TradeOfferDTO[]>()
     const [offeredOffers, setOfferedOffers] = useState<TradeOfferDTO[]>()
     const [offerList, setOfferList] = useState<React.JSX.Element[] | undefined>()
-
-
-    const config = {
-        headers: {
-            Authorization: 'Bearer ' + token?.token
-        }
-    }
-
 
     function getIncoming() {
         axios.get('tradeoffer/incoming')
