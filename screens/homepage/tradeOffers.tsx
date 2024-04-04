@@ -35,7 +35,7 @@ const TradeOffers = () => {
             .catch((e) => console.log(e))
         setVisible(!visible)
 
-        setOfferList(list => incomingOffers?.map((item, i) =>
+        setOfferList(incomingOffers?.map((item, i) =>
             <TradeOfferComponent key={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
                                  comment={item.comment} type={tradeOfferType}/>
         ))

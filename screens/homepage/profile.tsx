@@ -1,5 +1,16 @@
 import Styles from "../../Stylesheet";
-import {Dimensions, Image, Modal, Pressable, ScrollView, Text, TextInput, ToastAndroid, View} from "react-native";
+import {
+    Dimensions,
+    Image,
+    Modal,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    ToastAndroid,
+    View
+} from "react-native";
 import React, {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../contexts/authContext";
 import userDataDTO from "../../interfaces/userDataDTO";
@@ -9,6 +20,7 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import itemDataDTO from "../../interfaces/itemDataDTO";
 import ItemCard from "../../components/itemCard";
+import SelectDropdown from "react-native-select-dropdown";
 
 const styles = Styles;
 
@@ -26,7 +38,17 @@ interface updateUserDTO {
     profilePicture: string |undefined,
 }
 
+interface updateItemDTO {
+    title: string | undefined,
+    description: string | undefined,
+    priceTier: string | undefined,
+    category: string | undefined,
+    itemPicture: string | undefined,
+}
+
 const Profile = () => {
+
+    const categories = ["OTHER", "VEHICLE", "HOME", "HOUSEHOLD", "ELECTRONICS", "FREETIME", "SPORT", "FASHION", "COLLECTIBLES", "PETS" ]
 
     const {token} = useContext(AuthContext);
     const {logout} = useContext(AuthContext);
@@ -40,6 +62,13 @@ const Profile = () => {
     const [profilePicture, setProfilePicture] = useState(userData?.profilePicture);
     const [open, setOpen] = useState(false);
     const [visible, setVisible]= useState(false);
+    const [editModalVisible, setEditModalVisible] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<itemDataDTO>();
+    const [itemTitle, setItemTitle] = useState(selectedItem?.title);
+    const [itemDescription, setItemDescription] = useState(selectedItem?.description);
+    const [itemPriceTier, setItemPriceTier] = useState(selectedItem?.priceTier);
+    const [itemCategory, setItemCategory] = useState(selectedItem?.category);
+    const [itemPicture, setItemPicture] = useState(selectedItem?.itemPicture);
 
     const config = {
         headers: {
@@ -63,9 +92,9 @@ const Profile = () => {
     function loadCards() {
         axios.get('/user/items', config)
             .then((response) => {
-                console.log(response.data);
+                //console.log(response.data);
                 setItemList(response.data);
-                console.log('itemList: ' + itemList)
+                //console.log('itemList: ' + itemList)
             })
             .catch((e) => console.log(e.response.data))
 
@@ -74,13 +103,42 @@ const Profile = () => {
             itemCards = itemList.map((item, i) =>
 
                 <ItemCard key={i} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
-                          category={item.category} priceTier={item.priceTier} buttonPressFunction={placeholderFunc}/>);
+                          category={item.category} priceTier={item.priceTier} buttonPressFunction={() => editOpenHandler(item)}/>);
 
-            console.log('itemCards: ' + itemCards)
+            //console.log('itemCards: ' + itemCards)
         }
     }
 
-    function placeholderFunc() {}
+    function editOpenHandler(item: itemDataDTO) {
+        setEditModalVisible(!editModalVisible)
+        axios.get('/item/' + item.id, config)
+            .then((response) => {
+                console.log(response.data)
+                setSelectedItem(response.data)
+                setItemPriceTier(selectedItem?.priceTier)
+                setItemTitle(selectedItem?.title)
+                setItemDescription(selectedItem?.description)
+                setItemPicture(selectedItem?.itemPicture)
+                setItemCategory(selectedItem?.category)
+            })
+            .catch((e) => console.log(e))
+    }
+
+    function editItem() {
+        const updateItem: updateItemDTO = {
+            title:itemTitle,
+            description:itemDescription,
+            category: itemCategory,
+            priceTier: itemPriceTier,
+            itemPicture: itemPicture
+        }
+        axios.put('/item/' + selectedItem?.id, updateItem, config)
+            .then((response) => {
+                console.log(response.data)
+            })
+            .catch((e) => console.log(e))
+        setEditModalVisible(!editModalVisible)
+    }
 
     const getUserData  = async () => {
         await axios.get(baseUrl + '/user', config)
@@ -94,7 +152,6 @@ const Profile = () => {
     useEffect(() => {
         loadCards();
         getUserData().then();
-
     }, []);
 
     function updateUser() {
@@ -102,7 +159,7 @@ const Profile = () => {
             .then(() =>
                 ToastAndroid.showWithGravity('Profile data updated!', 2000, ToastAndroid.CENTER))
             .catch((e) => console.log(e))
-        console.log(updateUserData)
+        //console.log(updateUserData)
     }
 
     return (
@@ -191,6 +248,90 @@ const Profile = () => {
                             </View>
                         </View>
                     </Modal>
+
+                    {/*Item Edit Modal starts here*/}
+
+                    <Modal
+                        animationType="slide"
+                        transparent={false}
+                        presentationStyle={"overFullScreen"}
+                        visible={editModalVisible}
+                        onRequestClose={() => {
+                            setVisible(!visible);
+                        }}>
+                        <View style={styles.container}>
+
+                            <View>
+                                <KeyboardAwareScrollView>
+                                    <Text style={styles.header}>{selectedItem?.title}</Text>
+
+                                    <Text style={styles.text}>Title</Text>
+
+                                    <View style={styles.textInput}>
+                                        <TextInput defaultValue={selectedItem?.title} onChangeText={text => setItemTitle(text)}/>
+                                    </View>
+
+                                    <Text style={styles.text}>Description</Text>
+
+                                    <View style={styles.textInput}>
+                                        <TextInput defaultValue={selectedItem?.description} onChangeText={text => setItemDescription(text)}/>
+                                    </View>
+
+                                    <Text style={styles.text}>Item Picture</Text>
+
+                                    <View style={styles.textInput}>
+                                        <TextInput defaultValue={'Picture picker placeholder'}/>
+                                    </View>
+
+                                    <Text style={styles.text}>Categories</Text>
+                                    <SelectDropdown defaultButtonText={selectedItem?.category} searchPlaceHolder={"Search"} data={categories} onSelect={(selectedCategory) => {
+                                        setItemCategory(selectedCategory);
+                                    }}/>
+
+                                    <View style={localStyles.priceCategoryContainer}>
+                                        <Pressable onPress={() => {
+                                            setItemPriceTier('1')
+                                        }}>
+                                            <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                                        </Pressable>
+
+                                        <Pressable onPress={() => {
+                                            setItemPriceTier('2')
+                                        }}>
+                                            <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                                        </Pressable>
+
+                                        <Pressable onPress={() => {
+                                            setItemPriceTier('3')
+                                        }}>
+                                            <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                                        </Pressable>
+
+                                        <Pressable onPress={() => {
+                                            setItemPriceTier('4')
+                                        }}>
+                                            <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                                        </Pressable>
+
+                                        <Pressable onPress={() => {
+                                            setItemPriceTier('5')
+                                        }}>
+                                            <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                                        </Pressable>
+                                    </View>
+
+                                    <Pressable onPress={editItem}>
+                                        <Text style={styles.pressButton}>Update Item</Text>
+                                    </Pressable>
+
+                                    <Pressable onPress={() => setEditModalVisible(!editModalVisible)}>
+                                        <Text style={styles.pressButton}>Close</Text>
+                                    </Pressable>
+
+                                </KeyboardAwareScrollView>
+                            </View>
+                        </View>
+                    </Modal>
                     <View style={{padding: 20, backgroundColor: '#FFF'}}>
                         <View style={{flexDirection: "row", flexWrap: "wrap"}}>
                             {itemCards}
@@ -202,3 +343,20 @@ const Profile = () => {
     )};
 
 export default Profile;
+
+const localStyles = StyleSheet.create({
+    categoryImage: {
+        height: height * 0.07,
+        width: width * 0.14,
+        margin: width * 0.02,
+    },
+
+    priceCategoryContainer: {
+        flexDirection: "row",
+    },
+
+    infoImage: {
+        height: height * 0.04,
+        width: height * 0.08,
+    }
+})
