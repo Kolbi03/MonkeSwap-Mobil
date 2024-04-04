@@ -119,17 +119,6 @@ const Homepage = () => {
                     setItemList(response.data)
                 })
                 .catch((e) => console.log(e.response.data))
-
-            if(itemList === undefined) {} else {
-
-                setItemCards(itemList.map((item, i) =>
-
-                    <ItemCard key={i} buttonPressFunction={() => modalHandler(item)} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
-                              category={item.category} priceTier={item.priceTier}/>));
-
-                console.log('itemCards: ' + itemCards)
-            }
-
         }
     }
 
@@ -186,7 +175,7 @@ const Homepage = () => {
                                 <View className="flex-row flex-wrap">
                                     {ownItemList?.map((item, i ) =>
                                         <ItemCard key={i} userId={item.userId} buttonPressFunction={() => sendOffer(item.id)} id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
-                                                  category={item.category} priceTier={item.priceTier}/>)}
+                                                  category={item.category} priceTier={item.priceTier} buttonText={'Send Offer'}/>)}
                                 </View>
                             </ScrollView>
                         </View>
@@ -196,7 +185,7 @@ const Homepage = () => {
                     {itemList?.map((item, i) =>
 
                         <ItemCard key={i} buttonPressFunction={() => modalHandler(item)} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
-                                  category={item.category} priceTier={item.priceTier}/>)}
+                                  category={item.category} priceTier={item.priceTier} buttonText={'Details'}/>)}
                 </View>
             </ScrollView>
         </View>

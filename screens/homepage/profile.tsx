@@ -165,9 +165,9 @@ const Profile = () => {
                             <Text style={styles.pressButtonSmall}>Logout</Text>
                         </Pressable>
 
-                        <Pressable onPress={loadCards}>
+                        {/*<Pressable onPress={loadCards}>
                             <Text style={styles.pressButtonSmall}>Load Cards</Text>
-                        </Pressable>
+                        </Pressable>*/}
                     </View>
                 </View>
                 <View>
@@ -326,7 +326,7 @@ const Profile = () => {
                             {itemList?.map((item, i) =>
 
                                 <ItemCard key={i} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
-                                          category={item.category} priceTier={item.priceTier} buttonPressFunction={() => editOpenHandler(item)}/>)}
+                                          category={item.category} priceTier={item.priceTier} buttonPressFunction={() => editOpenHandler(item)} buttonText={'Edit'}/>)}
                         </View>
                     </View>
                 </View>

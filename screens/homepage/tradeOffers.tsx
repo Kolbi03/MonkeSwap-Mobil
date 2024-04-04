@@ -13,7 +13,6 @@ const TradeOffers = () => {
     const [tradeOfferType, setTradeOfferType] = useState<boolean>()
     const [incomingOffers, setIncomingOffers] = useState<TradeOfferDTO[]>()
     const [offeredOffers, setOfferedOffers] = useState<TradeOfferDTO[]>()
-    const [offerList, setOfferList] = useState<React.JSX.Element[] | undefined>()
 
     function getIncoming() {
         axios.get('tradeoffer/incoming')
@@ -24,12 +23,6 @@ const TradeOffers = () => {
             })
             .catch((e) => console.log(e))
         setVisible(!visible)
-
-        setOfferList(incomingOffers?.map((item, i) =>
-            <TradeOfferComponent key={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
-                                 comment={item.comment} type={tradeOfferType}/>
-        ))
-        console.log(offerList)
     }
 
     function getOffered() {
@@ -41,12 +34,6 @@ const TradeOffers = () => {
             })
             .catch((e) => console.log(e))
         setVisible(!visible)
-
-        setOfferList(offeredOffers?.map((item, i) =>
-            <TradeOfferComponent key={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
-                                 comment={item.comment} type={tradeOfferType}/>
-        ))
-        console.log(offerList)
     }
 
     useEffect(() => {
@@ -61,7 +48,12 @@ const TradeOffers = () => {
                 <Text style={Styles.pressButton}>Open</Text>
             </Pressable>
                 <ScrollView>
-                    {offerList}
+                    {   tradeOfferType ? offeredOffers?.map((item, i) =>
+                            <TradeOfferComponent key={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
+                                                comment={item.comment} type={tradeOfferType}/>) :
+                        incomingOffers?.map((item, i) =>
+                            <TradeOfferComponent key={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
+                                                 comment={item.comment} type={tradeOfferType}/>)}
                 </ScrollView>
                 <Modal
                     animationType="slide"

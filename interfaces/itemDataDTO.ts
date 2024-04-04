@@ -6,5 +6,6 @@ export  default interface itemDataDTO {
     category: string,
     priceTier: string,
     userId: string,
+    buttonText: string,
     buttonPressFunction: () => void,
 }

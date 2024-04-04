@@ -33,7 +33,7 @@ function ItemCard(item: itemDataDTO) {
                             {item.description}
                         </Text>
                         <Pressable style={{alignSelf: "baseline"}}>
-                            <Text style={styles.pressButtonSmall} onPress={() => item.buttonPressFunction()}>PRESS ME</Text>
+                            <Text style={styles.pressButtonSmall} onPress={() => item.buttonPressFunction()}>{item.buttonText}</Text>
                         </Pressable>
                     </Card.Content>
                     </ScrollView>
