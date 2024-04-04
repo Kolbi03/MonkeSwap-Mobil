@@ -7,9 +7,6 @@ import ItemCard from "../../components/itemCard";
 import SelectDropdown from "react-native-select-dropdown";
 import {HttpContext} from "../../provider/httpProvider";
 
-let ownCards: React.JSX.Element[] | undefined;
-let incomingItemComponent: React.JSX.Element | undefined;
-
 const Homepage = () => {
 
     const categories = ["OTHER", "VEHICLE", "HOME", "HOUSEHOLD", "ELECTRONICS", "FREETIME", "SPORT", "FASHION", "COLLECTIBLES", "PETS" ]
@@ -51,16 +48,6 @@ const Homepage = () => {
                 setItemList(response.data);
             })
             .catch((e) => console.log(e))
-
-        if(itemList === undefined) {} else {
-
-            setItemCards(itemList.map((item, i) =>
-
-                <ItemCard key={i} buttonPressFunction={() => modalHandler(item)} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
-                          category={item.category} priceTier={item.priceTier}/>));
-
-            //console.log('itemCards: ' + itemCards)
-        }
     }
 
     const loadOwnCards = () => {
@@ -69,13 +56,6 @@ const Homepage = () => {
                 setOwnItemList(response.data)
             })
             .catch((e) => console.log(e))
-
-        if (ownItemList === undefined) {} else {
-            ownCards = ownItemList.map((item, i ) =>
-                <ItemCard key={i} userId={item.userId} buttonPressFunction={() => sendOffer(item.id)} id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
-                          category={item.category} priceTier={item.priceTier}/>);
-            //console.log('OwnCards: ' + ownCards)
-        }
     }
 
     function sendOffer(id: string) {
@@ -84,11 +64,11 @@ const Homepage = () => {
             ToastAndroid.showWithGravity('NO ITEM SELECTED', 2000, 1)
         } else {
             setOfferedItemId(id)
-            console.log(offeredItemId)
+            //console.log(offeredItemId)
             ToastAndroid.showWithGravity('Trade offer sent!', 2000, 1)
         }
 
-        console.log('offeredItem: '  + offeredItemId + 'incomingItem: ' + incomingItemId)
+        //console.log('offeredItem: '  + offeredItemId + 'incomingItem: ' + incomingItemId)
 
         axios.post('/tradeoffer', {offeredItem: offeredItemId, incomingItem: incomingItemId, comment: tradeOfferComment} , config)
             .then((response) => {
@@ -96,10 +76,10 @@ const Homepage = () => {
                 console.log(response.data)
                 setTradeOfferComment('');
                 axios.post('/notification', {message: username + ' sent you a trade request!', type: 'NOTIFICATION', userId: userId}, config)
-                    .then((response) => {
+                    /*.then((response) => {
                         console.log(response.data)
                         console.log(username + ' ' + userId)
-                    })
+                    })*/
                     .catch((e) => console.log('Notification error: ' + e.response.data))
             })
             .catch((e) => console.log('Tradeoffer error:' + e.response.data))
@@ -119,9 +99,9 @@ const Homepage = () => {
         } else {
             setIncomingItemId(item.id)
             setIncomingItem(item)
-            incomingItemComponent = <ItemCard id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
+            /*incomingItemComponent = <ItemCard id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
                                               category={item.category} priceTier={item.priceTier} userId={item.userId}
-                                              buttonPressFunction={placeholderFunc}/>
+                                              buttonPressFunction={placeholderFunc}/>*/
             setUserId(item.userId)
             axios.put('/item/views/' + incomingItemId, {} , config)
                 .then((response) => console.log(response.data))
@@ -153,8 +133,6 @@ const Homepage = () => {
         }
     }
 
-    function placeholderFunc() { }
-
     function cardFlipHandler() {
         setVisible(!visible);
     }
@@ -171,9 +149,9 @@ const Homepage = () => {
         <View style={styles.container}>
             <ScrollView>
                 <View style={{flexDirection: "column"}}>
-                    <Pressable onPress={loadCards}>
+                    {/*<Pressable onPress={loadCards}>
                         <Text style={styles.pressButtonSmall}>Load Cards</Text>
-                    </Pressable>
+                    </Pressable>*/}
                     <Pressable onPress={searchByCategory}>
                         <Text style={styles.pressButtonSmall}>Search</Text>
                     </Pressable>
@@ -206,14 +184,19 @@ const Homepage = () => {
                                 </View>
 
                                 <View className="flex-row flex-wrap">
-                                    {ownCards}
+                                    {ownItemList?.map((item, i ) =>
+                                        <ItemCard key={i} userId={item.userId} buttonPressFunction={() => sendOffer(item.id)} id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
+                                                  category={item.category} priceTier={item.priceTier}/>)}
                                 </View>
                             </ScrollView>
                         </View>
                     </Modal>
                 </View>
                 <View style={{flexDirection: "row", flexWrap: "wrap"}}>
-                    {itemCards}
+                    {itemList?.map((item, i) =>
+
+                        <ItemCard key={i} buttonPressFunction={() => modalHandler(item)} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
+                                  category={item.category} priceTier={item.priceTier}/>)}
                 </View>
             </ScrollView>
         </View>

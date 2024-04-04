@@ -25,7 +25,6 @@ import SelectDropdown from "react-native-select-dropdown";
 const styles = Styles;
 
 const baseUrl = baseURL;
-let itemCards: React.JSX.Element[] | undefined;
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -97,16 +96,6 @@ const Profile = () => {
                 //console.log('itemList: ' + itemList)
             })
             .catch((e) => console.log(e.response.data))
-
-        if(itemList === undefined) {} else {
-
-            itemCards = itemList.map((item, i) =>
-
-                <ItemCard key={i} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
-                          category={item.category} priceTier={item.priceTier} buttonPressFunction={() => editOpenHandler(item)}/>);
-
-            //console.log('itemCards: ' + itemCards)
-        }
     }
 
     function editOpenHandler(item: itemDataDTO) {
@@ -334,7 +323,10 @@ const Profile = () => {
                     </Modal>
                     <View style={{padding: 20, backgroundColor: '#FFF'}}>
                         <View style={{flexDirection: "row", flexWrap: "wrap"}}>
-                            {itemCards}
+                            {itemList?.map((item, i) =>
+
+                                <ItemCard key={i} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
+                                          category={item.category} priceTier={item.priceTier} buttonPressFunction={() => editOpenHandler(item)}/>)}
                         </View>
                     </View>
                 </View>

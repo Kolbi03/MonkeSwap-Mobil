@@ -5,8 +5,6 @@ import React, {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../contexts/authContext";
 import Styles from "../../Stylesheet";
 
-let notifications: React.JSX.Element[] | undefined;
-
 const Notifications = () => {
 
     interface notificationDataDTO {
@@ -33,13 +31,6 @@ const Notifications = () => {
                 //console.log(notificationList)
             })
             .catch((e) => console.log(e.response.data))
-
-        if (notificationList === undefined) {} else {
-            notifications = notificationList.map((notification, i ) =>
-                <NotificationComponent key={i} message={notification.message} id={notification.id} type={notification.type}/>)
-
-            console.log(notifications)
-        }
     }
 
     function deleteNotifications() {
@@ -59,12 +50,13 @@ const Notifications = () => {
                     <Pressable onPress={deleteNotifications}>
                         <Text style={Styles.pressButton}>Delete notifications</Text>
                     </Pressable>
-                    <Pressable onPress={loadNotifications}>
+{/*                    <Pressable onPress={loadNotifications}>
                         <Text style={Styles.pressButton}>Load notifications</Text>
-                    </Pressable>
+                    </Pressable>*/}
                 </View>
                 <View>
-                    {notifications}
+                    {notificationList?.map((notification, i ) =>
+                        <NotificationComponent key={i} message={notification.message} id={notification.id} type={notification.type}/>)}
                 </View>
             </ScrollView>
         </View>
