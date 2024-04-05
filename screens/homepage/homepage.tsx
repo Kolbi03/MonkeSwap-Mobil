@@ -41,7 +41,7 @@ const Homepage = () => {
     }
 
     function loadCards() {
-        console.log(token)
+        //console.log(token)
         axios.get('/items')
             .then((response) => {
                 setItemList(response.data);
@@ -95,16 +95,16 @@ const Homepage = () => {
             ToastAndroid.showWithGravity('NO ITEM SELECTED', 2000, 1)
         } else {
             setVisible(() => !visible)
-            setIncomingItemId(item.id)
             setIncomingItem(item)
+            setIncomingItemId(item.id)
             /*incomingItemComponent = <ItemCard id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
                                               category={item.category} priceTier={item.priceTier} userId={item.userId}
                                               buttonPressFunction={placeholderFunc}/>*/
             setUserId(item.userId)
-            axios.put('/item/views/' + incomingItemId, {})
+            axios.put('/item/views/' + item.id, {})
                 .then((response) => console.log(response.data))
                 .catch((e) => console.log('Incoming item error:' + e))
-            console.log('incoming item id: ' + incomingItemId)
+            console.log('incoming item id: ' + item.id)
         }
     }
 
@@ -118,6 +118,12 @@ const Homepage = () => {
                 })
                 .catch((e) => console.log(e.response.data))
         }
+    }
+
+    function reportHandler(itemId: string) {
+        axios.put('/item/reports/' + itemId, {})
+            .then()
+            .catch((e) => ToastAndroid.showWithGravity(e.response.data, 2000, 1))
     }
 
     function cardFlipHandler() {
@@ -170,11 +176,16 @@ const Homepage = () => {
                                     </View>
                                 </View>
 
+                                <Pressable onPress={() => reportHandler(incomingItemId)}>
+                                    <Text style={styles.pressButtonSmall}>Report</Text>
+                                </Pressable>
+
                                 <View className="flex-row flex-wrap">
                                     {ownItemList?.map((item, i ) =>
                                         <ItemCard key={i} userId={item.userId} buttonPressFunction={() => sendOffer(item.id)} id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
                                                   category={item.category} priceTier={item.priceTier} buttonText={'Send Offer'}/>)}
                                 </View>
+
                             </ScrollView>
                         </View>
                     </Modal>
