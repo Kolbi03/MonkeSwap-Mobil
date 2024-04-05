@@ -32,9 +32,15 @@ const TradeOffers = () => {
             .catch((e) => console.log(e))
     }
 
-    function typeHandler() {
-        setTradeOfferType(!tradeOfferType)
+    function incomingOffersButton() {
+        setTradeOfferType(false)
         setVisible(!visible)
+    }
+
+    function sentOffersButton() {
+        setTradeOfferType(true)
+        setVisible(!visible)
+
     }
 
     useEffect(() => {
@@ -67,10 +73,10 @@ const TradeOffers = () => {
                         ToastAndroid.showWithGravity('You must choose the type of offers!', 2000, 1)
                     }}>
                         <View style={{height: "30%", backgroundColor: "#FFF", marginTop: "auto", borderRadius: 20}}>
-                            <Pressable onPress={typeHandler}>
+                            <Pressable onPress={incomingOffersButton}>
                                 <Text style={Styles.pressButton}>Sent Offers</Text>
                             </Pressable>
-                            <Pressable onPress={typeHandler}>
+                            <Pressable onPress={sentOffersButton}>
                                 <Text style={Styles.pressButton}>Incoming Offers</Text>
                             </Pressable>
                         </View>

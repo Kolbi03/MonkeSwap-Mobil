@@ -1,4 +1,4 @@
-import {Image, Modal, Pressable, ScrollView, Text, ToastAndroid, View} from "react-native";
+import {Image, Modal, Pressable, ScrollView, Text, View} from "react-native";
 import TradeOfferDTO from "../interfaces/tradeOfferDTO";
 import React, {useContext, useEffect, useState} from "react";
 import {HttpContext} from "../provider/httpProvider";
@@ -32,6 +32,18 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
             .catch((e) => console.log(e))
     }
 
+    function acceptOffer() {
+        axios.delete('/tradeoffer/accept/' + item.id)
+            .then(() => setVisible(false))
+            .catch((e) => console.log(e))
+    }
+
+    function declineOffer() {
+        axios.delete('/tradeoffer/decline/' + item.id)
+            .then(() => setVisible(false))
+            .catch((e) => console.log(e))
+    }
+
     useEffect(() => {
         getIncomingItemData()
         getOfferedItemData()
@@ -50,9 +62,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
                         transparent={true}
                         //presentationStyle={"overFullScreen"}
                         visible={visible}
-                        onRequestClose={() => {
-                            ToastAndroid.showWithGravity('You must choose the type of offers!', 2000, 1)
-                        }}>
+                        onRequestClose={() => setVisible(!visible)}>
                         <ScrollView style={{backgroundColor: "#FFF", borderRadius: 0, flex: 1}}>
                             <Image style={{width: "70%", borderRadius: 10}} source={require('../assets/placeholderMonkeicon.jpg')} />
                             <Text className="text-xl"> Name: {incomingItemData?.title}</Text>
@@ -67,10 +77,10 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
                             <Text className="text-xl"> Price Tier: {offeredItemData?.priceTier}</Text>
 
 
-                            <Pressable onPress={() => setVisible(!visible)}>
+                            <Pressable onPress={acceptOffer}>
                                 <Text style={Styles.pressButton}>Accept Offer</Text>
                             </Pressable>
-                            <Pressable onPress={() => setVisible(!visible)}>
+                            <Pressable onPress={declineOffer}>
                                 <Text style={Styles.pressButton}>Decline Offer</Text>
                             </Pressable>
                         </ScrollView>

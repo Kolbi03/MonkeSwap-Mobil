@@ -49,12 +49,12 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
                 //console.log('received token: ' + response.data.token)
                 ToastAndroid.showWithGravity('Logged in!', 2000, ToastAndroid.CENTER)
                 AsyncStorage.setItem('token', response.data.token).catch((e) => {
-                    //console.log(e)
+                    console.log(e)
                 });
             })
             .catch((e) => {
                 //console.log(e + user.email, user.password);
-                ToastAndroid.showWithGravity('Wrong credentials!', 2000, ToastAndroid.CENTER)
+                ToastAndroid.showWithGravity(e.response.data, 2000, ToastAndroid.CENTER)
             })
     };
 

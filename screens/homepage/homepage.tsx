@@ -17,7 +17,6 @@ const Homepage = () => {
     const [itemList, setItemList] = useState<itemDataDTO[]>();
     const [ownItemList, setOwnItemList] = useState<itemDataDTO[]>();
     const [visible, setVisible] = useState(false);
-    const [offeredItemId, setOfferedItemId] = useState<string>('')
     const [incomingItemId, setIncomingItemId] = useState<string>('')
     const [incomingItem, setIncomingItem] = useState<itemDataDTO>()
     const [username, setUsername] = useState('');
@@ -57,20 +56,19 @@ const Homepage = () => {
             .catch((e) => console.log(e))
     }
 
-    function sendOffer(id: string) {
+    function sendOffer(offeredItemId: string) {
         setVisible(() => !visible)
-        if(id === null) {
+        if(offeredItemId === null) {
             ToastAndroid.showWithGravity('NO ITEM SELECTED', 2000, 1)
         } else {
-            setOfferedItemId(id)
-            //console.log(offeredItemId)
-            ToastAndroid.showWithGravity('Trade offer sent!', 2000, 1)
+            console.log('Offered item id: ' + offeredItemId)
+            console.log('Incoming item id: ' + incomingItemId)
         }
 
         axios.post('/tradeoffer', {offeredItem: offeredItemId, incomingItem: incomingItemId, comment: tradeOfferComment} , config)
-            .then((response) => {
+            .then(() => {
                 console.log('offeredItem: '  + offeredItemId + 'incomingItem: ' + incomingItemId)
-                console.log(response.data)
+                ToastAndroid.showWithGravity('Trade offer sent!', 2000, 1)
                 setTradeOfferComment('');
                 axios.post('/notification', {message: username + ' sent you a trade request!', type: 'NOTIFICATION', userId: userId}, config)
                     /*.then((response) => {
@@ -79,7 +77,7 @@ const Homepage = () => {
                     })*/
                     .catch((e) => console.log('Notification error: ' + e.response.data))
             })
-            .catch((e) => console.log('Tradeoffer error:' + e.response.data))
+            .catch((e) => ToastAndroid.showWithGravity(e.response.data, 2000, 1))
 
         axios.post('/notification', {message: username + ' sent you a trade request!', type: 'NOTIFICATION', userId: userId}, config)
             .then((response) => {

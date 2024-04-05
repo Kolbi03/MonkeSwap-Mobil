@@ -14,13 +14,13 @@ import {
 import React, {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../contexts/authContext";
 import userDataDTO from "../../interfaces/userDataDTO";
-import axios from "../../axios";
 import {baseURL} from "../../backendURL";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import itemDataDTO from "../../interfaces/itemDataDTO";
 import ItemCard from "../../components/itemCard";
 import SelectDropdown from "react-native-select-dropdown";
+import {HttpContext} from "../../provider/httpProvider";
 
 const styles = Styles;
 
@@ -51,6 +51,7 @@ const Profile = () => {
 
     const {token} = useContext(AuthContext);
     const {logout} = useContext(AuthContext);
+    const axios = useContext(HttpContext)
     const [itemList, setItemList] = useState<itemDataDTO[]>();
 
     const [userData, setUserData] = useState<userDataDTO>();
@@ -158,6 +159,15 @@ const Profile = () => {
                 ToastAndroid.showWithGravity('Profile data updated!', 2000, ToastAndroid.CENTER))
             .catch((e) => console.log(e))
         //console.log(updateUserData)
+    }
+
+    function deleteItem() {
+        axios.delete('/item/' + selectedItem?.id, config)
+            .then(() => {
+                setEditModalVisible(!editModalVisible)
+                loadCards()
+            })
+            .catch((e) => console.log(e))
     }
 
     return (
@@ -324,6 +334,10 @@ const Profile = () => {
 
                                     <Pressable onPress={editItem}>
                                         <Text style={styles.pressButton}>Update Item</Text>
+                                    </Pressable>
+
+                                    <Pressable onPress={deleteItem}>
+                                        <Text style={styles.pressButton}>Delete Item</Text>
                                     </Pressable>
 
                                     <Pressable onPress={() => setEditModalVisible(!editModalVisible)}>

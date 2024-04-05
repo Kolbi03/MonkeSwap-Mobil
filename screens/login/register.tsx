@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import {Text, View, TextInput, Pressable} from 'react-native';
+import {Text, View, TextInput, Pressable, ToastAndroid} from 'react-native';
 import Styles from "../../Stylesheet";
 import axios from "axios";
 import {useState} from "react";
@@ -16,7 +16,6 @@ const RegisterScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [conPassword, setConPassword] = useState('')
     const [username, setUsername] = useState('');
-    const [error, setError] = useState('');
 
     const baseUrl = baseURL;
 
@@ -40,18 +39,18 @@ const RegisterScreen = ({ navigation }) => {
             <Text style={styles.header}>Account creation</Text>
             <Text style={{fontSize: 18, paddingBottom: 8, color: '#444444',}}>Start trading today!</Text>
 
-            {/*Username mező*/}
-            <Text style={styles.text}>Username</Text>
-
-            <View style={styles.textInput}>
-                <TextInput placeholder='Monke' onChangeText={username => setUsername(username)} placeholderTextColor={'gray'}/>
-            </View>
-
             {/*Email mező*/}
             <Text style={styles.text}>Email</Text>
 
             <View style={styles.textInput}>
                 <TextInput keyboardType='email-address' placeholder='Monke@swap.com' placeholderTextColor={'gray'} onChangeText={email => setEmail(email)}/>
+            </View>
+
+            {/*Username mező*/}
+            <Text style={styles.text}>Username</Text>
+
+            <View style={styles.textInput}>
+                <TextInput placeholder='Monke' onChangeText={username => setUsername(username)} placeholderTextColor={'gray'}/>
             </View>
 
             {/*Jelszó mező*/}
@@ -71,11 +70,17 @@ const RegisterScreen = ({ navigation }) => {
             <Text style={{padding: 12, textAlign: "center"}}>When you create you account you accept the EULA and Privacy Policy</Text>
 
             <Pressable onPress={() => {
+                if(passwordCheck()) {
                 axios.post(baseUrl + '/auth/register', data)
-                    .then(async(response) => {
-                        console.log(response.data);
-                    }).catch(error => console.log(error))
-            }}>
+                    .then(() => {
+                        //console.log(response.data);
+                        navigation.navigate('Login')
+                    }).catch(e => {
+                        ToastAndroid.showWithGravity(e.response.data, 2000, 1)
+                })
+            } else {
+                ToastAndroid.showWithGravity('Passwords must match', 2000, 1)
+            }}}>
                 <Text style={styles.pressButton}>Create</Text>
             </Pressable>
 
@@ -84,7 +89,6 @@ const RegisterScreen = ({ navigation }) => {
             }}>
                 <Text style={styles.pressButton}>Back</Text>
             </Pressable>
-            <Text style={{marginTop: 20, color:'#FF0000'}}>{error}</Text>
             </View>
         </KeyboardAwareScrollView>
     );
