@@ -18,7 +18,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
         axios.get('/item/' + item.incomingItem)
             .then((response) => {
                 setIncomingItemData(response.data)
-                console.log(incomingItemData)
+                //console.log(incomingItemData)
             })
             .catch((e) => console.log(e))
     }
@@ -27,7 +27,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
         axios.get('/item/' + item.offeredItem)
             .then((response) => {
                 setOfferedItemData(response.data)
-                console.log(incomingItemData)
+                //console.log(incomingItemData)
             })
             .catch((e) => console.log(e))
     }

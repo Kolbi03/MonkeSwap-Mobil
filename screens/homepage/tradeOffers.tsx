@@ -34,11 +34,13 @@ const TradeOffers = () => {
 
     function incomingOffersButton() {
         setTradeOfferType(false)
+        getIncoming()
         setVisible(!visible)
     }
 
     function sentOffersButton() {
         setTradeOfferType(true)
+        getOffered()
         setVisible(!visible)
 
     }
@@ -47,7 +49,7 @@ const TradeOffers = () => {
         setVisible(true)
         getOffered()
         getIncoming()
-    }, []);
+    }, [axios]);
 
 
     return (
