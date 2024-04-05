@@ -104,7 +104,7 @@ const Homepage = () => {
             axios.put('/item/views/' + incomingItemId, {})
                 .then((response) => console.log(response.data))
                 .catch((e) => console.log('Incoming item error:' + e))
-            console.log(incomingItemId)
+            console.log('incoming item id: ' + incomingItemId)
         }
     }
 

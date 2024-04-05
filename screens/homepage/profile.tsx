@@ -138,6 +138,15 @@ const Profile = () => {
             .catch((e) => console.log(e))
     }
 
+    function userDeleteHandler() {
+        axios.delete('/user', config)
+            .then(response => {
+                console.log(response.data)
+                logout();
+            })
+            .catch(e => console.log(e))
+    }
+
     useEffect(() => {
         loadCards();
         getUserData().then();
@@ -231,6 +240,10 @@ const Profile = () => {
 
                                     <Pressable onPress={() => setVisible(!visible)}>
                                         <Text style={styles.pressButton}>Close</Text>
+                                    </Pressable>
+
+                                    <Pressable onPress={userDeleteHandler}>
+                                        <Text style={styles.pressButton}>Delete User</Text>
                                     </Pressable>
 
                                 </KeyboardAwareScrollView>

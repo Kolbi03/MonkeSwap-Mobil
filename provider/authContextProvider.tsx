@@ -27,10 +27,10 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
     const setTokenIfExists = async ()=> {
 
         const token = await AsyncStorage.getItem('token').catch((e)=>{console.log(e)});
-        console.log('At start: ' + token)
+        //console.log('At start: ' + token)
         if(token!=null){
             setToken({token: token});
-            console.log('finished: ' + token)
+            //console.log('finished: ' + token)
         }
         setInit(true);
     }
@@ -49,11 +49,11 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
                 //console.log('received token: ' + response.data.token)
                 ToastAndroid.showWithGravity('Logged in!', 2000, ToastAndroid.CENTER)
                 AsyncStorage.setItem('token', response.data.token).catch((e) => {
-                    console.log(e)
+                    //console.log(e)
                 });
             })
             .catch((e) => {
-                console.log(e + user.email, user.password);
+                //console.log(e + user.email, user.password);
                 ToastAndroid.showWithGravity('Wrong credentials!', 2000, ToastAndroid.CENTER)
             })
     };
@@ -61,7 +61,7 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
     const getUserData = () => {
         axios.get(baseURL + '/user', config)
             .then((response) => {
-                console.log(response.data)
+                //console.log(response.data)
                 setUserData(response.data)
             })
             .catch((e) => console.log(e));
@@ -72,7 +72,7 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
     const logout = async () => {
         setToken(null);
         await AsyncStorage.removeItem('token');
-        console.log(token)
+        //console.log(token)
     }
         return (
     <AuthContext.Provider value={{ token, login, logout, getUserData, init}}>
