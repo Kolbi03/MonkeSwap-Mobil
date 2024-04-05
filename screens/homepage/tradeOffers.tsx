@@ -17,27 +17,30 @@ const TradeOffers = () => {
     function getIncoming() {
         axios.get('tradeoffer/incoming')
             .then((response) => {
-                setTradeOfferType(true)
                 setIncomingOffers(response.data)
                 //console.log(response.data)
             })
             .catch((e) => console.log(e))
-        setVisible(!visible)
     }
 
     function getOffered() {
         axios.get('tradeoffer/offered')
             .then((response) => {
-                setTradeOfferType(false)
                 setOfferedOffers(response.data)
                 //console.log(response.data)
             })
             .catch((e) => console.log(e))
+    }
+
+    function typeHandler() {
+        setTradeOfferType(!tradeOfferType)
         setVisible(!visible)
     }
 
     useEffect(() => {
         setVisible(true)
+        getOffered()
+        getIncoming()
     }, []);
 
 
@@ -64,10 +67,10 @@ const TradeOffers = () => {
                         ToastAndroid.showWithGravity('You must choose the type of offers!', 2000, 1)
                     }}>
                         <View style={{height: "30%", backgroundColor: "#FFF", marginTop: "auto", borderRadius: 20}}>
-                            <Pressable onPress={getOffered}>
+                            <Pressable onPress={typeHandler}>
                                 <Text style={Styles.pressButton}>Sent Offers</Text>
                             </Pressable>
-                            <Pressable onPress={getIncoming}>
+                            <Pressable onPress={typeHandler}>
                                 <Text style={Styles.pressButton}>Incoming Offers</Text>
                             </Pressable>
                         </View>

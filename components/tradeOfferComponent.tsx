@@ -42,7 +42,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
             <Pressable onPress={()=> setVisible(!visible)}>
                 {!type ?
                 <View>
-                    <Text className="text-lg">
+                    <Text className="text-xl">
                         Your {offeredItemData?.title} has a pending trade for {incomingItemData?.title}!
                     </Text>
                     <Modal
@@ -78,7 +78,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
                 </View>
                     :
                     <View>
-                        <Text>
+                        <Text className={"text-xl"}>
                             You have offered a {incomingItemData?.title} for a {offeredItemData?.title}!
                         </Text>
                     </View>

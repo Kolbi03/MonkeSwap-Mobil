@@ -14,7 +14,6 @@ const Homepage = () => {
     const {token} = useContext(AuthContext);
     const axios = useContext(HttpContext)
 
-    const [itemCards, setItemCards] = useState<React.JSX.Element[] | undefined>();
     const [itemList, setItemList] = useState<itemDataDTO[]>();
     const [ownItemList, setOwnItemList] = useState<itemDataDTO[]>();
     const [visible, setVisible] = useState(false);
@@ -32,8 +31,8 @@ const Homepage = () => {
         }
     }
 
-    const getUserData  = async () => {
-        await axios.get('/user', config)
+    const getUserData  = () => {
+        axios.get('/user', config)
             .then((response) => {
                 //console.log('username: ' + response.data.username);
                 setUsername(response.data.username)
@@ -68,8 +67,6 @@ const Homepage = () => {
             ToastAndroid.showWithGravity('Trade offer sent!', 2000, 1)
         }
 
-        //console.log('offeredItem: '  + offeredItemId + 'incomingItem: ' + incomingItemId)
-
         axios.post('/tradeoffer', {offeredItem: offeredItemId, incomingItem: incomingItemId, comment: tradeOfferComment} , config)
             .then((response) => {
                 console.log('offeredItem: '  + offeredItemId + 'incomingItem: ' + incomingItemId)
@@ -84,28 +81,29 @@ const Homepage = () => {
             })
             .catch((e) => console.log('Tradeoffer error:' + e.response.data))
 
-        /*axios.post('/notification', {message: username + ' sent you a trade request!', type: 'NOTIFICATION', userId: userId}, config)
+        axios.post('/notification', {message: username + ' sent you a trade request!', type: 'NOTIFICATION', userId: userId}, config)
             .then((response) => {
                 console.log(response.data)
                 console.log(username + ' ' + userId)
             })
-            .catch((e) => console.log('Notification error: ' + e.response.data))*/
+            .catch((e) => console.log('Notification error: ' + e.response.data))
     }
 
     function modalHandler(item: itemDataDTO) {
-        setVisible(() => !visible)
+        console.log(item)
         if(item.id === null) {
             ToastAndroid.showWithGravity('NO ITEM SELECTED', 2000, 1)
         } else {
+            setVisible(() => !visible)
             setIncomingItemId(item.id)
             setIncomingItem(item)
             /*incomingItemComponent = <ItemCard id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
                                               category={item.category} priceTier={item.priceTier} userId={item.userId}
                                               buttonPressFunction={placeholderFunc}/>*/
             setUserId(item.userId)
-            axios.put('/item/views/' + incomingItemId, {} , config)
+            axios.put('/item/views/' + incomingItemId, {})
                 .then((response) => console.log(response.data))
-                .catch((e) => console.log('Incoming item error:' + e.response.data))
+                .catch((e) => console.log('Incoming item error:' + e))
             console.log(incomingItemId)
         }
     }
@@ -128,7 +126,7 @@ const Homepage = () => {
 
     useEffect(() => {
         loadCards()
-        getUserData().then()
+        getUserData()
         loadOwnCards()
     }, [axios]);
 
