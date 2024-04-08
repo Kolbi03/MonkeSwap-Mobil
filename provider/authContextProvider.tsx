@@ -1,12 +1,11 @@
-import React, {ReactNode, useEffect, useState} from "react";
+import React, {ReactNode, useContext, useEffect, useState} from "react";
 import authToken from "../interfaces/authToken";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthContext} from '../contexts/authContext';
-import axios from "axios";
 import {ToastAndroid} from "react-native";
 import loginDataDTO from '../interfaces/loginDataDTO'
-import {baseURL} from '../backendURL'
 import userDataDTO from "../interfaces/userDataDTO";
+import axios from "../axios";
 
 interface authContextProviderProps {
     children: ReactNode;
@@ -43,7 +42,7 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
 
     const login = (user: loginDataDTO) => {
 
-        axios.post(baseURL + '/auth/login', {email: user.email, password: user.password})
+        axios.post('/auth/login', {email: user.email, password: user.password})
             .then((response) => {
                 setToken({token: response.data.token})
                 //console.log('received token: ' + response.data.token)
@@ -59,7 +58,7 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
     };
 
     const getUserData = () => {
-        axios.get(baseURL + '/user', config)
+        axios.get('/user', config)
             .then((response) => {
                 //console.log(response.data)
                 setUserData(response.data)

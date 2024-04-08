@@ -1,11 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import {Text, View, TextInput, ToastAndroid, TouchableOpacity} from 'react-native';
-import axios from "axios";
 import React, {useState} from "react";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import registerDataDTO from "../../interfaces/registerDataDTO";
-import {baseURL} from "../../backendURL";
-import Animated, {FadeInUp} from "react-native-reanimated";
+import Animated, {FadeIn, FadeInUp} from "react-native-reanimated";
+import axios from "../../axios";
 
 
 // @ts-ignore
@@ -15,8 +14,6 @@ const RegisterScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [conPassword, setConPassword] = useState('')
     const [username, setUsername] = useState('');
-
-    const baseUrl = baseURL;
 
     const data: registerDataDTO = {
         email: email,
@@ -34,8 +31,10 @@ const RegisterScreen = ({ navigation }) => {
         <KeyboardAwareScrollView className="bg-white h-full- w-full flex-1">
             <StatusBar style="auto" />
 
-            <Text className="text-black font-bold text-3xl tracking-wider text-center pt-4">Account creation</Text>
-            <Text className="text-gray-500 text-lg text-center pb-4">Start trading today!</Text>
+            <Animated.View entering={FadeIn.delay(0).duration(800)}>
+                <Text className="text-black font-bold text-3xl tracking-wider text-center pt-4">Account creation</Text>
+                <Text className="text-gray-500 text-lg text-center pb-4">Start trading today!</Text>
+            </Animated.View>
 
             <View className="flex items-center mx-4 space-y-4">
 
@@ -44,7 +43,7 @@ const RegisterScreen = ({ navigation }) => {
                 </Animated.View>
 
                 <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(100).duration(600)}>
-                    <TextInput placeholder='Username' secureTextEntry={true} onChangeText={username => setUsername(username)} placeholderTextColor={'gray'}/>
+                    <TextInput placeholder='Username' onChangeText={username => setUsername(username)} placeholderTextColor={'gray'}/>
                 </Animated.View>
 
                 <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(200).duration(600)}>
@@ -60,9 +59,10 @@ const RegisterScreen = ({ navigation }) => {
                 <Animated.View className="w-full" entering={FadeInUp.delay(500).duration(600)}>
                     <TouchableOpacity className="w-full bg-amber-300 p-3 rounded-2xl" onPress={() => {
                         if(passwordCheck()) {
-                        axios.post(baseUrl + '/auth/register', data)
-                            .then(() => {
-                                //console.log(response.data);
+                        axios.post('/auth/register', data)
+                            .then((response) => {
+                                console.log(response.data)
+                                ToastAndroid.showWithGravity('Account created!', 2000, 1)
                                 navigation.push('Login')
                             }).catch(e => {
                                 ToastAndroid.showWithGravity(e.response.data, 2000, 1)
