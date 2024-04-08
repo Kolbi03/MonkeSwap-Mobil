@@ -23,7 +23,7 @@ const LoginScreen = ({ navigation }) => {
         <KeyboardAwareScrollView className="bg-white h-full- w-full flex-1">
             <StatusBar style='auto'  />
 
-                <Animated.View className="items-center pt-24 content-evenly pb-40" entering={FadeIn.delay(0).duration(800)}>
+                <Animated.View className="items-center pt-40 content-evenly pb-40" entering={FadeIn.delay(0).duration(800)}>
                     <Text className="text-black font-bold text-4xl tracking-wider">Welcome to</Text>
                     <Text className="text-black font-bold text-4xl tracking-wider">MonkeSwap™</Text>
                 </Animated.View>

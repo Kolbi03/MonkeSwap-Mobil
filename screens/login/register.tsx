@@ -31,7 +31,7 @@ const RegisterScreen = ({ navigation }) => {
         <KeyboardAwareScrollView className="bg-white h-full- w-full flex-1">
             <StatusBar style="auto" />
 
-            <Animated.View entering={FadeIn.delay(0).duration(800)}>
+            <Animated.View className="pt-24" entering={FadeIn.delay(0).duration(800)}>
                 <Text className="text-black font-bold text-3xl tracking-wider text-center pt-4">Account creation</Text>
                 <Text className="text-gray-500 text-lg text-center pb-4">Start trading today!</Text>
             </Animated.View>

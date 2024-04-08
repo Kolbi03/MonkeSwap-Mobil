@@ -6,6 +6,7 @@ import itemDataDTO from "../../interfaces/itemDataDTO";
 import ItemCard from "../../components/itemCard";
 import SelectDropdown from "react-native-select-dropdown";
 import {HttpContext} from "../../provider/httpProvider";
+import {StatusBar} from "expo-status-bar";
 
 const Homepage = () => {
 
@@ -138,6 +139,7 @@ const Homepage = () => {
 
     return(
         <View style={styles.container}>
+            <StatusBar style="auto"/>
             <ScrollView>
                 <View style={{flexDirection: "column"}}>
                     {/*<Pressable onPress={loadCards}>
@@ -147,7 +149,7 @@ const Homepage = () => {
                         <Text style={styles.pressButtonSmall}>Search</Text>
                     </Pressable>
                     <Text style={styles.text}>Categories</Text>
-                    <SelectDropdown defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories} onSelect={(selectedItem) => {
+                    <SelectDropdown buttonStyle={{borderRadius: 20}} defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories} onSelect={(selectedItem) => {
                         setCategory(selectedItem);
                     }}/>
                     <Modal

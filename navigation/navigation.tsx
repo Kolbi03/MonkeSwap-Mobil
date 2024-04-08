@@ -34,9 +34,8 @@ function MainPage() {
             </BottomNav.Navigator>
     )}
 const Login = () => (
-    <Stack.Navigator screenOptions={{ headerStyle: {
-            backgroundColor: '#B5651D',
-        },
+    <Stack.Navigator screenOptions={{
+        headerShown: false,
     }}>
         <Stack.Screen name="Login" component={LoginScreen}/>
         <Stack.Screen name="Register" component={RegisterScreen}/>
@@ -52,10 +51,7 @@ export default function Navigation() {
                 <NavigationContainer>
                     {!token ? <Login/> : (
                         <Stack.Navigator screenOptions={{
-                            headerStyle: {
-                                backgroundColor: '#B5651D',
-                            },
-                            //tabBarStyle: {backgroundColor: '#B5651D'}
+                            headerShown: true
                         }}>
                             <Stack.Screen name="MainPage" component={MainPage}/>
                         </Stack.Navigator>
