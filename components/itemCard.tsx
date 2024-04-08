@@ -3,6 +3,7 @@ import {Pressable, ScrollView, Text, View} from "react-native";
 import React, {useState} from "react";
 import Styles from '../Stylesheet';
 import itemDataDTO from "../interfaces/itemDataDTO";
+import Animated, {FadeIn, FadeInUp} from "react-native-reanimated";
 
 const styles = Styles;
 
@@ -13,15 +14,15 @@ function ItemCard(item: itemDataDTO) {
     return (
         <Card onPress={() => setPressed(!pressed)} mode={"elevated"} style={styles.card}>
             {pressed ?
-                <View>
+                <Animated.View entering={FadeIn.duration(250)}>
                     <Card.Title title={item.title}/>
                     <Card.Cover source={require('../assets/placeholderMonkeicon.jpg')}/>
                     <Card.Content>
                             <Text>{item.priceTier}</Text>
                     </Card.Content>
-                </View>
+                </Animated.View>
                 :
-                <View>
+                <Animated.View entering={FadeIn.duration(250)}>
                     <Card.Title style={{alignSelf: "center"}} title={'Details'}/>
                     <ScrollView>
                     <Card.Content>
@@ -37,7 +38,7 @@ function ItemCard(item: itemDataDTO) {
                         </Pressable>
                     </Card.Content>
                     </ScrollView>
-                </View>
+                </Animated.View>
             }
         </Card>
     )

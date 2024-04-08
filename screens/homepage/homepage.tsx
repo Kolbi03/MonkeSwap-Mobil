@@ -7,6 +7,7 @@ import ItemCard from "../../components/itemCard";
 import SelectDropdown from "react-native-select-dropdown";
 import {HttpContext} from "../../provider/httpProvider";
 import {StatusBar} from "expo-status-bar";
+import Animated from "react-native-reanimated";
 
 const Homepage = () => {
 
@@ -23,7 +24,6 @@ const Homepage = () => {
     const [username, setUsername] = useState('');
     const [userId, setUserId] = useState('');
     const [tradeOfferComment, setTradeOfferComment] = useState('')
-    const [category, setCategory] = useState('');
 
     const config = {
         headers: {
@@ -107,7 +107,7 @@ const Homepage = () => {
         }
     }
 
-    const searchByCategory = () => {
+    const searchByCategory = (category: string) => {
         if(category === '') {
             ToastAndroid.showWithGravity('You have to chose a category!', 2000, 1)
         } else {
@@ -145,13 +145,11 @@ const Homepage = () => {
                     {/*<Pressable onPress={loadCards}>
                         <Text style={styles.pressButtonSmall}>Load Cards</Text>
                     </Pressable>*/}
-                    <Pressable onPress={searchByCategory}>
-                        <Text style={styles.pressButtonSmall}>Search</Text>
-                    </Pressable>
-                    <Text style={styles.text}>Categories</Text>
-                    <SelectDropdown buttonStyle={{borderRadius: 20}} defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories} onSelect={(selectedItem) => {
-                        setCategory(selectedItem);
-                    }}/>
+                    <Animated.View className="flex-row pb-4">
+                        <Text className="text-xl p-2 text-gray-800 pl-0 pr-20">Search: </Text>
+                        <SelectDropdown buttonStyle={{borderRadius: 20}} defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories}
+                                        onSelect={(selectedItem) => {searchByCategory(selectedItem) }}/>
+                    </Animated.View>
                     <Modal
                         animationType="slide"
                         transparent={false}
