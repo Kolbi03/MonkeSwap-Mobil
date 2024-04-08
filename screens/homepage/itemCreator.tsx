@@ -1,5 +1,15 @@
 import React, {useContext, useState} from "react";
-import {Dimensions, Image, Pressable, StyleSheet, TextInput, ToastAndroid, View, Modal} from "react-native";
+import {
+    Dimensions,
+    Image,
+    Pressable,
+    StyleSheet,
+    TextInput,
+    ToastAndroid,
+    View,
+    Modal,
+    TouchableOpacity
+} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import SelectDropdown from 'react-native-select-dropdown'
 import Styles from "../../Stylesheet";
@@ -8,6 +18,8 @@ import {baseURL} from "../../backendURL";
 import axios from "axios";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {AuthContext} from "../../contexts/authContext";
+import Animated, {FadeInUp} from "react-native-reanimated";
+import {ImagePickerResponse, launchImageLibrary} from "react-native-image-picker";
 
 const baseUrl = baseURL;
 
@@ -25,13 +37,13 @@ const ItemCreator = ({ navigation }) => {
     const [visible, setVisible] = useState(false);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState<ImagePickerResponse>();
     const [category, setCategory] = useState('');
     const [price, setPrice] = useState('');
 
     interface newItemDataDTO {
         title: string,
-        itemPicture: string,
+        itemPicture: ImagePickerResponse | undefined,
         description: string,
         category: string,
         priceTier: string,
@@ -74,9 +86,13 @@ const ItemCreator = ({ navigation }) => {
 
             <Text style={styles.text}>Image (placeholder)</Text>
 
-            <View style={styles.textInput}>
-                <TextInput placeholder='Placeholder for opening gallery' placeholderTextColor={'gray'} onChangeText={(text) => setImage(text)}/>
-            </View>
+                <Animated.View className="w-full pt-6" entering={FadeInUp.delay(400).duration(600)}>
+                    <TouchableOpacity className="w-full bg-amber-300 p-3 rounded-2xl" onPress={() => {
+                        launchImageLibrary({mediaType: "photo"}).then((result) => setImage(result))
+                    }}>
+                        <Text className="text-xl font-bold text-white text-center">Login</Text>
+                    </TouchableOpacity>
+                </Animated.View>
 
             <Text style={styles.text}>Categories</Text>
             <SelectDropdown defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories} onSelect={(selectedItem) => {
