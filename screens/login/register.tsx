@@ -1,16 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import {Text, View, TextInput, Pressable, ToastAndroid} from 'react-native';
-import Styles from "../../Stylesheet";
+import {Text, View, TextInput, ToastAndroid, TouchableOpacity} from 'react-native';
 import axios from "axios";
-import {useState} from "react";
+import React, {useState} from "react";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import registerDataDTO from "../../interfaces/registerDataDTO";
 import {baseURL} from "../../backendURL";
+import Animated, {FadeInUp} from "react-native-reanimated";
 
 
 // @ts-ignore
 const RegisterScreen = ({ navigation }) => {
-    const styles = Styles;
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -32,63 +31,56 @@ const RegisterScreen = ({ navigation }) => {
     //-----------PAGE STARTS HERE--------------
 
     return (
-        <KeyboardAwareScrollView style={{backgroundColor: '#FFFFFF'}}>
-            <View style={styles.container}>
+        <KeyboardAwareScrollView className="bg-white h-full- w-full flex-1">
             <StatusBar style="auto" />
 
-            <Text style={styles.header}>Account creation</Text>
-            <Text style={{fontSize: 18, paddingBottom: 8, color: '#444444',}}>Start trading today!</Text>
+            <Text className="text-black font-bold text-3xl tracking-wider text-center pt-4">Account creation</Text>
+            <Text className="text-gray-500 text-lg text-center pb-4">Start trading today!</Text>
 
-            {/*Email mező*/}
-            <Text style={styles.text}>Email</Text>
+            <View className="flex items-center mx-4 space-y-4">
 
-            <View style={styles.textInput}>
-                <TextInput keyboardType='email-address' placeholder='Monke@swap.com' placeholderTextColor={'gray'} onChangeText={email => setEmail(email)}/>
-            </View>
+                <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(0).duration(600)}>
+                    <TextInput placeholder='Email' keyboardType="email-address" onChangeText={email => setEmail(email)} placeholderTextColor={'gray'}/>
+                </Animated.View>
 
-            {/*Username mező*/}
-            <Text style={styles.text}>Username</Text>
+                <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(100).duration(600)}>
+                    <TextInput placeholder='Username' secureTextEntry={true} onChangeText={username => setUsername(username)} placeholderTextColor={'gray'}/>
+                </Animated.View>
 
-            <View style={styles.textInput}>
-                <TextInput placeholder='Monke' onChangeText={username => setUsername(username)} placeholderTextColor={'gray'}/>
-            </View>
+                <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(200).duration(600)}>
+                    <TextInput placeholder='Password' secureTextEntry={true} onChangeText={password => setPassword(password)} placeholderTextColor={'gray'}/>
+                </Animated.View>
 
-            {/*Jelszó mező*/}
-            <Text style={styles.text}>Password</Text>
+                <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(300).duration(600)}>
+                    <TextInput placeholder='Confirm Password' secureTextEntry={true} onChangeText={password => setConPassword(password)} placeholderTextColor={'gray'}/>
+                </Animated.View>
 
-            <View style={styles.textInput}>
-                <TextInput placeholder='********' secureTextEntry={true} onChangeText={password => setPassword(password)} placeholderTextColor={'gray'}/>
-            </View>
+                <Animated.Text className="pt-4 pb-2 text-center" entering={FadeInUp.delay(400).duration(600)}>When you create you account you accept the EULA and Privacy Policy</Animated.Text>
 
-            {/*Jelszó megerősítése mező*/}
-            <Text style={styles.text}>Confirm password</Text>
+                <Animated.View className="w-full" entering={FadeInUp.delay(500).duration(600)}>
+                    <TouchableOpacity className="w-full bg-amber-300 p-3 rounded-2xl" onPress={() => {
+                        if(passwordCheck()) {
+                        axios.post(baseUrl + '/auth/register', data)
+                            .then(() => {
+                                //console.log(response.data);
+                                navigation.push('Login')
+                            }).catch(e => {
+                                ToastAndroid.showWithGravity(e.response.data, 2000, 1)
+                        })
+                    } else {
+                        ToastAndroid.showWithGravity('Passwords must match', 2000, 1)
+                    }}}>
+                        <Text  className="text-xl font-bold text-white text-center">Create</Text>
+                    </TouchableOpacity>
+                </Animated.View>
 
-            <View style={styles.textInput}>
-                <TextInput placeholder='********' secureTextEntry={true} onChangeText={password => setConPassword(password)} placeholderTextColor={'gray'}/>
-            </View>
-
-            <Text style={{padding: 12, textAlign: "center"}}>When you create you account you accept the EULA and Privacy Policy</Text>
-
-            <Pressable onPress={() => {
-                if(passwordCheck()) {
-                axios.post(baseUrl + '/auth/register', data)
-                    .then(() => {
-                        //console.log(response.data);
-                        navigation.navigate('Login')
-                    }).catch(e => {
-                        ToastAndroid.showWithGravity(e.response.data, 2000, 1)
-                })
-            } else {
-                ToastAndroid.showWithGravity('Passwords must match', 2000, 1)
-            }}}>
-                <Text style={styles.pressButton}>Create</Text>
-            </Pressable>
-
-            <Pressable onPress={() => {
-                navigation.navigate('Login')
-            }}>
-                <Text style={styles.pressButton}>Back</Text>
-            </Pressable>
+                <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(600).duration(600)}>
+                    <TouchableOpacity onPress={() => {
+                        navigation.push('Login')
+                    }}>
+                        <Text className="text-xl font-bold text-white text-center">Back to login</Text>
+                    </TouchableOpacity>
+                </Animated.View>
             </View>
         </KeyboardAwareScrollView>
     );
