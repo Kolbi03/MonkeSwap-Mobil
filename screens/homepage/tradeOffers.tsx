@@ -48,8 +48,6 @@ const TradeOffers = () => {
 
     useEffect(() => {
         setVisible(true)
-        getOffered()
-        getIncoming()
     }, [axios]);
 
 

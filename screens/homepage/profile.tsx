@@ -172,7 +172,7 @@ const Profile = () => {
     }
 
     return (
-        <View className="bg-white h-full- w-full flex-1">
+        <View className="bg-white h-full- w-full flex-1 pt-12">
             <StatusBar style="auto"/>
             <ScrollView>
                 <View style={{height: height * 0.3}}>
@@ -185,10 +185,6 @@ const Profile = () => {
                         <Pressable onPress={logout}>
                             <Text style={styles.pressButtonSmall}>Logout</Text>
                         </Pressable>
-
-                        {/*<Pressable onPress={loadCards}>
-                            <Text style={styles.pressButtonSmall}>Load Cards</Text>
-                        </Pressable>*/}
                     </View>
                 </View>
                 <View>
