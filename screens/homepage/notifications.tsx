@@ -4,6 +4,7 @@ import axios from "../../axios";
 import React, {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../contexts/authContext";
 import Styles from "../../Stylesheet";
+import {StatusBar} from "expo-status-bar";
 
 const Notifications = () => {
 
@@ -44,7 +45,8 @@ const Notifications = () => {
     }, []);
 
     return(
-        <View className="p-2">
+        <View className="bg-white h-full- w-full flex-1 p-2">
+            <StatusBar style="auto"/>
             <ScrollView>
                 <View>
                     <Pressable onPress={deleteNotifications}>

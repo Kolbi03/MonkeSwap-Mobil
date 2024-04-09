@@ -14,7 +14,7 @@ const Homepage = () => {
     const categories = ["OTHER", "VEHICLE", "HOME", "HOUSEHOLD", "ELECTRONICS", "FREETIME", "SPORT", "FASHION", "COLLECTIBLES", "PETS" ]
 
     const {token} = useContext(AuthContext);
-    const axios = useContext(HttpContext)
+    const axios = useContext(HttpContext);
 
     const [itemList, setItemList] = useState<itemDataDTO[]>();
     const [ownItemList, setOwnItemList] = useState<itemDataDTO[]>();
@@ -138,7 +138,7 @@ const Homepage = () => {
     const styles = Styles;
 
     return(
-        <View style={styles.container}>
+        <View className="bg-white h-full- w-full flex-1 p-4 pt-16">
             <StatusBar style="auto"/>
             <ScrollView>
                 <View style={{flexDirection: "column"}}>

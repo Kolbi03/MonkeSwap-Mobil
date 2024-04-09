@@ -21,6 +21,7 @@ import itemDataDTO from "../../interfaces/itemDataDTO";
 import ItemCard from "../../components/itemCard";
 import SelectDropdown from "react-native-select-dropdown";
 import {HttpContext} from "../../provider/httpProvider";
+import {StatusBar} from "expo-status-bar";
 
 const styles = Styles;
 
@@ -171,7 +172,8 @@ const Profile = () => {
     }
 
     return (
-        <View style={{backgroundColor: '#FFF'}}>
+        <View className="bg-white h-full- w-full flex-1">
+            <StatusBar style="auto"/>
             <ScrollView>
                 <View style={{height: height * 0.3}}>
                     <Text style={{fontSize: 22, alignSelf: "center", marginTop: 10}}>{userData?.username}</Text>

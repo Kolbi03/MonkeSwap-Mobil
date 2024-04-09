@@ -4,6 +4,7 @@ import React, {useContext, useEffect, useState} from "react";
 import Styles from "../../Stylesheet";
 import TradeOfferDTO from "../../interfaces/tradeOfferDTO";
 import {HttpContext} from "../../provider/httpProvider";
+import {StatusBar} from "expo-status-bar";
 
 const TradeOffers = () => {
 
@@ -53,8 +54,8 @@ const TradeOffers = () => {
 
 
     return (
-        <View className="backdrop:bg-white">
-            <View className="justify-items-center backdrop:bg-white">
+        <View className="backdrop:bg-white w-full h-full flex-1 items-center pt-16">
+            <StatusBar style="auto"/>
             <Pressable onPress={() => setVisible(!visible)}>
                 <Text style={Styles.pressButton}>Open</Text>
             </Pressable>
@@ -69,7 +70,6 @@ const TradeOffers = () => {
                 <Modal
                     animationType="slide"
                     transparent={true}
-                    //presentationStyle={"overFullScreen"}
                     visible={visible}
                     onRequestClose={() => {
                         ToastAndroid.showWithGravity('You must choose the type of offers!', 2000, 1)
@@ -83,7 +83,6 @@ const TradeOffers = () => {
                             </Pressable>
                         </View>
                 </Modal>
-            </View>
         </View>
     )
 }

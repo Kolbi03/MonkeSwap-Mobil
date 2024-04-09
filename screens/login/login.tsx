@@ -21,7 +21,7 @@ const LoginScreen = ({ navigation }) => {
 
     return (
         <KeyboardAwareScrollView className="bg-white h-full- w-full flex-1">
-            <StatusBar style='auto'  />
+            <StatusBar style='auto'/>
 
                 <Animated.View className="items-center pt-40 content-evenly pb-40" entering={FadeIn.delay(0).duration(800)}>
                     <Text className="text-black font-bold text-4xl tracking-wider">Welcome to</Text>
@@ -29,15 +29,15 @@ const LoginScreen = ({ navigation }) => {
                 </Animated.View>
 
                 <View className="flex items-center mx-4 space-y-4">
-                    <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(200).duration(600)}>
+                    <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(200).duration(600).springify()}>
                         <TextInput placeholder='Email' keyboardType="email-address" onChangeText={email => setEmail(email)} placeholderTextColor={'gray'}/>
                     </Animated.View>
 
-                        <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(200).duration(600)}>
+                        <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(300).duration(600).springify()}>
                             <TextInput placeholder='Password' secureTextEntry={true} onChangeText={password => setPassword(password)} placeholderTextColor={'gray'}/>
                         </Animated.View>
 
-                    <Animated.View className="w-full pt-6" entering={FadeInUp.delay(400).duration(600)}>
+                    <Animated.View className="w-full pt-6" entering={FadeInUp.delay(400).duration(600).springify()}>
                         <TouchableOpacity className="w-full bg-amber-300 p-3 rounded-2xl" onPress={() => {
                             login({email: data.email, password: data.password})
                         }}>
@@ -45,7 +45,7 @@ const LoginScreen = ({ navigation }) => {
                         </TouchableOpacity>
                     </Animated.View>
 
-                    <Animated.View className="w-full flex-row justify-center" entering={FadeInUp.delay(500).duration(600)}>
+                    <Animated.View className="w-full flex-row justify-center" entering={FadeInUp.delay(500).duration(600).springify()}>
                         <Text>Don't have an account?</Text>
                         <TouchableOpacity onPress={() => {
                             navigation.push('Register')

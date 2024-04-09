@@ -20,6 +20,9 @@ function MainPage() {
     return(
             <BottomNav.Navigator screenOptions={{
                 headerShown: false,
+                tabBarActiveBackgroundColor: "hsl(56, 100%, 50%)",
+                tabBarInactiveBackgroundColor: "hsl(56, 100%, 50%)",
+                unmountOnBlur: true,
             }}>
                 <BottomNav.Screen options={{tabBarLabel: 'Home', tabBarIcon: ({ color, size }) => (
                         <Icon source="home" color={color} size={size} />)}} name="Homepage" component={Homepage}/>
@@ -51,7 +54,7 @@ export default function Navigation() {
                 <NavigationContainer>
                     {!token ? <Login/> : (
                         <Stack.Navigator screenOptions={{
-                            headerShown: true
+                            headerShown: false
                         }}>
                             <Stack.Screen name="MainPage" component={MainPage}/>
                         </Stack.Navigator>
