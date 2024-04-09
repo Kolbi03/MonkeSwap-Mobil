@@ -23,6 +23,7 @@ function MainPage() {
                 tabBarActiveBackgroundColor: "hsl(56, 100%, 50%)",
                 tabBarInactiveBackgroundColor: "hsl(56, 100%, 50%)",
                 unmountOnBlur: true,
+                tabBarStyle: {height: 50}
             }}>
                 <BottomNav.Screen options={{tabBarLabel: 'Home', tabBarIcon: ({ color, size }) => (
                         <Icon source="home" color={color} size={size} />)}} name="Homepage" component={Homepage}/>

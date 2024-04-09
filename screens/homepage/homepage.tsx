@@ -96,9 +96,6 @@ const Homepage = () => {
             setVisible(() => !visible)
             setIncomingItem(item)
             setIncomingItemId(item.id)
-            /*incomingItemComponent = <ItemCard id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
-                                              category={item.category} priceTier={item.priceTier} userId={item.userId}
-                                              buttonPressFunction={placeholderFunc}/>*/
             setUserId(item.userId)
             axios.put('/item/views/' + item.id, {})
                 .then((response) => console.log(response.data))
@@ -138,13 +135,10 @@ const Homepage = () => {
     const styles = Styles;
 
     return(
-        <View className="bg-white h-full- w-full flex-1 p-4 pt-16">
+        <View className="bg-white h-full- w-full flex-1 px-4 pt-16">
             <StatusBar style="auto"/>
             <ScrollView>
                 <View style={{flexDirection: "column"}}>
-                    {/*<Pressable onPress={loadCards}>
-                        <Text style={styles.pressButtonSmall}>Load Cards</Text>
-                    </Pressable>*/}
                     <Animated.View className="flex-row pb-4">
                         <Text className="text-xl p-2 text-gray-800 pl-0 pr-20">Search: </Text>
                         <SelectDropdown buttonStyle={{borderRadius: 20}} defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories}
@@ -157,11 +151,11 @@ const Homepage = () => {
                         visible={visible}
                         onShow={loadOwnCards}
                         onRequestClose={cardFlipHandler}>
-                        <View style={styles.container}>
+                        <View className="flex-1 backdrop:bg-white px-4 items-center">
                             <ScrollView>
 
-                                <View>
-                                    <Image style={{width: 370, borderRadius: 10}} source={require('../../assets/placeholderMonkeicon.jpg')} />
+                                <View className="flex-col w-full">
+                                    <Image className="rounded-xl w-full" source={require('../../assets/placeholderMonkeicon.jpg')} />
                                     <Text className="text-xl p-1">Title: {incomingItem?.title}</Text>
                                     <Text className="text-xl p-1">Category: {incomingItem?.category}</Text>
                                     <Text className="text-xl p-1">Price Tier: {incomingItem?.priceTier}</Text>
@@ -178,6 +172,8 @@ const Homepage = () => {
                                     <Text style={styles.pressButtonSmall}>Report</Text>
                                 </Pressable>
 
+                                {/*.sort((itemA, itemB) => itemB.id - itemA.id)*/}
+
                                 <View className="flex-row flex-wrap">
                                     {ownItemList?.map((item, i ) =>
                                         <ItemCard key={i} userId={item.userId} buttonPressFunction={() => sendOffer(item.id)} id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
@@ -188,7 +184,7 @@ const Homepage = () => {
                         </View>
                     </Modal>
                 </View>
-                <View style={{flexDirection: "row", flexWrap: "wrap"}}>
+                <View className="flex-row flex-wrap">
                     {itemList?.map((item, i) =>
 
                         <ItemCard key={i} buttonPressFunction={() => modalHandler(item)} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}

@@ -43,13 +43,13 @@ const Notifications = () => {
     return(
         <View className="bg-white items-center h-full- w-full flex-1 p-2 pt-16">
             <StatusBar style="auto"/>
-            <ScrollView>
-                    <Animated.View className="w-full items-center" entering={FadeInUp.delay(400).duration(600).springify()}>
+            <ScrollView className="w-full">
+                    <Animated.View className=" items-center pb-6" entering={FadeInUp.delay(400).duration(600).springify()}>
                         <TouchableOpacity className="w-full bg-amber-300 p-3 rounded-2xl" onPress={deleteNotifications}>
                             <Text className="text-xl font-bold text-white text-center">Delete notifications</Text>
                         </TouchableOpacity>
                     </Animated.View>
-                <View className="h-full">
+                <View className="h-full w-full">
                     {notificationList?.map((notification, i ) =>
                         <NotificationComponent key={i} counter={i} message={notification.message} id={notification.id} type={notification.type}/>)}
                 </View>
