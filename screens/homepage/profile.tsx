@@ -23,6 +23,7 @@ import SelectDropdown from "react-native-select-dropdown";
 import {HttpContext} from "../../provider/httpProvider";
 import {StatusBar} from "expo-status-bar";
 import Animated, {FadeIn, FadeInUp} from "react-native-reanimated";
+import {Icon} from "react-native-paper";
 
 const styles = Styles;
 
@@ -211,36 +212,32 @@ const Profile = () => {
                         onRequestClose={() => {
                             setVisible(!visible);
                         }}>
-                        <View style={styles.container}>
+                        <View className="flex-1 backdrop:bg-white p-4 justify-start h-full">
 
                             <View>
-                                <KeyboardAwareScrollView>
-                                <Text style={styles.header}>Profile</Text>
+                                <KeyboardAwareScrollView className="space-y-4">
+                                    <Animated.View entering={FadeInUp.delay(200).duration(600).springify()}>
+                                        <Text className="text-3xl my-20 font-bold text-center">Edit profile</Text>
+                                    </Animated.View>
 
-                                <Text style={styles.text}>PROFILE PIC PLACEHOLDER</Text>
+                                    <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(250).duration(600).springify()}>
+                                        <TextInput placeholder={'Username'} defaultValue={userData?.username} onChangeText={text => setUsername(text)} placeholderTextColor={'gray'}/>
+                                    </Animated.View>
 
-                                <View style={styles.textInput}>
-                                    <TextInput defaultValue={'PROFILE PIC PLACEHOLDER'} placeholderTextColor={'gray'} onChangeText={text => setProfilePicture(text)}/>
-                                </View>
+                                    <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(300).duration(600).springify()}>
+                                        <TextInput placeholder={'Full name'} defaultValue={userData?.fullName} onChangeText={text => setFullName(text)} placeholderTextColor={'gray'}/>
+                                    </Animated.View>
 
-                                <Text style={styles.text}>Full Name</Text>
 
-                                <View style={styles.textInput}>
-                                    <TextInput placeholder={'No full name yet'} defaultValue={userData?.fullName} onChangeText={text => setFullName(text)} placeholderTextColor={'gray'}/>
-                                </View>
-
-                                <Text style={styles.text}>Username</Text>
-
-                                <View style={styles.textInput}>
-                                    <TextInput defaultValue={userData?.username} onChangeText={text => setUsername(text)} placeholderTextColor={'gray'}/>
-                                </View>
-
-                                    <View style={{flex: 1, flexDirection: "row"}}>
-                                        <Text style={{ verticalAlign: "middle", fontSize: 18}}>Date Of Birth</Text>
-
-                                        <Pressable onPress={() => setOpen(true)}>
-                                            <Text style={styles.pressButtonSmall}>Edit</Text>
-                                        </Pressable>
+                                    <View className="flex-row space-x-2 content-center w-full">
+                                        <Animated.View className="w-10/12 bg-black/5 rounded-2xl p-5 h-14 justify-start" entering={FadeInUp.delay(350).duration(600).springify()}>
+                                            <TextInput placeholder={'Date of birth'} editable={false} defaultValue={userData?.dateOfBirth.toString()} onChangeText={text => setFullName(text)} placeholderTextColor={'gray'}/>
+                                        </Animated.View>
+                                        <Animated.View className="h-full bg-amber-300 p-3 rounded-2xl flex self-end align-middle" entering={FadeInUp.delay(400).duration(600).springify()}>
+                                            <TouchableOpacity onPress={() => setOpen(!open)}>
+                                                <Icon size={30} source={"calendar"} color={"#FFF"}/>
+                                            </TouchableOpacity>
+                                        </Animated.View>
                                     </View>
 
                                     {open && <RNDateTimePicker value={new Date()} onChange={(_event, date) =>
@@ -251,23 +248,29 @@ const Profile = () => {
                                         setOpen(false)
                                     }}}/>}
 
-                                    <Text style={styles.text}>Phone Number</Text>
+                                    <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(450).duration(600).springify()}>
+                                        <TextInput  placeholder={'No phone number yet'} defaultValue={userData?.phoneNumber} keyboardType="phone-pad" onChangeText={num => setPhoneNumber(num)} placeholderTextColor={'gray'}/>
+                                    </Animated.View>
 
-                                    <View style={styles.textInput}>
-                                        <TextInput placeholder={'No phone number yet'} defaultValue={userData?.phoneNumber} keyboardType="phone-pad" onChangeText={num => setPhoneNumber(num)} placeholderTextColor={'gray'}/>
-                                    </View>
+                                    <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(500).duration(600).springify()}>
+                                        <TouchableOpacity onPress={handleUpdateUser}>
+                                            <Text className="text-xl font-bold text-white text-center">Update user</Text>
+                                        </TouchableOpacity>
+                                    </Animated.View>
 
-                                    <Pressable onPress={handleUpdateUser}>
-                                        <Text style={styles.pressButton}>Update Profile</Text>
-                                    </Pressable>
+                                    <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(550).duration(600).springify()}>
+                                        <TouchableOpacity onPress={() => {
+                                            setVisible(!visible)
+                                        }}>
+                                            <Text className="text-xl font-bold text-white text-center">Close</Text>
+                                        </TouchableOpacity>
+                                    </Animated.View>
 
-                                    <Pressable onPress={() => setVisible(!visible)}>
-                                        <Text style={styles.pressButton}>Close</Text>
-                                    </Pressable>
-
-                                    <Pressable onPress={userDeleteHandler}>
-                                        <Text style={styles.pressButton}>Delete User</Text>
-                                    </Pressable>
+                                    <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(600).duration(600).springify()}>
+                                        <TouchableOpacity onPress={userDeleteHandler}>
+                                            <Text className="text-xl font-bold text-white text-center">Delete user</Text>
+                                        </TouchableOpacity>
+                                    </Animated.View>
 
                                 </KeyboardAwareScrollView>
                             </View>
