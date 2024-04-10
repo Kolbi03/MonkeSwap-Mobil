@@ -28,13 +28,13 @@ function MainPage() {
                 <BottomNav.Screen options={{tabBarLabel: 'Home', tabBarIcon: ({ color, size }) => (
                         <Icon source="home" color={color} size={size} />)}} name="Homepage" component={Homepage}/>
                 <BottomNav.Screen options={{tabBarLabel: 'TradeOffers', tabBarIcon: ({ color, size }) => (
-                        <Icon source="plus" color={color} size={size} />)}} name={"TradeOffers"} component={TradeOffers}/>
+                        <Icon source="swap-horizontal" color={color} size={size} />)}} name={"TradeOffers"} component={TradeOffers}/>
                 <BottomNav.Screen options={{tabBarLabel: 'Item Creation', tabBarIcon: ({ color, size }) => (
                         <Icon source="plus" color={color} size={size} />)}} name="ItemCreator" component={ItemCreator} />
                 <BottomNav.Screen options={{tabBarLabel: 'Notifications', tabBarIcon: ({ color, size }) => (
                         <Icon source="bell" color={color} size={size} />)}} name="Notifications" component={Notifications} />
                 <BottomNav.Screen options={{tabBarLabel: 'Profile', tabBarIcon: ({ color, size }) => (
-                        <Icon source="star" color={color} size={size} />)}} name={"Profile"} component={Profile}/>
+                        <Icon source="account" color={color} size={size} />)}} name={"Profile"} component={Profile}/>
             </BottomNav.Navigator>
     )}
 const Login = () => (

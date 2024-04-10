@@ -1,6 +1,7 @@
-import {Text} from "react-native";
+import {Text, View} from "react-native";
 import React from "react";
 import Animated, {FadeInLeft, FadeOutRight} from "react-native-reanimated";
+import {Icon, shadow} from "react-native-paper";
 
 interface notificationDTO {
     id: string,
@@ -10,16 +11,20 @@ interface notificationDTO {
 }
 
 const NotificationComponent = (input: notificationDTO) => {
-    return(
-        <Animated.View className="border-2 backdrop:bg-gray-200 border-gray-200 h-20 rounded-2xl my-1 w-full"
+    return (
+        <Animated.View className={` rounded-2xl p-4 mx-0.5 my-1.5 flex-row justify-start items-center h-24
+                    ${input.type === 'WARNING' ? 'bg-red-300' : 'bg-gray-300'}`}
                        entering={FadeInLeft.delay(input.counter *  30).duration(600).springify()}
-        exiting={FadeOutRight.delay(input.counter * 30).duration(600)}>
-            <Text className="text-xl text-center pt-1">
-                {input.message}
-            </Text>
-            <Text className="text-right pt-2 pr-4">
-                {input.type}
-            </Text>
+        exiting={FadeOutRight.delay(input.counter * 40).duration(600)}>
+            <View className="">
+                {input.type === "WARNING" ?
+                    <Icon size={60} source={"alert-outline"} color={"#F00"} /> : <Icon size={50} source={"bell"}/>}
+            </View>
+            <View className={`font-bold text-xl ml-6 ${input.type ? 'text-red-700' : 'text-black'}`}>
+                <Text className="text-xl font-bold">
+                    {input.message}
+                </Text>
+            </View>
         </Animated.View>
     )
 }

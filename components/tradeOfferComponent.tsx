@@ -47,12 +47,12 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
     useEffect(() => {
         getIncomingItemData()
         getOfferedItemData()
-    }, []);
+    }, [axios]);
 
     return (
         <View className="h-20 border-b-2 border-amber-400">
             <Pressable onPress={()=> setVisible(!visible)}>
-                {!type ?
+                {type ?
                 <View>
                     <Text className="text-xl">
                         Your {offeredItemData?.title} has a pending trade for {incomingItemData?.title}!
