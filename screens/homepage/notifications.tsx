@@ -44,7 +44,7 @@ const Notifications = () => {
         <View className="bg-white items-center h-full- w-full flex-1 p-2 pt-16">
             <StatusBar style="auto"/>
             <ScrollView className="w-full">
-                    <Animated.View className=" items-center pb-6" entering={FadeInUp.delay(400).duration(600).springify()}>
+                    <Animated.View className=" items-center pb-6" entering={FadeInUp.delay(100).duration(600).springify()}>
                         <TouchableOpacity className="w-full bg-amber-300 p-3 rounded-2xl" onPress={deleteNotifications}>
                             <Text className="text-xl font-bold text-white text-center">Delete notifications</Text>
                         </TouchableOpacity>

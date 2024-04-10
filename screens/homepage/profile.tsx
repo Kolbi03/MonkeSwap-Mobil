@@ -8,7 +8,7 @@ import {
     StyleSheet,
     Text,
     TextInput,
-    ToastAndroid,
+    ToastAndroid, TouchableOpacity,
     View
 } from "react-native";
 import React, {useContext, useEffect, useState} from "react";
@@ -22,6 +22,7 @@ import ItemCard from "../../components/itemCard";
 import SelectDropdown from "react-native-select-dropdown";
 import {HttpContext} from "../../provider/httpProvider";
 import {StatusBar} from "expo-status-bar";
+import Animated, {FadeIn, FadeInUp} from "react-native-reanimated";
 
 const styles = Styles;
 
@@ -171,22 +172,36 @@ const Profile = () => {
             .catch((e) => console.log(e))
     }
 
+    function profilePicChange() {
+
+    }
+
     return (
         <View className="bg-white h-full- w-full flex-1 pt-12">
             <StatusBar style="auto"/>
             <ScrollView>
-                <View style={{height: height * 0.3}}>
-                    <Text style={{fontSize: 22, alignSelf: "center", marginTop: 10}}>{userData?.username}</Text>
-                    <Image source={require('../../assets/monke.jpg')} style={{alignSelf: "center", height: height * 0.14, width: width * 0.28, margin: width * 0.02, borderRadius: 100}}/>
-                    <View style={{flex: 1, flexDirection: "row", alignSelf: "center"}}>
-                        <Pressable onPress={() => setVisible(true)}>
-                            <Text style={styles.pressButtonSmall}>Edit profile</Text>
+                <Animated.View entering={FadeIn.duration(600)} className="h-72 items-center m-4 rounded-2xl">
+                    <Animated.View className="h-16 mt-4" entering={FadeInUp.delay(100).duration(600).springify()}>
+                        <Text className="text-4xl font-bold align-middle">{userData?.username}</Text>
+                    </Animated.View>
+                    <Animated.View className="my-2" entering={FadeInUp.delay(200).duration(600).springify()}>
+                        <Pressable onPress={profilePicChange}>
+                            <Image source={require('../../assets/monke.jpg')} className="h-32 w-32 rounded-full"/>
                         </Pressable>
-                        <Pressable onPress={logout}>
-                            <Text style={styles.pressButtonSmall}>Logout</Text>
-                        </Pressable>
+                    </Animated.View>
+                    <View className="flex-row self-center space-x-1 mt-4">
+                        <Animated.View entering={FadeInUp.delay(300).duration(600).springify()}>
+                            <TouchableOpacity className="w-32 bg-amber-300 p-3 rounded-2xl" onPress={() => setVisible(true)}>
+                                <Text className="text-l text-white text-center">Edit profile</Text>
+                            </TouchableOpacity>
+                        </Animated.View >
+                        <Animated.View className="w-32 bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(250).duration(600).springify()}>
+                            <Pressable onPress={logout}>
+                                <Text className="text-l text-white text-center">Logout</Text>
+                            </Pressable>
+                        </Animated.View>
                     </View>
-                </View>
+                </Animated.View>
                 <View>
                     <Modal
                         animationType="slide"
