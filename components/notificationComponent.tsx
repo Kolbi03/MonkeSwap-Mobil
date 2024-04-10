@@ -1,7 +1,7 @@
 import {Text, View} from "react-native";
 import React from "react";
 import Animated, {FadeInLeft, FadeOutRight} from "react-native-reanimated";
-import {Icon, shadow} from "react-native-paper";
+import {Icon} from "react-native-paper";
 
 interface notificationDTO {
     id: string,
