@@ -258,17 +258,17 @@ const Profile = () => {
                                         </TouchableOpacity>
                                     </Animated.View>
 
+                                    <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(600).duration(600).springify()}>
+                                        <TouchableOpacity onPress={userDeleteHandler}>
+                                            <Text className="text-xl font-bold text-white text-center">Delete user</Text>
+                                        </TouchableOpacity>
+                                    </Animated.View>
+
                                     <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(550).duration(600).springify()}>
                                         <TouchableOpacity onPress={() => {
                                             setVisible(!visible)
                                         }}>
                                             <Text className="text-xl font-bold text-white text-center">Close</Text>
-                                        </TouchableOpacity>
-                                    </Animated.View>
-
-                                    <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(600).duration(600).springify()}>
-                                        <TouchableOpacity onPress={userDeleteHandler}>
-                                            <Text className="text-xl font-bold text-white text-center">Delete user</Text>
                                         </TouchableOpacity>
                                     </Animated.View>
 
