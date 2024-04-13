@@ -55,8 +55,8 @@ const Profile = () => {
     const {token} = useContext(AuthContext);
     const {logout} = useContext(AuthContext);
     const axios = useContext(HttpContext)
-    const [itemList, setItemList] = useState<itemDataDTO[]>();
 
+    const [itemList, setItemList] = useState<itemDataDTO[]>();
     const [userData, setUserData] = useState<userDataDTO>();
     const [fullName, setFullName] = useState(userData?.fullName)
     const [username, setUsername] = useState(userData?.username)
@@ -133,11 +133,16 @@ const Profile = () => {
         setEditModalVisible(!editModalVisible)
     }
 
-    const getUserData  = async () => {
-        await axios.get(baseUrl + '/user', config)
+    const getUserData  = () => {
+        axios.get(baseUrl + '/user', config)
             .then((response) => {
                 //console.log(response.data);
                 setUserData(response.data)
+                setDateOfBirth(userData!.dateOfBirth)
+                setUsername(userData?.username)
+                setFullName(userData?.fullName)
+                setPhoneNumber(userData?.phoneNumber)
+
             })
             .catch((e) => console.log(e))
     }
@@ -153,14 +158,16 @@ const Profile = () => {
 
     useEffect(() => {
         loadCards();
-        getUserData().then();
+        getUserData()
     }, []);
 
     function updateUser() {
         axios.put(baseUrl + '/user', updateUserData, config)
-            .then(() =>
-                ToastAndroid.showWithGravity('Profile data updated!', 2000, ToastAndroid.CENTER))
-            .catch((e) => console.log(e))
+            .then(() => {
+                ToastAndroid.showWithGravity('Profile data updated!', 2000, ToastAndroid.CENTER)
+                getUserData()
+            })
+            .catch((e) => console.log(e.response.data))
         //console.log(updateUserData)
     }
 
@@ -231,7 +238,7 @@ const Profile = () => {
 
                                     <View className="flex-row space-x-2 content-center w-full">
                                         <Animated.View className="w-10/12 bg-black/5 rounded-2xl p-5 h-14 justify-start" entering={FadeInUp.delay(350).duration(600).springify()}>
-                                            <TextInput placeholder={'Date of birth'} editable={false} defaultValue={userData?.dateOfBirth.toString()} onChangeText={text => setFullName(text)} placeholderTextColor={'gray'}/>
+                                            <TextInput placeholder={'Date of birth'} editable={false} defaultValue={`${userData?.dateOfBirth === null ? "Date of birth" : userData?.dateOfBirth.toString()}`} placeholderTextColor={'gray'}/>
                                         </Animated.View>
                                         <Animated.View className="h-full bg-amber-300 p-3 rounded-2xl flex self-end align-middle" entering={FadeInUp.delay(400).duration(600).springify()}>
                                             <TouchableOpacity onPress={() => setOpen(!open)}>
@@ -258,13 +265,13 @@ const Profile = () => {
                                         </TouchableOpacity>
                                     </Animated.View>
 
-                                    <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(600).duration(600).springify()}>
+                                    <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(550).duration(600).springify()}>
                                         <TouchableOpacity onPress={userDeleteHandler}>
                                             <Text className="text-xl font-bold text-white text-center">Delete user</Text>
                                         </TouchableOpacity>
                                     </Animated.View>
 
-                                    <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(550).duration(600).springify()}>
+                                    <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(600).duration(600).springify()}>
                                         <TouchableOpacity onPress={() => {
                                             setVisible(!visible)
                                         }}>

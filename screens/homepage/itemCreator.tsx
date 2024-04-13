@@ -15,11 +15,11 @@ import SelectDropdown from 'react-native-select-dropdown'
 import Styles from "../../Stylesheet";
 import { Provider, Text} from 'react-native-paper';
 import {baseURL} from "../../backendURL";
-import axios from "axios";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {AuthContext} from "../../contexts/authContext";
 import Animated, {FadeIn, FadeInUp} from "react-native-reanimated";
 import * as ImagePicker from 'expo-image-picker';
+import httpProvider, {HttpContext} from "../../provider/httpProvider";
 
 const baseUrl = baseURL;
 
@@ -33,24 +33,25 @@ const ItemCreator = ({ navigation }) => {
     const styles = Styles;
 
     const {token} = useContext(AuthContext);
+    const axios = useContext(HttpContext)
 
     const [visible, setVisible] = useState(false);
-    const [name, setName] = useState('');
+    const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [image, setImage] = useState<string>();
+    const [image, setImage] = useState<Blob>();
     const [category, setCategory] = useState('');
     const [price, setPrice] = useState('');
 
     interface newItemDataDTO {
         title: string,
-        itemPicture: string | undefined,
+        itemPicture: Blob | undefined,
         description: string,
         category: string,
         priceTier: string,
     }
 
     const data: newItemDataDTO = {
-        title: name,
+        title: title,
         itemPicture: image,
         description: description,
         category: category,
@@ -67,6 +68,7 @@ const ItemCreator = ({ navigation }) => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
+            base64: true,
             aspect: [1, 1],
             quality: 1,
         });
@@ -74,9 +76,32 @@ const ItemCreator = ({ navigation }) => {
         console.log(result);
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);
+            const uri = result.assets[0].uri;
+            const response = await fetch(uri);
+            const blob = await response.blob();
+            setImage(blob)
+            console.log(image)
         }
     };
+
+    function handleSubmitEvent() {
+        console.log('Pressed')
+        const formData = new FormData();
+        formData.append('title', title);
+        if (image) {
+            formData.append('itemPicture', image);
+        }
+        formData.append('description', description);
+        formData.append('category', category as string);
+        formData.append('priceTier', price.toString());
+
+        axios.post('/item', formData)
+            .then(() => {
+                ToastAndroid.showWithGravity('Item created!', 2000, 1)
+            }).catch((e) => {
+                console.log(e)
+            });
+    }
 
 
         return(
@@ -86,13 +111,14 @@ const ItemCreator = ({ navigation }) => {
 
                 <View className="space-y-4">
 
+
                     <Animated.View className="items-center pb-8" entering={FadeIn.delay(100).duration(800)}>
                         <Text className="text-black font-bold text-4xl tracking-wider">Item Creation</Text>
                         <Text className="text-gray-500 font-bold text-xl tracking-wider">You can upload your items here</Text>
                     </Animated.View>
 
                     <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(200).duration(600).springify()}>
-                        <TextInput placeholder='Title' placeholderTextColor={'gray'} onChangeText={(text) => setName(text)}/>
+                        <TextInput placeholder='Title' placeholderTextColor={'gray'} onChangeText={(text) => setTitle(text)}/>
                     </Animated.View>
 
                     <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(300).duration(600).springify()}>
@@ -103,8 +129,8 @@ const ItemCreator = ({ navigation }) => {
                         <TouchableOpacity className="w-full bg-amber-300 p-3 rounded-2xl" onPress={pickImage}>
                             <Text className="text-xl font-bold text-white text-center">Select image</Text>
                         </TouchableOpacity>
-                        {image ?
-                        <Image source={{uri: image}} style={localStyles.categoryImage}></Image> : <></>}
+                        {/*{image ?
+                        <Image source={image.} style={localStyles.categoryImage}></Image> : <></>}*/}
                     </Animated.View>
 
                     <Animated.View className="w-full items-center" entering={FadeInUp.delay(500).duration(600).springify()}>
@@ -188,12 +214,7 @@ const ItemCreator = ({ navigation }) => {
 
             <View className="space-y-4">
                 <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(800).duration(600).springify()}>
-                    <TouchableOpacity onPress={() => {
-                        axios.post(baseUrl + '/item', data, config)
-                            .then(() =>
-                            ToastAndroid.showWithGravity('Item created!', 2000, ToastAndroid.CENTER))
-                            .catch(error => console.log(error))
-                    }}>
+                    <TouchableOpacity onPress={handleSubmitEvent}>
                         <Text className="text-xl font-bold text-white text-center">Create</Text>
                     </TouchableOpacity>
                 </Animated.View>
