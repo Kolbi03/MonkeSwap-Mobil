@@ -14,14 +14,11 @@ import {StatusBar} from "expo-status-bar";
 import SelectDropdown from 'react-native-select-dropdown'
 import Styles from "../../Stylesheet";
 import { Provider, Text} from 'react-native-paper';
-import {baseURL} from "../../backendURL";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {AuthContext} from "../../contexts/authContext";
 import Animated, {FadeIn, FadeInUp} from "react-native-reanimated";
 import * as ImagePicker from 'expo-image-picker';
-import httpProvider, {HttpContext} from "../../provider/httpProvider";
-
-const baseUrl = baseURL;
+import {HttpContext} from "../../provider/httpProvider";
 
 const categories = ["OTHER", "VEHICLE", "HOME", "HOUSEHOLD", "ELECTRONICS", "FREETIME", "SPORT", "FASHION", "COLLECTIBLES", "PETS" ]
 
@@ -56,12 +53,6 @@ const ItemCreator = ({ navigation }) => {
         description: description,
         category: category,
         priceTier: price,
-    }
-
-    const config = {
-        headers: {
-            Authorization: 'Bearer ' + token?.token
-        }
     }
 
     const pickImage = async () => {
