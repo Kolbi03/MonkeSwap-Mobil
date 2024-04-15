@@ -1,5 +1,5 @@
 interface TradeOfferDTO {
-    id: string,
+    id: number,
     offeredItem: string,
     incomingItem: string,
     comment: string,

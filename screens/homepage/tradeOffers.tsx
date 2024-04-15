@@ -64,10 +64,12 @@ const TradeOffers = () => {
             </Pressable>
                 <ScrollView className="h-full w-full">
                     {tradeOfferType ?
-                        offeredOffers?.map((item, i) =>
+                        offeredOffers?.sort((itemA, itemB) => itemB.id - itemA.id)
+                            .map((item, i) =>
                             <TradeOfferComponent key={i} counter={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
                                                 comment={item.comment} type={tradeOfferType}/>) :
-                        incomingOffers?.map((item, i) =>
+                        incomingOffers?.sort((itemA, itemB) => itemB.id - itemA.id)
+                            .map((item, i) =>
                             <TradeOfferComponent key={i} counter={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
                                                  comment={item.comment} type={tradeOfferType}/>)
                     }
