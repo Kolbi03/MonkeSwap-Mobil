@@ -47,11 +47,11 @@ const RegisterScreen = ({ navigation }) => {
                 </Animated.View>
 
                 <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(200).duration(600)}>
-                    <TextInput placeholder='Password' secureTextEntry={true} onChangeText={password => setPassword(password)} placeholderTextColor={'gray'}/>
+                    <TextInput placeholder='Password' autoCapitalize="none" secureTextEntry={true} onChangeText={password => setPassword(password)} placeholderTextColor={'gray'}/>
                 </Animated.View>
 
                 <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(300).duration(600)}>
-                    <TextInput placeholder='Confirm Password' secureTextEntry={true} onChangeText={password => setConPassword(password)} placeholderTextColor={'gray'}/>
+                    <TextInput placeholder='Confirm Password' autoCapitalize="none" secureTextEntry={true} onChangeText={password => setConPassword(password)} placeholderTextColor={'gray'}/>
                 </Animated.View>
 
                 <Animated.Text className="pt-4 pb-2 text-center" entering={FadeInUp.delay(400).duration(600)}>When you create you account you accept the EULA and Privacy Policy</Animated.Text>

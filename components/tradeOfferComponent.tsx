@@ -62,7 +62,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
                                entering={FadeInLeft.delay(item.counter *  50).duration(600).springify()}>
                         <View className="w-2/12">
                             <View className="content-center">
-                                    <Icon size={60} source={"alert-outline"} color={"#F00"} />
+                                    <Icon size={60} source={"arrow-down"} color={"#080"} />
                             </View>
                         </View>
                         <View className={`ml-6 ${item.type ? 'text-red-700' : 'text-black'}`}>
@@ -80,7 +80,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
                                    entering={FadeInLeft.delay(item.counter *  50).duration(600).springify()}>
                         <View className="w-2/12">
                             <View className="content-center">
-                                    <Icon size={60} source={"alert-outline"} color={"#F00"} />
+                                    <Icon size={60} source={"arrow-up"} color={"#080"} />
                             </View>
                         </View>
                         <View className={'ml-6'}>
