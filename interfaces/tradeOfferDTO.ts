@@ -3,6 +3,7 @@ interface TradeOfferDTO {
     offeredItem: string,
     incomingItem: string,
     comment: string,
+    counter: number,
     type: boolean |undefined,
 }
 

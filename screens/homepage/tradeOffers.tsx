@@ -11,7 +11,7 @@ const TradeOffers = () => {
     const axios = useContext(HttpContext)
 
     const [visible, setVisible] = useState(true);
-    const [tradeOfferType, setTradeOfferType] = useState<boolean>()
+    const [tradeOfferType, setTradeOfferType] = useState<boolean>(true)
     const [incomingOffers, setIncomingOffers] = useState<TradeOfferDTO[]>()
     const [offeredOffers, setOfferedOffers] = useState<TradeOfferDTO[]>()
 
@@ -34,36 +34,43 @@ const TradeOffers = () => {
     }
 
     function incomingOffersButton() {
-        setTradeOfferType(false)
         getIncoming()
+        setTradeOfferType(false)
         setVisible(!visible)
+        console.log(tradeOfferType)
+        console.log(incomingOffers)
     }
 
     function sentOffersButton() {
-        setTradeOfferType(true)
         getOffered()
+        setTradeOfferType(true)
         setVisible(!visible)
-
+        console.log(tradeOfferType)
+        console.log(offeredOffers)
     }
 
     useEffect(() => {
         setVisible(true)
+        getOffered()
+        getIncoming()
     }, [axios]);
 
 
     return (
-        <View className="backdrop:bg-white w-full h-full flex-1 items-center pt-16">
+        <View className="bg-white items-center h-full- w-full flex-1 p-2 pt-16">
             <StatusBar style="auto"/>
             <Pressable onPress={() => setVisible(!visible)}>
                 <Text style={Styles.pressButton}>Open</Text>
             </Pressable>
-                <ScrollView>
-                    {   tradeOfferType ? offeredOffers?.map((item, i) =>
-                            <TradeOfferComponent key={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
+                <ScrollView className="h-full w-full">
+                    {tradeOfferType ?
+                        offeredOffers?.map((item, i) =>
+                            <TradeOfferComponent key={i} counter={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
                                                 comment={item.comment} type={tradeOfferType}/>) :
                         incomingOffers?.map((item, i) =>
-                            <TradeOfferComponent key={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
-                                                 comment={item.comment} type={tradeOfferType}/>)}
+                            <TradeOfferComponent key={i} counter={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
+                                                 comment={item.comment} type={tradeOfferType}/>)
+                    }
                 </ScrollView>
                 <Modal
                     animationType="slide"
@@ -73,10 +80,10 @@ const TradeOffers = () => {
                         ToastAndroid.showWithGravity('You must choose the type of offers!', 2000, 1)
                     }}>
                         <View style={{height: "30%", backgroundColor: "#FFF", marginTop: "auto", borderRadius: 20}}>
-                            <Pressable onPress={incomingOffersButton}>
+                            <Pressable onPress={sentOffersButton}>
                                 <Text style={Styles.pressButton}>Sent Offers</Text>
                             </Pressable>
-                            <Pressable onPress={sentOffersButton}>
+                            <Pressable onPress={incomingOffersButton}>
                                 <Text style={Styles.pressButton}>Incoming Offers</Text>
                             </Pressable>
                         </View>

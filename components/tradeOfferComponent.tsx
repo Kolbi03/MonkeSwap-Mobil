@@ -4,6 +4,8 @@ import React, {useContext, useEffect, useState} from "react";
 import {HttpContext} from "../provider/httpProvider";
 import itemDataDTO from "../interfaces/itemDataDTO";
 import Styles from "../Stylesheet";
+import Animated, {FadeInLeft} from "react-native-reanimated";
+import {Icon} from "react-native-paper";
 
 const TradeOfferComponent = (item: TradeOfferDTO) => {
 
@@ -12,7 +14,6 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
     const [incomingItemData, setIncomingItemData] = useState<itemDataDTO>()
     const [offeredItemData, setOfferedItemData] = useState<itemDataDTO>()
     const [visible, setVisible] = useState<boolean>(false)
-    const [type] = useState(item.type)
 
     function getIncomingItemData() {
         axios.get('/item/' + item.incomingItem)
@@ -21,6 +22,10 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
                 //console.log(incomingItemData)
             })
             .catch((e) => console.log(e))
+    }
+
+    function onClickType() {
+        setVisible(!visible)
     }
 
     function getOfferedItemData() {
@@ -50,50 +55,72 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
     }, [axios]);
 
     return (
-        <View className="h-20 border-b-2 border-amber-400">
-            <Pressable onPress={()=> setVisible(!visible)}>
-                {type ?
-                <View>
-                    <Text className="text-xl">
-                        Your {offeredItemData?.title} has a pending trade for {incomingItemData?.title}!
-                    </Text>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        //presentationStyle={"overFullScreen"}
-                        visible={visible}
-                        onRequestClose={() => setVisible(!visible)}>
-                        <ScrollView style={{backgroundColor: "#FFF", borderRadius: 0, flex: 1}}>
-                            <Image style={{width: "70%", borderRadius: 10}} source={require('../assets/placeholderMonkeicon.jpg')} />
-                            <Text className="text-xl"> Name: {incomingItemData?.title}</Text>
-                            <Text className="text-xl"> Description: {incomingItemData?.description}</Text>
-                            <Text className="text-xl"> Category: {incomingItemData?.category}</Text>
-                            <Text className="text-xl"> Price Tier: {incomingItemData?.priceTier}</Text>
+        <View className="h-34 w-full px-2">
+            {item.type ?
+            <Pressable onPress={()=> onClickType()}>
+                <Animated.View className={` rounded-2xl p-4 mx-0.5 my-1.5 flex-row justify-start items-center h-24 bg-gray-300`}
+                               entering={FadeInLeft.delay(item.counter *  50).duration(600).springify()}>
+                        <View className="w-2/12">
+                            <View className="content-center">
+                                    <Icon size={60} source={"alert-outline"} color={"#F00"} />
+                            </View>
+                        </View>
+                        <View className={`ml-6 ${item.type ? 'text-red-700' : 'text-black'}`}>
+                            <Text className={'text-lg font-bold text-justify'}>
+                                Your {incomingItemData?.title} has an offer for a {offeredItemData?.title}
+                            </Text>
+                        </View>
+                    </Animated.View>
 
-                            <Image style={{width: "70%", borderRadius: 10}} source={require('../assets/placeholderMonkeicon.jpg')} />
-                            <Text className="text-xl"> Name: {offeredItemData?.title}</Text>
-                            <Text className="text-xl"> Description: {offeredItemData?.description}</Text>
-                            <Text className="text-xl"> Category: {offeredItemData?.category}</Text>
-                            <Text className="text-xl"> Price Tier: {offeredItemData?.priceTier}</Text>
+                </Pressable>
 
-
-                            <Pressable onPress={acceptOffer}>
-                                <Text style={Styles.pressButton}>Accept Offer</Text>
-                            </Pressable>
-                            <Pressable onPress={declineOffer}>
-                                <Text style={Styles.pressButton}>Decline Offer</Text>
-                            </Pressable>
-                        </ScrollView>
-                    </Modal>
-                </View>
                     :
-                    <View>
-                        <Text className={"text-xl"}>
-                            You have offered a {incomingItemData?.title} for a {offeredItemData?.title}!
-                        </Text>
-                    </View>
-                }
-            </Pressable>
+                <Pressable onPress={()=> onClickType()}>
+                    <Animated.View className='rounded-2xl p-4 mx-0.5 my-1.5 flex-row justify-start items-center h-32 backdrop:bg-gray-300'
+                                   entering={FadeInLeft.delay(item.counter *  50).duration(600).springify()}>
+                        <View className="w-2/12">
+                            <View className="content-center">
+                                    <Icon size={60} source={"alert-outline"} color={"#F00"} />
+                            </View>
+                        </View>
+                        <View className={'ml-6'}>
+                            <Text className={`text-lg font-bold text-justify ${item.type ? "text-red-700" : "text-black"}`}>
+                                You offered a {offeredItemData?.title} for a {incomingItemData?.title}
+                            </Text>
+                        </View>
+                    </Animated.View>
+
+                </Pressable>
+            }
+
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    //presentationStyle={"overFullScreen"}
+                    visible={visible}
+                    onRequestClose={() => setVisible(!visible)}>
+                    <ScrollView style={{backgroundColor: "#FFF", borderRadius: 0, flex: 1}}>
+                        <Image style={{width: "70%", borderRadius: 10}} source={require('../assets/placeholderMonkeicon.jpg')} />
+                        <Text className="text-xl"> Name: {incomingItemData?.title}</Text>
+                        <Text className="text-xl"> Description: {incomingItemData?.description}</Text>
+                        <Text className="text-xl"> Category: {incomingItemData?.category}</Text>
+                        <Text className="text-xl"> Price Tier: {incomingItemData?.priceTier}</Text>
+
+                        <Image style={{width: "70%", borderRadius: 10}} source={require('../assets/placeholderMonkeicon.jpg')} />
+                        <Text className="text-xl"> Name: {offeredItemData?.title}</Text>
+                        <Text className="text-xl"> Description: {offeredItemData?.description}</Text>
+                        <Text className="text-xl"> Category: {offeredItemData?.category}</Text>
+                        <Text className="text-xl"> Price Tier: {offeredItemData?.priceTier}</Text>
+
+
+                        <Pressable onPress={acceptOffer}>
+                            <Text style={Styles.pressButton}>Accept Offer</Text>
+                        </Pressable>
+                        <Pressable onPress={declineOffer}>
+                            <Text style={Styles.pressButton}>Decline Offer</Text>
+                        </Pressable>
+                    </ScrollView>
+                </Modal>
         </View>
     )
 }
