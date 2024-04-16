@@ -1,6 +1,6 @@
 import {Text, View} from "react-native";
 import React from "react";
-import Animated, {FadeInLeft, FadeOutRight} from "react-native-reanimated";
+import Animated, {FadeInLeft} from "react-native-reanimated";
 import {Icon} from "react-native-paper";
 
 interface notificationDTO {
@@ -14,8 +14,7 @@ const NotificationComponent = (input: notificationDTO) => {
     return (
         <Animated.View className={` rounded-2xl p-4 mx-0.5 my-1.5 flex-row justify-start items-center h-24
                     ${input.type === 'WARNING' ? 'bg-red-300' : 'bg-gray-300'}`}
-                       entering={FadeInLeft.delay(input.counter *  50).duration(600).springify()}
-        exiting={FadeOutRight.delay(input.counter * 40).duration(600)}>
+                       entering={FadeInLeft.delay(input.counter *  50).duration(600).springify()}>
             <View className="w-2/12">
                 <View className="content-center">
                     {input.type === "WARNING" ?

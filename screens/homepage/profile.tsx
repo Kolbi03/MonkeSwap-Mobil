@@ -238,7 +238,9 @@ const Profile = () => {
 
                                     <View className="flex-row space-x-2 content-center w-full">
                                         <Animated.View className="w-10/12 bg-black/5 rounded-2xl p-5 h-14 justify-start" entering={FadeInUp.delay(350).duration(600).springify()}>
+
                                             <TextInput placeholder={'Date of birth'} editable={false} defaultValue={`${userData?.dateOfBirth === null ? "Date of birth" : userData?.dateOfBirth.toString()}`} placeholderTextColor={'gray'}/>
+
                                         </Animated.View>
                                         <Animated.View className="h-full bg-amber-300 p-3 rounded-2xl flex self-end align-middle" entering={FadeInUp.delay(400).duration(600).springify()}>
                                             <TouchableOpacity onPress={() => setOpen(!open)}>
@@ -272,6 +274,7 @@ const Profile = () => {
                                     </Animated.View>
 
                                     <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(600).duration(600).springify()}>
+
                                         <TouchableOpacity onPress={() => {
                                             setVisible(!visible)
                                         }}>

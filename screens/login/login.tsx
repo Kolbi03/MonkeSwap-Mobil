@@ -34,7 +34,7 @@ const LoginScreen = ({ navigation }) => {
                     </Animated.View>
 
                         <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(300).duration(600).springify()}>
-                            <TextInput placeholder='Password' secureTextEntry={true} onChangeText={password => setPassword(password)} placeholderTextColor={'gray'}/>
+                            <TextInput placeholder='Password' autoCapitalize="none" secureTextEntry={true} onChangeText={password => setPassword(password)} placeholderTextColor={'gray'}/>
                         </Animated.View>
 
                     <Animated.View className="w-full pt-6" entering={FadeInUp.delay(400).duration(600).springify()}>
