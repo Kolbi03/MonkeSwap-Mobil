@@ -18,7 +18,7 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {AuthContext} from "../../contexts/authContext";
 import Animated, {FadeIn, FadeInUp} from "react-native-reanimated";
 import * as ImagePicker from 'expo-image-picker';
-import {HttpContext} from "../../provider/httpProvider";
+import axios from "../../axios";
 
 const categories = ["OTHER", "VEHICLE", "HOME", "HOUSEHOLD", "ELECTRONICS", "FREETIME", "SPORT", "FASHION", "COLLECTIBLES", "PETS" ]
 
@@ -30,18 +30,18 @@ const ItemCreator = ({ navigation }) => {
     const styles = Styles;
 
     const {token} = useContext(AuthContext);
-    const axios = useContext(HttpContext)
 
     const [visible, setVisible] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [image, setImage] = useState<Blob>();
+    const [image, setImage] = useState<string | null |undefined>('');
     const [category, setCategory] = useState('');
     const [price, setPrice] = useState('');
+    const [base64Icon, setBase64Icon] = useState('');
 
     interface newItemDataDTO {
         title: string,
-        itemPicture: Blob | undefined,
+        itemPicture: string | undefined | null,
         description: string,
         category: string,
         priceTier: string,
@@ -57,36 +57,49 @@ const ItemCreator = ({ navigation }) => {
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             base64: true,
             aspect: [1, 1],
             quality: 1,
         });
 
-        console.log(result);
+        if(result.canceled) {console.log('cancelled')} else {
+            setImage(result.assets![0].base64)
+            setBase64Icon(result.assets![0].base64 as string)
+            console.log(base64Icon)
+        console.log(image)
+        }
 
-        if (!result.canceled) {
+        /*if (!result.canceled) {
             const uri = result.assets[0].uri;
             const response = await fetch(uri);
             const blob = await response.blob();
             setImage(blob)
             console.log(image)
-        }
+        }*/
     };
 
+
     function handleSubmitEvent() {
-        console.log('Pressed')
+
         const formData = new FormData();
         formData.append('title', title);
-        if (image) {
-            formData.append('itemPicture', image);
-        }
+        formData.append('itemPicture', image as string);
         formData.append('description', description);
         formData.append('category', category as string);
         formData.append('priceTier', price.toString());
 
-        axios.post('/item', formData)
+        console.log(formData)
+
+        axios.post('/item', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: 'Bearer ' + token?.token
+            },
+            transformRequest: (data, headers) => {
+                return formData;
+            }},)
             .then(() => {
                 ToastAndroid.showWithGravity('Item created!', 2000, 1)
             }).catch((e) => {
@@ -103,10 +116,14 @@ const ItemCreator = ({ navigation }) => {
                 <View className="space-y-4">
 
 
-                    <Animated.View className="items-center pb-8" entering={FadeIn.delay(100).duration(800)}>
+                    <Animated.View className="items-center pb-4" entering={FadeIn.delay(100).duration(800)}>
                         <Text className="text-black font-bold text-4xl tracking-wider">Item Creation</Text>
                         <Text className="text-gray-500 font-bold text-xl tracking-wider">You can upload your items here</Text>
                     </Animated.View>
+
+                    <Pressable onPress={pickImage}>
+                        <Image style={{width: 150, height: 150}} className="self-center rounded-xl" source={{uri: "data:image/png;base64," + base64Icon}}/>
+                    </Pressable>
 
                     <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(200).duration(600).springify()}>
                         <TextInput placeholder='Title' placeholderTextColor={'gray'} onChangeText={(text) => setTitle(text)}/>
@@ -116,14 +133,13 @@ const ItemCreator = ({ navigation }) => {
                         <TextInput placeholder='Description' placeholderTextColor={'gray'} onChangeText={(text) => setDescription(text)}/>
                     </Animated.View>
 
-                    <Animated.View className="w-full items-center" entering={FadeInUp.delay(400).duration(600).springify()}>
+                    {/*<Animated.View className="w-full items-center" entering={FadeInUp.delay(400).duration(600).springify()}>
                         <TouchableOpacity className="w-full bg-amber-300 p-3 rounded-2xl" onPress={pickImage}>
                             <Text className="text-xl font-bold text-white text-center">Select image</Text>
                         </TouchableOpacity>
-                        {/*{image ?
-                        <Image source={image.} style={localStyles.categoryImage}></Image> : <></>}*/}
-                    </Animated.View>
-
+                        {image ?
+                        <Image source={image.} style={localStyles.categoryImage}></Image> : <></>}
+                    </Animated.View>*/}
                     <Animated.View className="w-full items-center" entering={FadeInUp.delay(500).duration(600).springify()}>
                         <SelectDropdown buttonStyle={{borderRadius: 14, backgroundColor: 'rgb(252 211 77)'}} buttonTextStyle={{color: "#FFF", fontWeight: "bold"}} defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories} onSelect={(selectedItem) => {
                             setCategory(selectedItem);
@@ -210,13 +226,6 @@ const ItemCreator = ({ navigation }) => {
                     </TouchableOpacity>
                 </Animated.View>
 
-                <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(900).duration(600).springify()}>
-                    <TouchableOpacity onPress={() => {
-                        navigation.navigate('Homepage')
-                    }}>
-                        <Text className="text-xl font-bold text-white text-center">Back to homepage</Text>
-                    </TouchableOpacity>
-                </Animated.View>
             </View>
             </KeyboardAwareScrollView>
 

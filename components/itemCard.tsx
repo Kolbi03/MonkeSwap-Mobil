@@ -1,9 +1,10 @@
 import {Card} from "react-native-paper";
-import {Pressable, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {Image, Pressable, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import React, {useState} from "react";
 import Styles from '../Stylesheet';
 import itemDataDTO from "../interfaces/itemDataDTO";
-import Animated, {FadeIn, FadeInUp} from "react-native-reanimated";
+import Animated, {FadeIn} from "react-native-reanimated";
+import {Buffer} from "buffer";
 
 const styles = Styles;
 
@@ -11,12 +12,15 @@ function ItemCard(item: itemDataDTO) {
 
     const [pressed, setPressed] = useState(true);
 
+    const image = Buffer.from(item.itemPicture, 'base64').toString('ascii')
+
+
     return (
         <Card onPress={() => setPressed(!pressed)} mode={"elevated"} style={styles.card}>
             {pressed ?
                 <Animated.View entering={FadeIn.duration(250)}>
                     <Card.Title className="text-l font-bold" title={item.title}/>
-                    <Card.Cover source={require('../assets/placeholderMonkeicon.jpg')}/>
+                    <Card.Cover source={{uri: "data:image/png;base64," + image}}/>
                     <Card.Content>
                             <Text>{item.priceTier}</Text>
                     </Card.Content>
