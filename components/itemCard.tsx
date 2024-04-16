@@ -1,5 +1,5 @@
 import {Card} from "react-native-paper";
-import {Image, Pressable, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {ScrollView, Text, TouchableOpacity, View} from "react-native";
 import React, {useState} from "react";
 import Styles from '../Stylesheet';
 import itemDataDTO from "../interfaces/itemDataDTO";

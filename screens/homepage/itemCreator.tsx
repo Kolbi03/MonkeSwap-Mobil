@@ -13,7 +13,7 @@ import {
 import {StatusBar} from "expo-status-bar";
 import SelectDropdown from 'react-native-select-dropdown'
 import Styles from "../../Stylesheet";
-import { Provider, Text} from 'react-native-paper';
+import {Icon, Provider, Text} from 'react-native-paper';
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {AuthContext} from "../../contexts/authContext";
 import Animated, {FadeIn, FadeInUp} from "react-native-reanimated";
@@ -121,9 +121,16 @@ const ItemCreator = ({ navigation }) => {
                         <Text className="text-gray-500 font-bold text-xl tracking-wider">You can upload your items here</Text>
                     </Animated.View>
 
-                    <Pressable onPress={pickImage}>
-                        <Image style={{width: 150, height: 150}} className="self-center rounded-xl" source={{uri: "data:image/png;base64," + base64Icon}}/>
-                    </Pressable>
+                    <Animated.View className="backdrop:bg-gray-200 w-full h-40 justify-center rounded-2xl">
+                        <Pressable onPress={pickImage}>
+                            { image ? <Image style={{width: 150, height: 150}} className="self-center rounded-xl" source={{uri: "data:image/png;base64," + base64Icon}}/>
+                                :
+                                <View className="self-center">
+                                    <Icon size={100} source={"image"} color="#AAA"/>
+                                </View>
+                            }
+                        </Pressable>
+                    </Animated.View>
 
                     <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(200).duration(600).springify()}>
                         <TextInput placeholder='Title' placeholderTextColor={'gray'} onChangeText={(text) => setTitle(text)}/>
