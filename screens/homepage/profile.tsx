@@ -55,8 +55,8 @@ const Profile = () => {
     const {token} = useContext(AuthContext);
     const {logout} = useContext(AuthContext);
     const axios = useContext(HttpContext)
-    const [itemList, setItemList] = useState<itemDataDTO[]>();
 
+    const [itemList, setItemList] = useState<itemDataDTO[]>();
     const [userData, setUserData] = useState<userDataDTO>();
     const [fullName, setFullName] = useState(userData?.fullName)
     const [username, setUsername] = useState(userData?.username)
@@ -133,11 +133,16 @@ const Profile = () => {
         setEditModalVisible(!editModalVisible)
     }
 
-    const getUserData  = async () => {
-        await axios.get(baseUrl + '/user', config)
+    const getUserData  = () => {
+        axios.get(baseUrl + '/user', config)
             .then((response) => {
                 //console.log(response.data);
                 setUserData(response.data)
+                setDateOfBirth(userData!.dateOfBirth)
+                setUsername(userData?.username)
+                setFullName(userData?.fullName)
+                setPhoneNumber(userData?.phoneNumber)
+
             })
             .catch((e) => console.log(e))
     }
@@ -153,14 +158,16 @@ const Profile = () => {
 
     useEffect(() => {
         loadCards();
-        getUserData().then();
+        getUserData()
     }, []);
 
     function updateUser() {
         axios.put(baseUrl + '/user', updateUserData, config)
-            .then(() =>
-                ToastAndroid.showWithGravity('Profile data updated!', 2000, ToastAndroid.CENTER))
-            .catch((e) => console.log(e))
+            .then(() => {
+                ToastAndroid.showWithGravity('Profile data updated!', 2000, ToastAndroid.CENTER)
+                getUserData()
+            })
+            .catch((e) => console.log(e.response.data))
         //console.log(updateUserData)
     }
 
@@ -231,7 +238,9 @@ const Profile = () => {
 
                                     <View className="flex-row space-x-2 content-center w-full">
                                         <Animated.View className="w-10/12 bg-black/5 rounded-2xl p-5 h-14 justify-start" entering={FadeInUp.delay(350).duration(600).springify()}>
-                                            <TextInput placeholder={'Date of birth'} editable={false} defaultValue={userData?.dateOfBirth ? userData?.dateOfBirth.toString() : 'Date of birth' } onChangeText={text => setFullName(text)} placeholderTextColor={'gray'}/>
+
+                                            <TextInput placeholder={'Date of birth'} editable={false} defaultValue={`${userData?.dateOfBirth === null ? "Date of birth" : userData?.dateOfBirth.toString()}`} placeholderTextColor={'gray'}/>
+
                                         </Animated.View>
                                         <Animated.View className="h-full bg-amber-300 p-3 rounded-2xl flex self-end align-middle" entering={FadeInUp.delay(400).duration(600).springify()}>
                                             <TouchableOpacity onPress={() => setOpen(!open)}>
@@ -258,13 +267,14 @@ const Profile = () => {
                                         </TouchableOpacity>
                                     </Animated.View>
 
-                                    <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(600).duration(600).springify()}>
+                                    <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(550).duration(600).springify()}>
                                         <TouchableOpacity onPress={userDeleteHandler}>
                                             <Text className="text-xl font-bold text-white text-center">Delete user</Text>
                                         </TouchableOpacity>
                                     </Animated.View>
 
-                                    <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(650).duration(600).springify()}>
+                                    <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(600).duration(600).springify()}>
+
                                         <TouchableOpacity onPress={() => {
                                             setVisible(!visible)
                                         }}>
@@ -291,81 +301,102 @@ const Profile = () => {
 
                             <View>
                                 <KeyboardAwareScrollView>
-                                    <Text style={styles.header}>{selectedItem?.title}</Text>
+                                    <Text className="text-4xl text-center font-bold py-8">Edit item</Text>
 
-                                    <Text style={styles.text}>Title</Text>
+                                    <View className="space-y-4">
 
-                                    <View style={styles.textInput}>
-                                        <TextInput defaultValue={selectedItem?.title} onChangeText={text => setItemTitle(text)}/>
+                                        <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(200).duration(600).springify()}>
+                                            <TextInput placeholder={'Title'} defaultValue={selectedItem?.title} onChangeText={text => setItemTitle(text)} placeholderTextColor={'gray'}/>
+                                        </Animated.View>
+
+                                        <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(250).duration(600).springify()}>
+                                            <TextInput placeholder={'Description'} defaultValue={selectedItem?.description} onChangeText={text => setItemDescription(text)} placeholderTextColor={'gray'}/>
+                                        </Animated.View>
+
+                                        <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(300).duration(600).springify()}>
+                                            <TextInput placeholder={'picplaceholder'}/>
+                                        </Animated.View>
+
+                                        <Animated.View className="w-full items-center" entering={FadeInUp.delay(350).duration(600).springify()}>
+                                            <SelectDropdown buttonStyle={{borderRadius: 14, backgroundColor: 'rgb(252 211 77)'}} buttonTextStyle={{color: "#FFF", fontWeight: "bold"}} defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories} onSelect={(selectedItem) => {
+                                                setItemCategory(selectedItem);
+                                            }}/>
+                                        </Animated.View>
+
+                                        <View className="flex-row w-full">
+
+                                            <Animated.View entering={FadeInUp.delay(400).duration(600).springify()}>
+                                                <Pressable onPress={() => {
+                                                    setItemPriceTier('1')
+                                                }}>
+                                                    <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                                                </Pressable>
+                                            </Animated.View>
+
+                                            <Animated.View entering={FadeInUp.delay(440).duration(600).springify()}>
+                                                <Pressable onPress={() => {
+                                                    setItemPriceTier('2')
+                                                }}>
+                                                    <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                                                </Pressable>
+                                            </Animated.View>
+
+                                            <Animated.View entering={FadeInUp.delay(480).duration(600).springify()}>
+                                                <Pressable onPress={() => {
+                                                    setItemPriceTier('3')
+                                                }}>
+                                                    <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                                                </Pressable>
+                                            </Animated.View>
+
+                                            <Animated.View entering={FadeInUp.delay(520).duration(600).springify()}>
+                                                <Pressable onPress={() => {
+                                                    setItemPriceTier('4')
+                                                }}>
+                                                    <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                                                </Pressable>
+                                            </Animated.View>
+
+                                            <Animated.View entering={FadeInUp.delay(560).duration(600).springify()}>
+                                                <Pressable onPress={() => {
+                                                    setItemPriceTier('5')
+                                                }}>
+                                                    <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                                                </Pressable>
+                                            </Animated.View>
+                                        </View>
+
+                                        <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(600).duration(600).springify()}>
+                                            <TouchableOpacity onPress={() => {
+                                                editItem()
+                                            }}>
+                                                <Text className="text-xl font-bold text-white text-center">Save changes</Text>
+                                            </TouchableOpacity>
+                                        </Animated.View>
+
+                                        <Animated.View className="w-full bg-red-500 p-3 rounded-2xl" entering={FadeInUp.delay(650).duration(600).springify()}>
+                                            <TouchableOpacity onPress={() => {
+                                                deleteItem()
+                                            }}>
+                                                <Text className="text-xl font-bold text-white text-center">Delete item</Text>
+                                            </TouchableOpacity>
+                                        </Animated.View>
+
+                                        <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(700).duration(600).springify()}>
+                                            <TouchableOpacity onPress={() => {
+                                                setEditModalVisible(!editModalVisible)
+                                            }}>
+                                                <Text className="text-xl font-bold text-white text-center">Close</Text>
+                                            </TouchableOpacity>
+                                        </Animated.View>
                                     </View>
-
-                                    <Text style={styles.text}>Description</Text>
-
-                                    <View style={styles.textInput}>
-                                        <TextInput defaultValue={selectedItem?.description} onChangeText={text => setItemDescription(text)}/>
-                                    </View>
-
-                                    <Text style={styles.text}>Item Picture</Text>
-
-                                    <View style={styles.textInput}>
-                                        <TextInput defaultValue={'Picture picker placeholder'}/>
-                                    </View>
-
-                                    <Text style={styles.text}>Categories</Text>
-                                    <SelectDropdown defaultButtonText={selectedItem?.category} searchPlaceHolder={"Search"} data={categories} onSelect={(selectedCategory) => {
-                                        setItemCategory(selectedCategory);
-                                    }}/>
-
-                                    <View style={localStyles.priceCategoryContainer}>
-                                        <Pressable onPress={() => {
-                                            setItemPriceTier('1')
-                                        }}>
-                                            <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
-                                        </Pressable>
-
-                                        <Pressable onPress={() => {
-                                            setItemPriceTier('2')
-                                        }}>
-                                            <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
-                                        </Pressable>
-
-                                        <Pressable onPress={() => {
-                                            setItemPriceTier('3')
-                                        }}>
-                                            <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
-                                        </Pressable>
-
-                                        <Pressable onPress={() => {
-                                            setItemPriceTier('4')
-                                        }}>
-                                            <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
-                                        </Pressable>
-
-                                        <Pressable onPress={() => {
-                                            setItemPriceTier('5')
-                                        }}>
-                                            <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
-                                        </Pressable>
-                                    </View>
-
-                                    <Pressable onPress={editItem}>
-                                        <Text style={styles.pressButton}>Update Item</Text>
-                                    </Pressable>
-
-                                    <Pressable onPress={deleteItem}>
-                                        <Text style={styles.pressButton}>Delete Item</Text>
-                                    </Pressable>
-
-                                    <Pressable onPress={() => setEditModalVisible(!editModalVisible)}>
-                                        <Text style={styles.pressButton}>Close</Text>
-                                    </Pressable>
 
                                 </KeyboardAwareScrollView>
                             </View>
                         </View>
                     </Modal>
-                    <View style={{padding: 20, backgroundColor: '#FFF'}}>
-                        <View style={{flexDirection: "row", flexWrap: "wrap"}}>
+                    <View className="p-4">
+                        <View className="flex-row flex-wrap">
                             {itemList?.map((item, i) =>
 
                                 <ItemCard key={i} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
@@ -386,12 +417,4 @@ const localStyles = StyleSheet.create({
         margin: width * 0.02,
     },
 
-    priceCategoryContainer: {
-        flexDirection: "row",
-    },
-
-    infoImage: {
-        height: height * 0.04,
-        width: height * 0.08,
-    }
 })

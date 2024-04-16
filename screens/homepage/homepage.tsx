@@ -7,7 +7,7 @@ import ItemCard from "../../components/itemCard";
 import SelectDropdown from "react-native-select-dropdown";
 import {HttpContext} from "../../provider/httpProvider";
 import {StatusBar} from "expo-status-bar";
-import Animated from "react-native-reanimated";
+import Animated, {FadeInUp} from "react-native-reanimated";
 
 const Homepage = () => {
 
@@ -102,6 +102,7 @@ const Homepage = () => {
                 .catch((e) => console.log('Incoming item error:' + e))
             console.log('incoming item id: ' + item.id)
         }
+
     }
 
     const searchByCategory = (category: string) => {
@@ -151,20 +152,21 @@ const Homepage = () => {
                         visible={visible}
                         onShow={loadOwnCards}
                         onRequestClose={cardFlipHandler}>
-                        <View className="flex-1 backdrop:bg-white px-4 items-center">
-                            <ScrollView>
-
-                                <View className="flex-col w-full">
-                                    <Image className="rounded-xl w-full" source={require('../../assets/placeholderMonkeicon.jpg')} />
-                                    <Text className="text-xl p-1">Title: {incomingItem?.title}</Text>
-                                    <Text className="text-xl p-1">Category: {incomingItem?.category}</Text>
-                                    <Text className="text-xl p-1">Price Tier: {incomingItem?.priceTier}</Text>
-                                    <Text className="text-xl p-1">Description: {incomingItem?.description}</Text>
+                        <View className="flex-1 backdrop:bg-white px-2 items-center w-full">
+                            <ScrollView className="w-full">
+                                <View className="pb-8">
+                                    <Animated.Text className="text-4xl font-bold text-center py-6 pt-12">{incomingItem?.title}</Animated.Text>
+                                    <Image className="rounded-xl w-10/12 h-80 self-center" source={require('../../assets/placeholderMonkeicon.jpg')} />
                                 </View>
+                                <View className="flex-col w-full backdrop:bg-gray-200 rounded-2xl p-4">
+                                    <Text className="text-xl py-2">Description: {incomingItem?.description}</Text>
+                                    <Text className="text-xl py-2">Category: {incomingItem?.category}</Text>
+                                    <Text className="text-xl py-2">Price Tier: {incomingItem?.priceTier}</Text>
 
-                                <View>
-                                    <View className="m" style={styles.textInput}>
-                                        <TextInput placeholder={'You can write a comment for your offer'} onChangeText={text => setTradeOfferComment(text)} placeholderTextColor={'gray'}/>
+                                    <View>
+                                        <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(100).duration(600)}>
+                                            <TextInput placeholder='Comment' onChangeText={text => setTradeOfferComment(text)} placeholderTextColor={'gray'}/>
+                                        </Animated.View>
                                     </View>
                                 </View>
 
@@ -174,7 +176,7 @@ const Homepage = () => {
 
                                 {/*.sort((itemA, itemB) => itemB.id - itemA.id)*/}
 
-                                <View className="flex-row flex-wrap">
+                                <View className="flex-row flex-wrap backdrop:bg-gray-200 rounded-2xl">
                                     {ownItemList?.map((item, i ) =>
                                         <ItemCard key={i} userId={item.userId} buttonPressFunction={() => sendOffer(item.id)} id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
                                                   category={item.category} priceTier={item.priceTier} buttonText={'Send Offer'}/>)}
