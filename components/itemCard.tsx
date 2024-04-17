@@ -5,6 +5,7 @@ import Styles from '../Stylesheet';
 import itemDataDTO from "../interfaces/itemDataDTO";
 import Animated, {FadeIn} from "react-native-reanimated";
 import {Buffer} from "buffer";
+import PriceTier from "./priceTier";
 
 const styles = Styles;
 
@@ -12,7 +13,7 @@ function ItemCard(item: itemDataDTO) {
 
     const [pressed, setPressed] = useState(true);
 
-    const image = Buffer.from(item.itemPicture, 'base64').toString('ascii')
+    const image = Buffer.from(item.itemPicture as string, 'base64').toString('ascii')
 
 
     return (
@@ -22,7 +23,10 @@ function ItemCard(item: itemDataDTO) {
                     <Card.Title className="text-l font-bold" title={item.title}/>
                     <Card.Cover source={{uri: "data:image/png;base64," + image}}/>
                     <Card.Content>
+                        <View>
                             <Text>{item.priceTier}</Text>
+                            {/*<PriceTier tier={item.priceTier}/>*/}
+                        </View>
                     </Card.Content>
                 </Animated.View>
                 :

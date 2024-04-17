@@ -24,6 +24,7 @@ import {HttpContext} from "../../provider/httpProvider";
 import {StatusBar} from "expo-status-bar";
 import Animated, {FadeIn, FadeInUp} from "react-native-reanimated";
 import {Icon} from "react-native-paper";
+import * as ImagePicker from "expo-image-picker";
 
 const styles = Styles;
 
@@ -43,9 +44,9 @@ interface updateUserDTO {
 interface updateItemDTO {
     title: string | undefined,
     description: string | undefined,
-    priceTier: string | undefined,
+    priceTier: number | undefined,
     category: string | undefined,
-    itemPicture: string | undefined,
+    itemPicture: string | undefined | null,
 }
 
 const Profile = () => {
@@ -72,6 +73,7 @@ const Profile = () => {
     const [itemPriceTier, setItemPriceTier] = useState(selectedItem?.priceTier);
     const [itemCategory, setItemCategory] = useState(selectedItem?.category);
     const [itemPicture, setItemPicture] = useState(selectedItem?.itemPicture);
+    const [base64Icon, setBase64Icon] = useState('')
 
     const config = {
         headers: {
@@ -117,20 +119,30 @@ const Profile = () => {
             .catch((e) => console.log(e))
     }
 
-    function editItem() {
-        const updateItem: updateItemDTO = {
-            title:itemTitle,
-            description:itemDescription,
-            category: itemCategory,
-            priceTier: itemPriceTier,
-            itemPicture: itemPicture
-        }
-        axios.put('/item/' + selectedItem?.id, updateItem, config)
-            .then((response) => {
-                console.log(response.data)
-            })
-            .catch((e) => console.log(e))
-        setEditModalVisible(!editModalVisible)
+    function handleEditEvent() {
+
+        const formData = new FormData();
+        formData.append('title', itemTitle as string);
+        formData.append('itemPicture', itemPicture as string);
+        formData.append('description', itemDescription as string);
+        formData.append('category', itemCategory as string);
+        formData.append('priceTier', itemPriceTier!.toString());
+
+        console.log(formData)
+
+        axios.put('/item/' + selectedItem?.id, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: 'Bearer ' + token?.token
+            },
+            transformRequest: (data, headers) => {
+                return formData;
+            }},)
+            .then(() => {
+                ToastAndroid.showWithGravity('Item updated!', 2000, 1)
+            }).catch((e) => {
+            console.log(e)
+        });
     }
 
     const getUserData  = () => {
@@ -170,6 +182,31 @@ const Profile = () => {
             .catch((e) => console.log(e.response.data))
         //console.log(updateUserData)
     }
+
+    const pickImage = async () => {
+            let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            base64: true,
+            aspect: [1, 1],
+            quality: 1,
+        });
+
+        if(result.canceled) {console.log('cancelled')} else {
+            setItemPicture(result.assets![0].base64)
+            setBase64Icon(result.assets![0].base64 as string)
+            //console.log(base64Icon)
+            //console.log(itemPicture)
+        }
+
+        /*if (!result.canceled) {
+            const uri = result.assets[0].uri;
+            const response = await fetch(uri);
+            const blob = await response.blob();
+            setImage(blob)
+            console.log(image)
+        }*/
+    };
 
     function deleteItem() {
         axios.delete('/item/' + selectedItem?.id, config)
@@ -313,10 +350,16 @@ const Profile = () => {
                                             <TextInput placeholder={'Description'} defaultValue={selectedItem?.description} onChangeText={text => setItemDescription(text)} placeholderTextColor={'gray'}/>
                                         </Animated.View>
 
-                                        <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(300).duration(600).springify()}>
-                                            <TextInput placeholder={'picplaceholder'}/>
+                                        <Animated.View className="backdrop:bg-gray-200 w-full h-40 justify-center rounded-2xl" entering={FadeInUp.delay(150).duration(600).springify()}>
+                                            <Pressable onPress={pickImage}>
+                                                { itemPicture ? <Image style={{width: 150, height: 150}} className="self-center rounded-xl" source={{uri: "data:image/png;base64," + base64Icon}}/>
+                                                    :
+                                                    <View className="self-center">
+                                                        <Icon size={100} source={"image"} color="#AAA"/>
+                                                    </View>
+                                                }
+                                            </Pressable>
                                         </Animated.View>
-
                                         <Animated.View className="w-full items-center" entering={FadeInUp.delay(350).duration(600).springify()}>
                                             <SelectDropdown buttonStyle={{borderRadius: 14, backgroundColor: 'rgb(252 211 77)'}} buttonTextStyle={{color: "#FFF", fontWeight: "bold"}} defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories} onSelect={(selectedItem) => {
                                                 setItemCategory(selectedItem);
@@ -327,7 +370,7 @@ const Profile = () => {
 
                                             <Animated.View entering={FadeInUp.delay(400).duration(600).springify()}>
                                                 <Pressable onPress={() => {
-                                                    setItemPriceTier('1')
+                                                    setItemPriceTier(1)
                                                 }}>
                                                     <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
                                                 </Pressable>
@@ -335,7 +378,7 @@ const Profile = () => {
 
                                             <Animated.View entering={FadeInUp.delay(440).duration(600).springify()}>
                                                 <Pressable onPress={() => {
-                                                    setItemPriceTier('2')
+                                                    setItemPriceTier(2)
                                                 }}>
                                                     <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
                                                 </Pressable>
@@ -343,7 +386,7 @@ const Profile = () => {
 
                                             <Animated.View entering={FadeInUp.delay(480).duration(600).springify()}>
                                                 <Pressable onPress={() => {
-                                                    setItemPriceTier('3')
+                                                    setItemPriceTier(3)
                                                 }}>
                                                     <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
                                                 </Pressable>
@@ -351,7 +394,7 @@ const Profile = () => {
 
                                             <Animated.View entering={FadeInUp.delay(520).duration(600).springify()}>
                                                 <Pressable onPress={() => {
-                                                    setItemPriceTier('4')
+                                                    setItemPriceTier(4)
                                                 }}>
                                                     <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
                                                 </Pressable>
@@ -359,7 +402,7 @@ const Profile = () => {
 
                                             <Animated.View entering={FadeInUp.delay(560).duration(600).springify()}>
                                                 <Pressable onPress={() => {
-                                                    setItemPriceTier('5')
+                                                    setItemPriceTier(5)
                                                 }}>
                                                     <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
                                                 </Pressable>
@@ -368,7 +411,7 @@ const Profile = () => {
 
                                         <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(600).duration(600).springify()}>
                                             <TouchableOpacity onPress={() => {
-                                                editItem()
+                                                handleEditEvent()
                                             }}>
                                                 <Text className="text-xl font-bold text-white text-center">Save changes</Text>
                                             </TouchableOpacity>

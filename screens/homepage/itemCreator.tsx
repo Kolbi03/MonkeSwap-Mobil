@@ -121,7 +121,7 @@ const ItemCreator = ({ navigation }) => {
                         <Text className="text-gray-500 font-bold text-xl tracking-wider">You can upload your items here</Text>
                     </Animated.View>
 
-                    <Animated.View className="backdrop:bg-gray-200 w-full h-40 justify-center rounded-2xl">
+                    <Animated.View className="backdrop:bg-gray-200 w-full h-40 justify-center rounded-2xl" entering={FadeInUp.delay(150).duration(600).springify()}>
                         <Pressable onPress={pickImage}>
                             { image ? <Image style={{width: 150, height: 150}} className="self-center rounded-xl" source={{uri: "data:image/png;base64," + base64Icon}}/>
                                 :
