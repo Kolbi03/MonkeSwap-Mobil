@@ -171,7 +171,7 @@ const Profile = () => {
     useEffect(() => {
         loadCards();
         getUserData()
-    }, []);
+    }, [axios]);
 
     function updateUser() {
         axios.put(baseUrl + '/user', updateUserData, config)

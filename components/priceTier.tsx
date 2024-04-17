@@ -1,5 +1,6 @@
 import {Image, View} from "react-native";
 import React from "react";
+// @ts-ignore
 import peeled_banana from "../assets/peeled_banana.png"
 
 interface PriceTierProps {
