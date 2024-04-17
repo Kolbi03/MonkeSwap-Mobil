@@ -171,7 +171,7 @@ const Profile = () => {
     useEffect(() => {
         loadCards();
         getUserData()
-    }, [axios]);
+    }, []);
 
     function updateUser() {
         axios.put(baseUrl + '/user', updateUserData, config)
@@ -276,7 +276,7 @@ const Profile = () => {
                                     <View className="flex-row space-x-2 content-center w-full">
                                         <Animated.View className="w-10/12 bg-black/5 rounded-2xl p-5 h-14 justify-start" entering={FadeInUp.delay(350).duration(600).springify()}>
 
-                                            <TextInput placeholder={'Date of birth'} editable={false} defaultValue={`${userData?.dateOfBirth === null ? "Date of birth" : userData?.dateOfBirth.toString()}`} placeholderTextColor={'gray'}/>
+                                            <TextInput value={dateOfBirth?.toDateString()} placeholder={'Date of birth'} editable={false} defaultValue={`${userData?.dateOfBirth === null ? "Date of birth" : userData?.dateOfBirth.toString()}`} placeholderTextColor={'gray'}/>
 
                                         </Animated.View>
                                         <Animated.View className="h-full bg-amber-300 p-3 rounded-2xl flex self-end align-middle" entering={FadeInUp.delay(400).duration(600).springify()}>

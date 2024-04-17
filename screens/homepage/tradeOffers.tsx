@@ -83,7 +83,7 @@ const TradeOffers = () => {
                     }}>
                         <View style={{height: "30%", backgroundColor: "#FFF", marginTop: "auto", borderRadius: 20}}>
                             <Pressable onPress={sentOffersButton}>
-                                <Text style={Styles.pressButton}>Sent Offers</Text>
+                                <Text style={Styles.pressButton}>Outgoing Offers</Text>
                             </Pressable>
                             <Pressable onPress={incomingOffersButton}>
                                 <Text style={Styles.pressButton}>Incoming Offers</Text>

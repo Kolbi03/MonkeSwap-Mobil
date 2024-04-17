@@ -8,6 +8,7 @@ import SelectDropdown from "react-native-select-dropdown";
 import {HttpContext} from "../../provider/httpProvider";
 import {StatusBar} from "expo-status-bar";
 import Animated, {FadeInUp} from "react-native-reanimated";
+import {Buffer} from "buffer";
 
 const Homepage = () => {
 
@@ -24,6 +25,7 @@ const Homepage = () => {
     const [username, setUsername] = useState('');
     const [userId, setUserId] = useState('');
     const [tradeOfferComment, setTradeOfferComment] = useState('')
+    //const image = Buffer.from(incomingItem?.itemPicture as string, 'base64').toString('ascii')
 
     const config = {
         headers: {
@@ -156,7 +158,7 @@ const Homepage = () => {
                             <ScrollView className="w-full">
                                 <View className="pb-8">
                                     <Animated.Text className="text-4xl font-bold text-center py-6 pt-12">{incomingItem?.title}</Animated.Text>
-                                    <Image className="rounded-xl w-10/12 h-80 self-center" source={require('../../assets/placeholderMonkeicon.jpg')} />
+                                    {/*<Image className="rounded-xl w-10/12 h-80 self-center" source={{uri: "data:image/png;base64," + image}} />*/}
                                 </View>
                                 <View className="flex-col w-full backdrop:bg-gray-200 rounded-2xl p-4">
                                     <Text className="text-xl py-2">Description: {incomingItem?.description}</Text>

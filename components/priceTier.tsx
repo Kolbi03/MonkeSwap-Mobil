@@ -8,18 +8,23 @@ interface PriceTierProps {
 }
 
 function PriceTier({ tier }: PriceTierProps) {
-    const images: React.JSX.Element[] = [];
 
-    for (let i = 0; i < tier; i++) {
-        images.push(<Image key={i} src={peeled_banana} /> )
+
+    const asd = new Array(tier);
+    for(let i = 0; i<tier; i++) {
+        asd[i] = 0;
     }
-    const imageArray = new Array(tier)
+    // @ts-ignore
     return (
-        <View>
-            {images}
-            {/*{imageArray.map((_, index) => (
-                <Image key={index} src={require('../assets/peeled_banana.png')}/>
-            ))}*/}
+        <View className="flex-row flex-wrap">
+
+
+            {asd
+                .map((item, index) => (
+                    <Image key={index} source={require('../assets/peeled_banana.png')} style={{height: 35, width: 35}}/>
+                ))}
+
+
         </View>
     );
 }

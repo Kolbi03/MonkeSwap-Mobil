@@ -26,7 +26,7 @@ const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
 // @ts-ignore
-const ItemCreator = ({ navigation }) => {
+const ItemCreator = () => {
     const styles = Styles;
 
     const {token} = useContext(AuthContext);
@@ -39,21 +39,21 @@ const ItemCreator = ({ navigation }) => {
     const [price, setPrice] = useState('');
     const [base64Icon, setBase64Icon] = useState('');
 
-    interface newItemDataDTO {
+    /*interface newItemDataDTO {
         title: string,
         itemPicture: string | undefined | null,
         description: string,
         category: string,
         priceTier: string,
-    }
+    }*/
 
-    const data: newItemDataDTO = {
+    /*const data: newItemDataDTO = {
         title: title,
         itemPicture: image,
         description: description,
         category: category,
         priceTier: price,
-    }
+    }*/
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -61,7 +61,7 @@ const ItemCreator = ({ navigation }) => {
             allowsEditing: true,
             base64: true,
             aspect: [1, 1],
-            quality: 1,
+            quality: 0.8,
         });
 
         if(result.canceled) {console.log('cancelled')} else {
@@ -140,13 +140,6 @@ const ItemCreator = ({ navigation }) => {
                         <TextInput placeholder='Description' placeholderTextColor={'gray'} onChangeText={(text) => setDescription(text)}/>
                     </Animated.View>
 
-                    {/*<Animated.View className="w-full items-center" entering={FadeInUp.delay(400).duration(600).springify()}>
-                        <TouchableOpacity className="w-full bg-amber-300 p-3 rounded-2xl" onPress={pickImage}>
-                            <Text className="text-xl font-bold text-white text-center">Select image</Text>
-                        </TouchableOpacity>
-                        {image ?
-                        <Image source={image.} style={localStyles.categoryImage}></Image> : <></>}
-                    </Animated.View>*/}
                     <Animated.View className="w-full items-center" entering={FadeInUp.delay(500).duration(600).springify()}>
                         <SelectDropdown buttonStyle={{borderRadius: 14, backgroundColor: 'rgb(252 211 77)'}} buttonTextStyle={{color: "#FFF", fontWeight: "bold"}} defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories} onSelect={(selectedItem) => {
                             setCategory(selectedItem);
