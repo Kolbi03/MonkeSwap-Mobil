@@ -72,6 +72,11 @@ const Profile = () => {
 
     const [base64Icon, setBase64Icon] = useState('')
 
+    const [banana2, setBanana2] = useState(false);
+    const [banana3, setBanana3] = useState(false);
+    const [banana4, setBanana4] = useState(false);
+    const [banana5, setBanana5] = useState(false);
+
     const config = {
         headers: {
             Authorization: 'Bearer ' + token?.token
@@ -138,6 +143,7 @@ const Profile = () => {
             }},)
             .then(() => {
                 ToastAndroid.showWithGravity('Item updated!', 2000, 1)
+                setEditModalVisible(!editModalVisible)
             }).catch((e) => {
             console.log(e)
         });
@@ -210,6 +216,41 @@ const Profile = () => {
     function profilePicChange() {
 
     }
+
+    useEffect(() => {
+        switch (itemPriceTier) {
+            case '1':
+                setBanana2(false);
+                setBanana3(false);
+                setBanana4(false);
+                setBanana5(false);
+                break;
+            case '2':
+                setBanana2(true);
+                setBanana3(false);
+                setBanana4(false);
+                setBanana5(false);
+                break;
+            case '3':
+                setBanana2(true);
+                setBanana3(true);
+                setBanana4(false);
+                setBanana5(false);
+                break;
+            case '4':
+                setBanana2(true);
+                setBanana3(true);
+                setBanana4(true);
+                setBanana5(false);
+                break;
+            case '5':
+                setBanana2(true);
+                setBanana3(true);
+                setBanana4(true);
+                setBanana5(true);
+                break;
+        }
+    }, [itemPriceTier]);
 
     return (
         <View className="bg-white h-full- w-full flex-1 pt-12">
@@ -356,45 +397,45 @@ const Profile = () => {
                                             }}/>
                                         </Animated.View>
 
-                                        <View className="flex-row w-full">
+                                        <View className="flex-row w-full h-24">
 
-                                            <Animated.View entering={FadeInUp.delay(400).duration(600).springify()}>
+                                            <Animated.View entering={FadeInUp.delay(600).duration(600).springify()}>
                                                 <Pressable onPress={() => {
                                                     setItemPriceTier('1')
                                                 }}>
-                                                    <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                                                    <Image source={require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
                                                 </Pressable>
                                             </Animated.View>
 
-                                            <Animated.View entering={FadeInUp.delay(440).duration(600).springify()}>
+                                            <Animated.View entering={FadeInUp.delay(640).duration(600).springify()}>
                                                 <Pressable onPress={() => {
                                                     setItemPriceTier('2')
                                                 }}>
-                                                    <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                                                    <Image source={!banana2 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
                                                 </Pressable>
                                             </Animated.View>
 
-                                            <Animated.View entering={FadeInUp.delay(480).duration(600).springify()}>
+                                            <Animated.View entering={FadeInUp.delay(680).duration(600).springify()}>
                                                 <Pressable onPress={() => {
                                                     setItemPriceTier('3')
                                                 }}>
-                                                    <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                                                    <Image source={!banana3 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
                                                 </Pressable>
                                             </Animated.View>
 
-                                            <Animated.View entering={FadeInUp.delay(520).duration(600).springify()}>
+                                            <Animated.View entering={FadeInUp.delay(720).duration(600).springify()}>
                                                 <Pressable onPress={() => {
                                                     setItemPriceTier('4')
                                                 }}>
-                                                    <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                                                    <Image source={!banana4 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
                                                 </Pressable>
                                             </Animated.View>
 
-                                            <Animated.View entering={FadeInUp.delay(560).duration(600).springify()}>
+                                            <Animated.View entering={FadeInUp.delay(760).duration(600).springify()}>
                                                 <Pressable onPress={() => {
                                                     setItemPriceTier('5')
                                                 }}>
-                                                    <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                                                    <Image source={!banana5 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
                                                 </Pressable>
                                             </Animated.View>
                                         </View>

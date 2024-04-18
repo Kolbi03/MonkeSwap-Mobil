@@ -25,7 +25,7 @@ function ItemCard(item: itemDataDTO) {
                     <Card.Content>
                         <View>
                             {/*<Text>{item.priceTier}</Text>*/}
-                            <PriceTier tier={item.priceTier}/>
+                            <PriceTier tier={item.priceTier as number}/>
                         </View>
                     </Card.Content>
                 </Animated.View>

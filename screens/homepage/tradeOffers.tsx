@@ -1,10 +1,11 @@
-import {Modal, Pressable, ScrollView, Text, ToastAndroid, View} from "react-native";
+import {Modal, Pressable, ScrollView, Text, ToastAndroid, TouchableOpacity, View} from "react-native";
 import TradeOfferComponent from "../../components/tradeOfferComponent";
 import React, {useContext, useEffect, useState} from "react";
 import Styles from "../../Stylesheet";
 import TradeOfferDTO from "../../interfaces/tradeOfferDTO";
 import {HttpContext} from "../../provider/httpProvider";
 import {StatusBar} from "expo-status-bar";
+import Animated, {FadeInUp} from "react-native-reanimated";
 
 const TradeOffers = () => {
 
@@ -59,9 +60,13 @@ const TradeOffers = () => {
     return (
         <View className="bg-white items-center h-full- w-full flex-1 p-2 pt-16">
             <StatusBar style="auto"/>
-            <Pressable onPress={() => setVisible(!visible)}>
-                <Text style={Styles.pressButton}>Open</Text>
-            </Pressable>
+            <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(150).duration(600).springify()}>
+                <TouchableOpacity onPress={() => {
+                    setVisible(!visible)
+                }}>
+                    <Text className="text-xl font-bold text-white text-center">Open</Text>
+                </TouchableOpacity>
+            </Animated.View>
                 <ScrollView className="h-full w-full">
                     {tradeOfferType ?
                         offeredOffers?.sort((itemA, itemB) => itemB.id - itemA.id)
@@ -81,13 +86,21 @@ const TradeOffers = () => {
                     onRequestClose={() => {
                         ToastAndroid.showWithGravity('You must choose the type of offers!', 2000, 1)
                     }}>
-                        <View style={{height: "30%", backgroundColor: "#FFF", marginTop: "auto", borderRadius: 20}}>
-                            <Pressable onPress={sentOffersButton}>
-                                <Text style={Styles.pressButton}>Outgoing Offers</Text>
-                            </Pressable>
-                            <Pressable onPress={incomingOffersButton}>
-                                <Text style={Styles.pressButton}>Incoming Offers</Text>
-                            </Pressable>
+                        <View className="h-1/4 backdrop: bg-white mt-auto rounded-2xl space-y-8 px-4">
+                            <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(100).duration(600).springify()}>
+                                <TouchableOpacity onPress={() => {
+                                    sentOffersButton()
+                                }}>
+                                    <Text className="text-xl font-bold text-white text-center">Outgoing offers</Text>
+                                </TouchableOpacity>
+                            </Animated.View>
+                            <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(150).duration(600).springify()}>
+                                <TouchableOpacity onPress={() => {
+                                    incomingOffersButton()
+                                }}>
+                                    <Text className="text-xl font-bold text-white text-center">Incoming offers</Text>
+                                </TouchableOpacity>
+                            </Animated.View>
                         </View>
                 </Modal>
         </View>

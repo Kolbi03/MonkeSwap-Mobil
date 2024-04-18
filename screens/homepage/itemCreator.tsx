@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {
     Dimensions,
     Image,
@@ -38,6 +38,11 @@ const ItemCreator = () => {
     const [category, setCategory] = useState('');
     const [price, setPrice] = useState('');
     const [base64Icon, setBase64Icon] = useState('');
+
+    const [banana2, setBanana2] = useState(false);
+    const [banana3, setBanana3] = useState(false);
+    const [banana4, setBanana4] = useState(false);
+    const [banana5, setBanana5] = useState(false);
 
     /*interface newItemDataDTO {
         title: string,
@@ -107,6 +112,41 @@ const ItemCreator = () => {
             });
     }
 
+    useEffect(() => {
+        switch (price) {
+            case '1':
+                setBanana2(false);
+                setBanana3(false);
+                setBanana4(false);
+                setBanana5(false);
+                break;
+            case '2':
+                setBanana2(true);
+                setBanana3(false);
+                setBanana4(false);
+                setBanana5(false);
+                break;
+            case '3':
+                setBanana2(true);
+                setBanana3(true);
+                setBanana4(false);
+                setBanana5(false);
+                break;
+            case '4':
+                setBanana2(true);
+                setBanana3(true);
+                setBanana4(true);
+                setBanana5(false);
+                break;
+            case '5':
+                setBanana2(true);
+                setBanana3(true);
+                setBanana4(true);
+                setBanana5(true);
+                break;
+        }
+    }, [price]);
+
 
         return(
         <Provider>
@@ -170,19 +210,19 @@ const ItemCreator = () => {
 
                     <Animated.View entering={FadeInUp.delay(550).duration(600).springify()}>
                         <Pressable onPress={() => setVisible(!visible)}>
-                            <Image source={require('../../assets/monke.jpg')} style={localStyles.infoImage}/>
+                            <Icon size={20} source={"information-outline"}/>
                         </Pressable>
                     </Animated.View>
                 </View>
             </View>
 
-            <View className="flex-row w-full">
+            <View className="flex-row w-full h-24">
 
                 <Animated.View entering={FadeInUp.delay(600).duration(600).springify()}>
                     <Pressable onPress={() => {
                         setPrice('1')
                     }}>
-                        <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                        <Image source={require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
                     </Pressable>
                 </Animated.View>
 
@@ -190,7 +230,7 @@ const ItemCreator = () => {
                     <Pressable onPress={() => {
                         setPrice('2')
                     }}>
-                        <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                        <Image source={!banana2 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
                     </Pressable>
                 </Animated.View>
 
@@ -198,7 +238,7 @@ const ItemCreator = () => {
                     <Pressable onPress={() => {
                         setPrice('3')
                     }}>
-                        <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                        <Image source={!banana3 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
                     </Pressable>
                 </Animated.View>
 
@@ -206,7 +246,7 @@ const ItemCreator = () => {
                     <Pressable onPress={() => {
                         setPrice('4')
                     }}>
-                        <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                        <Image source={!banana4 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
                     </Pressable>
                 </Animated.View>
 
@@ -214,7 +254,7 @@ const ItemCreator = () => {
                     <Pressable onPress={() => {
                         setPrice('5')
                     }}>
-                        <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
+                        <Image source={!banana5 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
                     </Pressable>
                 </Animated.View>
             </View>

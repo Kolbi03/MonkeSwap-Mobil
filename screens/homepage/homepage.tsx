@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Image, Modal, Pressable, ScrollView, Text, TextInput, ToastAndroid, View} from "react-native";
+import {Modal, Pressable, ScrollView, Text, TextInput, ToastAndroid, View} from "react-native";
 import Styles from "../../Stylesheet";
 import {AuthContext} from "../../contexts/authContext";
 import itemDataDTO from "../../interfaces/itemDataDTO";
@@ -8,7 +8,6 @@ import SelectDropdown from "react-native-select-dropdown";
 import {HttpContext} from "../../provider/httpProvider";
 import {StatusBar} from "expo-status-bar";
 import Animated, {FadeInUp} from "react-native-reanimated";
-import {Buffer} from "buffer";
 
 const Homepage = () => {
 
