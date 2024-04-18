@@ -25,6 +25,7 @@ import {StatusBar} from "expo-status-bar";
 import Animated, {FadeIn, FadeInUp} from "react-native-reanimated";
 import {Icon} from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
+import axios from "../../axios";
 
 const styles = Styles;
 
@@ -38,7 +39,7 @@ interface updateUserDTO {
     username: string | undefined,
     dateOfBirth: string |undefined,
     phoneNumber: string | undefined,
-    profilePicture: string |undefined,
+    profilePicture: string |undefined | null,
 }
 
 const Profile = () => {
@@ -71,6 +72,7 @@ const Profile = () => {
     const [itemPicture, setItemPicture] = useState(selectedItem?.itemPicture);
 
     const [base64Icon, setBase64Icon] = useState('')
+    const [base64Profile, setBase64Profile] = useState('')
 
     const [banana2, setBanana2] = useState(false);
     const [banana3, setBanana3] = useState(false);
@@ -187,22 +189,34 @@ const Profile = () => {
         //console.log(updateUserData)
     }
 
-    const pickImage = async () => {
+    const pickImage = async (type: string) => {
             let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             base64: true,
             aspect: [1, 1],
-            quality: 0.8,
+            quality: 0.6,
         });
 
-        if(result.canceled) {console.log('cancelled')} else {
-            setItemPicture(result.assets![0].base64)
-            setBase64Icon(result.assets![0].base64 as string)
-            console.log(base64Icon)
-            console.log(itemPicture)
+        if(result.canceled) {
+            console.log('cancelled')
+        } else {
+            if(type === 'item') {
+                setItemPicture(result.assets![0].base64)
+                setBase64Icon(result.assets![0].base64 as string)
+            } else if(type === 'profile') {
+                setProfilePicture(result.assets![0].base64)
+                setBase64Profile(result.assets![0].base64 as string)
+                profilePicChange()
+            }
+            /*console.log(base64Icon)
+            console.log(itemPicture)*/
         }
     };
+
+    const body = {
+        profilePicture: profilePicture as string,
+    }
 
     function deleteItem() {
         axios.delete('/item/' + selectedItem?.id, config)
@@ -214,7 +228,17 @@ const Profile = () => {
     }
 
     function profilePicChange() {
-
+        const formData = new FormData();
+        formData.append('profilePicture', profilePicture as string)
+        /*console.log(formData)
+        console.log(profilePicture)*/
+        console.log(body)
+        axios.put('/user/profilepicture', body)
+            .then(() => {
+                ToastAndroid.showWithGravity('Profile picture updated', 2000, 1)
+            }).catch((e) => {
+            console.log(e)
+        });
     }
 
     useEffect(() => {
@@ -261,8 +285,13 @@ const Profile = () => {
                         <Text className="text-4xl font-bold align-middle">{userData?.username}</Text>
                     </Animated.View>
                     <Animated.View className="my-2" entering={FadeInUp.delay(200).duration(600).springify()}>
-                        <Pressable onPress={profilePicChange}>
-                            <Image source={require('../../assets/monke.jpg')} className="h-32 w-32 rounded-full"/>
+                        <Pressable onPress={() => pickImage('profile')}>
+                            { profilePicture ? <Image style={{width: 150, height: 150}} className="self-center rounded-full" source={{uri: "data:image/png;base64," + base64Profile}}/>
+                                :
+                                <View className="self-center">
+                                    <Icon size={100} source={"image"} color="#AAA"/>
+                                </View>
+                            }
                         </Pressable>
                     </Animated.View>
                     <View className="flex-row self-center space-x-1 mt-4">
@@ -382,7 +411,7 @@ const Profile = () => {
                                         </Animated.View>
 
                                         <Animated.View className="backdrop:bg-gray-200 w-full h-40 justify-center rounded-2xl" entering={FadeInUp.delay(150).duration(600).springify()}>
-                                            <Pressable onPress={pickImage}>
+                                            <Pressable onPress={() => pickImage('item')}>
                                                 { itemPicture ? <Image style={{width: 150, height: 150}} className="self-center rounded-xl" source={{uri: "data:image/png;base64," + base64Icon}}/>
                                                     :
                                                     <View className="self-center">
