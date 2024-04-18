@@ -12,7 +12,7 @@ import {Buffer} from "buffer";
 
 const Homepage = () => {
 
-    const categories = ["OTHER", "VEHICLE", "HOME", "HOUSEHOLD", "ELECTRONICS", "FREETIME", "SPORT", "FASHION", "COLLECTIBLES", "PETS" ]
+    const categories = ["ALL", "OTHER", "VEHICLE", "HOME", "HOUSEHOLD", "ELECTRONICS", "FREETIME", "SPORT", "FASHION", "COLLECTIBLES", "PETS" ]
 
     const {token} = useContext(AuthContext);
     const axios = useContext(HttpContext);
@@ -103,6 +103,8 @@ const Homepage = () => {
     const searchByCategory = (category: string) => {
         if(category === '') {
             ToastAndroid.showWithGravity('You have to chose a category!', 2000, 1)
+        } else if (category === 'ALL') {
+            loadCards()
         } else {
             axios.get('/items/' + category, config)
                 .then((response) => {
