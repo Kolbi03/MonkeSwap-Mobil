@@ -81,13 +81,6 @@ const Homepage = () => {
                     .catch((e) => console.log('Notification error: ' + e.response.data))
             })
             .catch((e) => ToastAndroid.showWithGravity(e.response.data, 2000, 1))
-
-        axios.post('/notification', {message: username + ' sent you a trade request!', type: 'NOTIFICATION', userId: userId}, config)
-            .then((response) => {
-                /*console.log(response.data)
-                console.log(username + ' ' + userId)*/
-            })
-            .catch((e) => console.log('Notification error: ' + e.response.data))
     }
 
     function modalHandler(item: itemDataDTO) {

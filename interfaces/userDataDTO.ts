@@ -5,7 +5,7 @@ export default interface userDataDTO {
     role: 'USER' | 'ADMIN',
     dateOfRegistration: string,
     fullName: string,
-    dateOfBirth: Date,
+    dateOfBirth: string,
     phoneNumber: string,
     profilePicture: string,
 }

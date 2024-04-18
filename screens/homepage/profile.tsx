@@ -36,17 +36,9 @@ const width = Dimensions.get('window').width;
 interface updateUserDTO {
     fullName: string | undefined,
     username: string | undefined,
-    dateOfBirth: any,
+    dateOfBirth: string |undefined,
     phoneNumber: string | undefined,
     profilePicture: string |undefined,
-}
-
-interface updateItemDTO {
-    title: string | undefined,
-    description: string | undefined,
-    priceTier: number | undefined,
-    category: string | undefined,
-    itemPicture: string | undefined | null,
 }
 
 const Profile = () => {
@@ -59,20 +51,25 @@ const Profile = () => {
 
     const [itemList, setItemList] = useState<itemDataDTO[]>();
     const [userData, setUserData] = useState<userDataDTO>();
+
     const [fullName, setFullName] = useState(userData?.fullName)
     const [username, setUsername] = useState(userData?.username)
-    const [dateOfBirth, setDateOfBirth] = useState(new Date())
+    const [dateOfBirth, setDateOfBirth] = useState(userData?.dateOfBirth)
     const [phoneNumber, setPhoneNumber] = useState(userData?.phoneNumber)
     const [profilePicture, setProfilePicture] = useState(userData?.profilePicture);
+
     const [open, setOpen] = useState(false);
     const [visible, setVisible]= useState(false);
     const [editModalVisible, setEditModalVisible] = useState(false);
+
     const [selectedItem, setSelectedItem] = useState<itemDataDTO>();
+
     const [itemTitle, setItemTitle] = useState(selectedItem?.title);
     const [itemDescription, setItemDescription] = useState(selectedItem?.description);
     const [itemPriceTier, setItemPriceTier] = useState(selectedItem?.priceTier);
     const [itemCategory, setItemCategory] = useState(selectedItem?.category);
     const [itemPicture, setItemPicture] = useState(selectedItem?.itemPicture);
+
     const [base64Icon, setBase64Icon] = useState('')
 
     const config = {
@@ -92,6 +89,7 @@ const Profile = () => {
     function handleUpdateUser() {
         updateUser();
         setVisible(!visible);
+        getUserData()
     }
 
     function loadCards() {
@@ -126,9 +124,9 @@ const Profile = () => {
         formData.append('itemPicture', itemPicture as string);
         formData.append('description', itemDescription as string);
         formData.append('category', itemCategory as string);
-        formData.append('priceTier', itemPriceTier!.toString());
+        formData.append('priceTier', itemPriceTier as string);
 
-        console.log(formData)
+        //console.log(formData)
 
         axios.put('/item/' + selectedItem?.id, formData, {
             headers: {
@@ -189,23 +187,15 @@ const Profile = () => {
             allowsEditing: true,
             base64: true,
             aspect: [1, 1],
-            quality: 1,
+            quality: 0.8,
         });
 
         if(result.canceled) {console.log('cancelled')} else {
             setItemPicture(result.assets![0].base64)
             setBase64Icon(result.assets![0].base64 as string)
-            //console.log(base64Icon)
-            //console.log(itemPicture)
+            console.log(base64Icon)
+            console.log(itemPicture)
         }
-
-        /*if (!result.canceled) {
-            const uri = result.assets[0].uri;
-            const response = await fetch(uri);
-            const blob = await response.blob();
-            setImage(blob)
-            console.log(image)
-        }*/
     };
 
     function deleteItem() {
@@ -276,7 +266,7 @@ const Profile = () => {
                                     <View className="flex-row space-x-2 content-center w-full">
                                         <Animated.View className="w-10/12 bg-black/5 rounded-2xl p-5 h-14 justify-start" entering={FadeInUp.delay(350).duration(600).springify()}>
 
-                                            <TextInput value={dateOfBirth?.toDateString()} placeholder={'Date of birth'} editable={false} defaultValue={`${userData?.dateOfBirth === null ? "Date of birth" : userData?.dateOfBirth.toString()}`} placeholderTextColor={'gray'}/>
+                                            <TextInput value={dateOfBirth} placeholder={'Date of birth'} editable={false} defaultValue={`${userData?.dateOfBirth === null ? "Date of birth" : userData?.dateOfBirth}`} placeholderTextColor={'gray'}/>
 
                                         </Animated.View>
                                         <Animated.View className="h-full bg-amber-300 p-3 rounded-2xl flex self-end align-middle" entering={FadeInUp.delay(400).duration(600).springify()}>
@@ -290,8 +280,8 @@ const Profile = () => {
                                     {if(date === undefined) {
                                         setOpen(false)
                                     } else {
-                                        setDateOfBirth(date)
                                         setOpen(false)
+                                        setDateOfBirth(date.toLocaleDateString())
                                     }}}/>}
 
                                     <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(450).duration(600).springify()}>
@@ -361,7 +351,7 @@ const Profile = () => {
                                             </Pressable>
                                         </Animated.View>
                                         <Animated.View className="w-full items-center" entering={FadeInUp.delay(350).duration(600).springify()}>
-                                            <SelectDropdown buttonStyle={{borderRadius: 14, backgroundColor: 'rgb(252 211 77)'}} buttonTextStyle={{color: "#FFF", fontWeight: "bold"}} defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories} onSelect={(selectedItem) => {
+                                            <SelectDropdown buttonStyle={{borderRadius: 14, backgroundColor: 'rgb(252 211 77)'}} buttonTextStyle={{color: "#FFF", fontWeight: "bold"}} defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories} defaultValue={selectedItem?.category} onSelect={(selectedItem) => {
                                                 setItemCategory(selectedItem);
                                             }}/>
                                         </Animated.View>
@@ -370,7 +360,7 @@ const Profile = () => {
 
                                             <Animated.View entering={FadeInUp.delay(400).duration(600).springify()}>
                                                 <Pressable onPress={() => {
-                                                    setItemPriceTier(1)
+                                                    setItemPriceTier('1')
                                                 }}>
                                                     <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
                                                 </Pressable>
@@ -378,7 +368,7 @@ const Profile = () => {
 
                                             <Animated.View entering={FadeInUp.delay(440).duration(600).springify()}>
                                                 <Pressable onPress={() => {
-                                                    setItemPriceTier(2)
+                                                    setItemPriceTier('2')
                                                 }}>
                                                     <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
                                                 </Pressable>
@@ -386,7 +376,7 @@ const Profile = () => {
 
                                             <Animated.View entering={FadeInUp.delay(480).duration(600).springify()}>
                                                 <Pressable onPress={() => {
-                                                    setItemPriceTier(3)
+                                                    setItemPriceTier('3')
                                                 }}>
                                                     <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
                                                 </Pressable>
@@ -394,7 +384,7 @@ const Profile = () => {
 
                                             <Animated.View entering={FadeInUp.delay(520).duration(600).springify()}>
                                                 <Pressable onPress={() => {
-                                                    setItemPriceTier(4)
+                                                    setItemPriceTier('4')
                                                 }}>
                                                     <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
                                                 </Pressable>
@@ -402,7 +392,7 @@ const Profile = () => {
 
                                             <Animated.View entering={FadeInUp.delay(560).duration(600).springify()}>
                                                 <Pressable onPress={() => {
-                                                    setItemPriceTier(5)
+                                                    setItemPriceTier('5')
                                                 }}>
                                                     <Image source={require('../../assets/monke.jpg')} style={localStyles.categoryImage}/>
                                                 </Pressable>

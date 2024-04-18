@@ -4,7 +4,7 @@ export  default interface itemDataDTO {
     itemPicture: string | undefined | null,
     description: string,
     category: string,
-    priceTier: number,
+    priceTier: number | string,
     userId: string,
     buttonText: string,
     buttonPressFunction: () => void,
