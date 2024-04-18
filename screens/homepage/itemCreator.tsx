@@ -95,7 +95,7 @@ const ItemCreator = () => {
         formData.append('category', category as string);
         formData.append('priceTier', price.toString());
 
-        console.log(formData)
+        //console.log(formData)
 
         axios.post('/item', formData, {
             headers: {
