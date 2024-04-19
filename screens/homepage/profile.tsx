@@ -201,18 +201,15 @@ const Profile = () => {
                 setItemPicture(result.assets![0].base64)
                 setBase64Icon(result.assets![0].base64 as string)
             } else if(type === 'profile') {
-                //const test = Buffer.from(result.assets![0].base64 as string, "base64").toString('ascii')
                 setProfilePicture(result.assets![0].base64 as string)
                 setBase64Profile(result.assets![0].base64 as string)
                 profilePicChange()
             }
-            /*console.log(base64Icon)
-            console.log(itemPicture)*/
         }
     };
 
     const body = {
-        profilePicture: profilePicture as string,
+        profilePicture: profilePicture
     }
 
     function deleteItem() {
@@ -225,10 +222,8 @@ const Profile = () => {
     }
 
     function profilePicChange() {
-        const formData = new FormData();
-        formData.append('profilePicture', profilePicture as string)
-        /*console.log(formData)
-        console.log(profilePicture)*/
+        console.log(body.profilePicture)
+
         axios.put('/user/profilepicture', body, {headers: {
             "Content-Type": "multipart/form-data"
             }})

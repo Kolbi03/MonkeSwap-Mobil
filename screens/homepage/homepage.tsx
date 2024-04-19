@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Modal, ScrollView, Text, TextInput, ToastAndroid, TouchableOpacity, View} from "react-native";
+import {Image, Modal, ScrollView, Text, TextInput, ToastAndroid, TouchableOpacity, View} from "react-native";
 import {AuthContext} from "../../contexts/authContext";
 import itemDataDTO from "../../interfaces/itemDataDTO";
 import ItemCard from "../../components/itemCard";
@@ -8,6 +8,7 @@ import {HttpContext} from "../../provider/httpProvider";
 import {StatusBar} from "expo-status-bar";
 import Animated, {FadeInUp} from "react-native-reanimated";
 import {Buffer} from "buffer";
+import {Icon} from "react-native-paper";
 
 const Homepage = () => {
 
@@ -149,7 +150,14 @@ const Homepage = () => {
                             <ScrollView className="w-full">
                                 <View className="pb-8">
                                     <Animated.Text className="text-4xl font-bold text-center py-6 pt-12">{incomingItem?.title}</Animated.Text>
-                                    {/*<Image className="rounded-xl w-10/12 h-80 self-center" source={{uri: "data:image/png;base64," + image}}/>*/}
+                                    {incomingItem?.itemPicture ?
+                                        <Image className="rounded-xl w-10/12 h-80 self-center"
+                                                                        source={{uri: "data:image/png;base64," + Buffer.from(incomingItem.itemPicture as string, 'base64').toString('ascii')}}/>
+                                        :
+                                        <View className="self-center">
+                                            <Icon size={100} source={"image"} color="#AAA"/>
+                                        </View>
+                                    }
                                 </View>
                                 <View className="flex-col w-full backdrop:bg-gray-200 rounded-2xl p-4">
                                     <Text className="text-xl py-2">Description: {incomingItem?.description}</Text>
