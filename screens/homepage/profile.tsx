@@ -14,7 +14,6 @@ import {
 import React, {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../contexts/authContext";
 import userDataDTO from "../../interfaces/userDataDTO";
-import {baseURL} from "../../backendURL";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import itemDataDTO from "../../interfaces/itemDataDTO";
@@ -25,11 +24,8 @@ import {StatusBar} from "expo-status-bar";
 import Animated, {FadeIn, FadeInUp} from "react-native-reanimated";
 import {Icon} from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
-import axios from "../../axios";
 
 const styles = Styles;
-
-const baseUrl = baseURL;
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -39,7 +35,7 @@ interface updateUserDTO {
     username: string | undefined,
     dateOfBirth: string |undefined,
     phoneNumber: string | undefined,
-    profilePicture: string |undefined | null,
+    profilePicture: string |undefined,
 }
 
 const Profile = () => {
@@ -152,7 +148,7 @@ const Profile = () => {
     }
 
     const getUserData  = () => {
-        axios.get(baseUrl + '/user', config)
+        axios.get('/user', config)
             .then((response) => {
                 //console.log(response.data);
                 setUserData(response.data)
@@ -180,7 +176,7 @@ const Profile = () => {
     }, []);
 
     function updateUser() {
-        axios.put(baseUrl + '/user', updateUserData, config)
+        axios.put('/user', updateUserData, config)
             .then(() => {
                 ToastAndroid.showWithGravity('Profile data updated!', 2000, ToastAndroid.CENTER)
                 getUserData()
@@ -205,7 +201,8 @@ const Profile = () => {
                 setItemPicture(result.assets![0].base64)
                 setBase64Icon(result.assets![0].base64 as string)
             } else if(type === 'profile') {
-                setProfilePicture(result.assets![0].base64)
+                //const test = Buffer.from(result.assets![0].base64 as string, "base64").toString('ascii')
+                setProfilePicture(result.assets![0].base64 as string)
                 setBase64Profile(result.assets![0].base64 as string)
                 profilePicChange()
             }
@@ -232,8 +229,9 @@ const Profile = () => {
         formData.append('profilePicture', profilePicture as string)
         /*console.log(formData)
         console.log(profilePicture)*/
-        console.log(body)
-        axios.put('/user/profilepicture', body)
+        axios.put('/user/profilepicture', body, {headers: {
+            "Content-Type": "multipart/form-data"
+            }})
             .then(() => {
                 ToastAndroid.showWithGravity('Profile picture updated', 2000, 1)
             }).catch((e) => {

@@ -19,6 +19,7 @@ import {AuthContext} from "../../contexts/authContext";
 import Animated, {FadeIn, FadeInUp} from "react-native-reanimated";
 import * as ImagePicker from 'expo-image-picker';
 import axios from "../../axios";
+import priceTier from "../../components/priceTier";
 
 const categories = ["OTHER", "VEHICLE", "HOME", "HOUSEHOLD", "ELECTRONICS", "FREETIME", "SPORT", "FASHION", "COLLECTIBLES", "PETS" ]
 
@@ -66,24 +67,27 @@ const ItemCreator = () => {
             allowsEditing: true,
             base64: true,
             aspect: [1, 1],
-            quality: 0.8,
+            quality: 0.6,
         });
 
-        if(result.canceled) {console.log('cancelled')} else {
+        if(result.canceled) {
+            console.log('cancelled')
+        } else {
+
             setImage(result.assets![0].base64)
             setBase64Icon(result.assets![0].base64 as string)
-            console.log(base64Icon)
-        console.log(image)
         }
-
-        /*if (!result.canceled) {
-            const uri = result.assets[0].uri;
-            const response = await fetch(uri);
-            const blob = await response.blob();
-            setImage(blob)
-            console.log(image)
-        }*/
+            /*console.log(base64Icon)
+            console.log(itemPicture)*/
     };
+
+    const body = {
+        title: title,
+        itemPicture: image as string,
+        description: description,
+        category: category as string,
+        priceTier: price.toString(),
+    }
 
 
     function handleSubmitEvent() {
@@ -97,7 +101,7 @@ const ItemCreator = () => {
 
         //console.log(formData)
 
-        axios.post('/item', formData, {
+        axios.post('/item', body, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 Authorization: 'Bearer ' + token?.token
@@ -163,7 +167,7 @@ const ItemCreator = () => {
 
                     <Animated.View className="backdrop:bg-gray-200 w-full h-40 justify-center rounded-2xl" entering={FadeInUp.delay(150).duration(600).springify()}>
                         <Pressable onPress={pickImage}>
-                            { image ? <Image style={{width: 150, height: 150}} className="self-center rounded-xl" source={{uri: "data:image/png;base64," + base64Icon}}/>
+                            { image ? <Image style={{width: 150, height: 150}} className="self-center rounded-xl" source={{uri: "data:image/png;base64," + image}}/>
                                 :
                                 <View className="self-center">
                                     <Icon size={100} source={"image"} color="#AAA"/>
@@ -186,7 +190,7 @@ const ItemCreator = () => {
                         }}/>
                     </Animated.View>
 
-                <View style={{flexDirection: "row", padding: 10}}>
+                <View className="flex-row p-2.5">
 
                     <Modal
                         animationType="slide"

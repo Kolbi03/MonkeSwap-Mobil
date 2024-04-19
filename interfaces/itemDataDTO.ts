@@ -1,5 +1,5 @@
 export  default interface itemDataDTO {
-    id: string;
+    id: number;
     title: string,
     itemPicture: string | undefined | null,
     description: string,

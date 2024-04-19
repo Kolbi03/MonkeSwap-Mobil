@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Modal, Pressable, ScrollView, Text, TextInput, ToastAndroid, View} from "react-native";
-import Styles from "../../Stylesheet";
+import {Modal, ScrollView, Text, TextInput, ToastAndroid, TouchableOpacity, View} from "react-native";
 import {AuthContext} from "../../contexts/authContext";
 import itemDataDTO from "../../interfaces/itemDataDTO";
 import ItemCard from "../../components/itemCard";
@@ -8,6 +7,7 @@ import SelectDropdown from "react-native-select-dropdown";
 import {HttpContext} from "../../provider/httpProvider";
 import {StatusBar} from "expo-status-bar";
 import Animated, {FadeInUp} from "react-native-reanimated";
+import {Buffer} from "buffer";
 
 const Homepage = () => {
 
@@ -19,12 +19,11 @@ const Homepage = () => {
     const [itemList, setItemList] = useState<itemDataDTO[]>();
     const [ownItemList, setOwnItemList] = useState<itemDataDTO[]>();
     const [visible, setVisible] = useState(false);
-    const [incomingItemId, setIncomingItemId] = useState<string>('')
+    const [incomingItemId, setIncomingItemId] = useState<number>(0)
     const [incomingItem, setIncomingItem] = useState<itemDataDTO>()
     const [username, setUsername] = useState('');
     const [userId, setUserId] = useState('');
     const [tradeOfferComment, setTradeOfferComment] = useState('')
-    //const image = Buffer.from(incomingItem?.itemPicture as string, 'base64').toString('ascii')
 
     const config = {
         headers: {
@@ -58,7 +57,7 @@ const Homepage = () => {
             .catch((e) => console.log(e))
     }
 
-    function sendOffer(offeredItemId: string) {
+    function sendOffer(offeredItemId: number) {
         setVisible(() => !visible)
         if(offeredItemId === null) {
             ToastAndroid.showWithGravity('NO ITEM SELECTED', 2000, 1)
@@ -113,7 +112,7 @@ const Homepage = () => {
         }
     }
 
-    function reportHandler(itemId: string) {
+    function reportHandler(itemId: number) {
         axios.put('/item/reports/' + itemId, {})
             .then()
             .catch((e) => ToastAndroid.showWithGravity(e.response.data, 2000, 1))
@@ -129,13 +128,11 @@ const Homepage = () => {
         loadOwnCards()
     }, [axios]);
 
-    const styles = Styles;
-
     return(
         <View className="bg-white h-full- w-full flex-1 px-4 pt-16">
             <StatusBar style="auto"/>
             <ScrollView>
-                <View style={{flexDirection: "column"}}>
+                <View className="flex-column">
                     <Animated.View className="flex-row pb-4">
                         <Text className="text-xl p-2 text-gray-800 pl-0 pr-20">Search: </Text>
                         <SelectDropdown buttonStyle={{borderRadius: 20}} defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories}
@@ -152,7 +149,7 @@ const Homepage = () => {
                             <ScrollView className="w-full">
                                 <View className="pb-8">
                                     <Animated.Text className="text-4xl font-bold text-center py-6 pt-12">{incomingItem?.title}</Animated.Text>
-                                    {/*<Image className="rounded-xl w-10/12 h-80 self-center" source={{uri: "data:image/png;base64," + image}} />*/}
+                                    {/*<Image className="rounded-xl w-10/12 h-80 self-center" source={{uri: "data:image/png;base64," + image}}/>*/}
                                 </View>
                                 <View className="flex-col w-full backdrop:bg-gray-200 rounded-2xl p-4">
                                     <Text className="text-xl py-2">Description: {incomingItem?.description}</Text>
@@ -166,14 +163,15 @@ const Homepage = () => {
                                     </View>
                                 </View>
 
-                                <Pressable onPress={() => reportHandler(incomingItemId)}>
-                                    <Text style={styles.pressButtonSmall}>Report</Text>
-                                </Pressable>
-
-                                {/*.sort((itemA, itemB) => itemB.id - itemA.id)*/}
+                                <Animated.View className="w-80 self-center bg-red-500 p-3 rounded-2xl my-4" entering={FadeInUp.delay(800).duration(600).springify()}>
+                                    <TouchableOpacity onPress={() => reportHandler(incomingItemId)}>
+                                        <Text className="text-xl font-bold text-white text-center">Report</Text>
+                                    </TouchableOpacity>
+                                </Animated.View>
 
                                 <View className="flex-row flex-wrap backdrop:bg-gray-200 rounded-2xl">
-                                    {ownItemList?.map((item, i ) =>
+                                    {ownItemList?.sort((itemA, itemB) => itemB.id - itemA.id)
+                                        .map((item, i ) =>
                                         <ItemCard key={i} userId={item.userId} buttonPressFunction={() => sendOffer(item.id)} id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
                                                   category={item.category} priceTier={item.priceTier} buttonText={'Send Offer'}/>)}
                                 </View>
@@ -183,8 +181,8 @@ const Homepage = () => {
                     </Modal>
                 </View>
                 <View className="flex-row flex-wrap">
-                    {itemList?.map((item, i) =>
-
+                    {itemList?.sort((itemA, itemB) => itemB.id - itemA.id)
+                        .map((item, i) =>
                         <ItemCard key={i} buttonPressFunction={() => modalHandler(item)} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
                                   category={item.category} priceTier={item.priceTier} buttonText={'Details'}/>)}
                 </View>

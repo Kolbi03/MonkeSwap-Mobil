@@ -7,5 +7,5 @@ export default interface userDataDTO {
     fullName: string,
     dateOfBirth: string,
     phoneNumber: string,
-    profilePicture: string |undefined |null,
+    profilePicture: string | undefined,
 }
