@@ -24,7 +24,6 @@ function ItemCard(item: itemDataDTO) {
                     <Card.Cover source={{uri: "data:image/png;base64," + image}}/>
                     <Card.Content>
                         <View>
-                            {/*<Text>{item.priceTier}</Text>*/}
                             <PriceTier tier={item.priceTier as number}/>
                         </View>
                     </Card.Content>

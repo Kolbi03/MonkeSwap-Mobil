@@ -63,8 +63,8 @@ const Homepage = () => {
         if(offeredItemId === null) {
             ToastAndroid.showWithGravity('NO ITEM SELECTED', 2000, 1)
         } else {
-            console.log('Offered item id: ' + offeredItemId)
-            console.log('Incoming item id: ' + incomingItemId)
+            /*console.log('Offered item id: ' + offeredItemId)
+            console.log('Incoming item id: ' + incomingItemId)*/
         }
 
         axios.post('/tradeoffer', {offeredItem: offeredItemId, incomingItem: incomingItemId, comment: tradeOfferComment} , config)
@@ -72,14 +72,19 @@ const Homepage = () => {
                 console.log('offeredItem: '  + offeredItemId + 'incomingItem: ' + incomingItemId)
                 ToastAndroid.showWithGravity('Trade offer sent!', 2000, 1)
                 setTradeOfferComment('');
-                axios.post('/notification', {message: username + ' sent you a trade request!', type: 'NOTIFICATION', userId: userId}, config)
+                axios.post('/notification', {message: username + ' sent you a trade request!', type: 'NOTIFICATION', userId: incomingItem?.userId}, config)
                     /*.then((response) => {
                         console.log(response.data)
                         console.log(username + ' ' + userId)
                     })*/
                     .catch((e) => console.log('Notification error: ' + e.response.data))
+
+
             })
             .catch((e) => ToastAndroid.showWithGravity(e.response.data, 2000, 1))
+
+
+
     }
 
     function modalHandler(item: itemDataDTO) {
