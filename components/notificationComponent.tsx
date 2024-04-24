@@ -2,13 +2,7 @@ import {Text, View} from "react-native";
 import React from "react";
 import Animated, {FadeInLeft} from "react-native-reanimated";
 import {Icon} from "react-native-paper";
-
-interface notificationDTO {
-    id: string,
-    type: 'WARNING' | 'NOTIFICATION',
-    message: string,
-    counter: number,
-}
+import notificationDTO from "../interfaces/notificationDTO";
 
 const NotificationComponent = (input: notificationDTO) => {
     return (

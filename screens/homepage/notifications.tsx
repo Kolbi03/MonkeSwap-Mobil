@@ -4,15 +4,9 @@ import React, {useContext, useEffect, useState} from "react";
 import {StatusBar} from "expo-status-bar";
 import {HttpContext} from "../../provider/httpProvider";
 import Animated, {FadeInUp} from "react-native-reanimated";
+import notificationDataDTO from "../../interfaces/notificationDataDTO";
 
 const Notifications = () => {
-
-    interface notificationDataDTO {
-        id: string,
-        message: string,
-        type: 'WARNING' | 'NOTIFICATION',
-        counter: number,
-    }
 
     const axios = useContext(HttpContext)
 

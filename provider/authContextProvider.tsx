@@ -35,7 +35,6 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
     }
 
     useEffect(()=> {
-
         setTokenIfExists().then()
     },[])
 

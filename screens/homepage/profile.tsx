@@ -35,7 +35,7 @@ const Profile = () => {
 
     const {token} = useContext(AuthContext);
     const {logout} = useContext(AuthContext);
-    const axios = useContext(HttpContext)
+    const axios = useContext(HttpContext);
 
     const [itemList, setItemList] = useState<itemDataDTO[]>();
     const [userData, setUserData] = useState<userDataDTO>();
@@ -45,10 +45,14 @@ const Profile = () => {
     const [dateOfBirth, setDateOfBirth] = useState(userData?.dateOfBirth)
     const [phoneNumber, setPhoneNumber] = useState(userData?.phoneNumber)
     const [profilePicture, setProfilePicture] = useState(userData?.profilePicture);
+    const [password, setPassword] = useState('')
+    const [passwordAgain, setPasswordAgain] = useState('')
 
     const [open, setOpen] = useState(false);
     const [visible, setVisible]= useState(false);
     const [editModalVisible, setEditModalVisible] = useState(false);
+    const [editPasswordModal, setEditPasswordModal] = useState(false);
+    const [editMenuModal, setEditMenuModal] = useState(false);
 
     const [selectedItem, setSelectedItem] = useState<itemDataDTO>();
 
@@ -63,28 +67,14 @@ const Profile = () => {
     const [banana4, setBanana4] = useState(false);
     const [banana5, setBanana5] = useState(false);
 
-    const config = {
-        headers: {
-            Authorization: 'Bearer ' + token?.token
-        }
-    }
-
-    const updateUserData: updateUserDTO = {
-        fullName: fullName,
-        username: username,
-        dateOfBirth: dateOfBirth,
-        phoneNumber: phoneNumber,
-        profilePicture: profilePicture,
-    }
-
     function handleUpdateUser() {
         updateUser();
         setVisible(!visible);
-        getUserData()
+        getUserData();
     }
 
     function loadCards() {
-        axios.get('/user/items', config)
+        axios.get('/user/items')
             .then((response) => {
                 //console.log(response.data);
                 setItemList(response.data);
@@ -96,7 +86,7 @@ const Profile = () => {
     function editOpenHandler(item: itemDataDTO) {
         setSelectedItem(item)
         setEditModalVisible(!editModalVisible)
-        axios.get('/item/' + item.id, config)
+        axios.get('/item/' + item.id)
             .then((response) => {
                 //console.log(response.data)
 
@@ -137,7 +127,7 @@ const Profile = () => {
     }
 
     const getUserData  = () => {
-        axios.get('/user', config)
+        axios.get('/user')
             .then((response) => {
                 setUserData(response.data)
                 setDateOfBirth(userData?.dateOfBirth)
@@ -150,7 +140,7 @@ const Profile = () => {
     }
 
     function userDeleteHandler() {
-        axios.delete('/user', config)
+        axios.delete('/user')
             .then(response => {
                 console.log(response.data)
                 logout();
@@ -159,13 +149,43 @@ const Profile = () => {
     }
 
     function updateUser() {
-        axios.put('/user', updateUserData, config)
+
+        const updateUserData: updateUserDTO = {
+            fullName: fullName,
+            username: username,
+            dateOfBirth: dateOfBirth,
+            phoneNumber: phoneNumber,
+            profilePicture: profilePicture,
+        }
+
+        axios.put('/user', updateUserData)
             .then(() => {
                 ToastAndroid.showWithGravity('Profile data updated!', 2000, ToastAndroid.CENTER)
                 getUserData()
             })
             .catch((e) => console.log(e.response.data))
         //console.log(updateUserData)
+    }
+
+    function changePassword() {
+        if(password.trim() === '' || passwordAgain.trim() === '') {
+            ToastAndroid.showWithGravity('Password field can not be empty', 2000, 1)
+        } else {
+            console.log(password)
+            if (password === passwordAgain) {
+                const body = {
+                    password: password
+                }
+                axios.put('/user/password', body)
+                    .then(() => {
+                        ToastAndroid.showWithGravity('Password changed succesfully', 2000, 1)
+                        setEditPasswordModal(false)
+                    })
+                    .catch((e) => console.log(e))
+            } else {
+                ToastAndroid.showWithGravity('Passwords must match', 2000, 1)
+            }
+        }
     }
 
     const pickImage = async (type: string) => {
@@ -202,7 +222,7 @@ const Profile = () => {
     };
 
     function deleteItem() {
-        axios.delete('/item/' + selectedItem?.id, config)
+        axios.delete('/item/' + selectedItem?.id)
             .then(() => {
                 setEditModalVisible(!editModalVisible)
                 loadCards()
@@ -273,7 +293,7 @@ const Profile = () => {
                     </Animated.View>
                     <View className="flex-row self-center space-x-1 mt-4">
                         <Animated.View entering={FadeInUp.delay(300).duration(600).springify()}>
-                            <TouchableOpacity className="w-32 bg-amber-300 p-3 rounded-2xl" onPress={() => setVisible(true)}>
+                            <TouchableOpacity className="w-32 bg-amber-300 p-3 rounded-2xl" onPress={() => setEditMenuModal(true)}>
                                 <Text className="text-l text-white text-center">Edit profile</Text>
                             </TouchableOpacity>
                         </Animated.View >
@@ -298,7 +318,7 @@ const Profile = () => {
                             <View>
                                 <KeyboardAwareScrollView className="space-y-4">
                                     <Animated.View entering={FadeInUp.delay(200).duration(600).springify()}>
-                                        <Text className="text-3xl my-20 font-bold text-center">Edit profile</Text>
+                                        <Text className="text-4xl my-20 font-bold text-center">Edit profile</Text>
                                     </Animated.View>
 
                                     <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(250).duration(600).springify()}>
@@ -341,7 +361,7 @@ const Profile = () => {
                                         </TouchableOpacity>
                                     </Animated.View>
 
-                                    <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(550).duration(600).springify()}>
+                                    <Animated.View className="w-full bg-red-500 p-3 rounded-2xl" entering={FadeInUp.delay(550).duration(600).springify()}>
                                         <TouchableOpacity onPress={userDeleteHandler}>
                                             <Text className="text-xl font-bold text-white text-center">Delete user</Text>
                                         </TouchableOpacity>
@@ -473,6 +493,61 @@ const Profile = () => {
 
                                 </KeyboardAwareScrollView>
                             </View>
+                        </View>
+                    </Modal>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={editMenuModal}
+                        onRequestClose={() => {
+                            setEditMenuModal(false)
+                        }}>
+                        <View className="h-1/6 backdrop: bg-white mt-auto rounded-2xl w-full flex-row items-center space-x-4 justify-center">
+                            <Animated.View className="w-2/5 bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(150).duration(600).springify()}>
+                                <TouchableOpacity onPress={() => {
+                                    setVisible(true)
+                                    setEditMenuModal(false)
+                                }}>
+                                    <Text className="text-lg font-bold text-white text-center">Edit Profile</Text>
+                                </TouchableOpacity>
+                            </Animated.View>
+                            <Animated.View className="w-2/5 bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(200).duration(600).springify()}>
+                                <TouchableOpacity onPress={() => {
+                                    setEditPasswordModal(true)
+                                    setEditMenuModal(false)
+                                }}>
+                                    <Text className="text-lg font-bold text-white text-center">Edit Password</Text>
+                                </TouchableOpacity>
+                            </Animated.View>
+                        </View>
+                    </Modal>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={editPasswordModal}
+                        onRequestClose={() => {
+                            setEditMenuModal(false)
+                        }}>
+                        <View className="h-full backdrop: bg-white mt-auto rounded-2xl w-full flex space-y-4 px-4 items-center justify-center">
+                            <Text className="font-bold text-4xl text-center my-20">
+                                Change password
+                            </Text>
+                            <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(200).duration(600).springify()}>
+                                <TextInput placeholder='Password' placeholderTextColor={'gray'} secureTextEntry={true} autoCapitalize={"none"} onChangeText={(text) => setPassword(text)}/>
+                            </Animated.View>
+                            <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(250).duration(600).springify()}>
+                                <TextInput placeholder='Password again' placeholderTextColor={'gray'} secureTextEntry={true} autoCapitalize={"none"} onChangeText={(text) => setPasswordAgain(text)}/>
+                            </Animated.View>
+                            <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(300).duration(600).springify()}>
+                                <TouchableOpacity onPress={changePassword}>
+                                    <Text className="text-xl font-bold text-white text-center">Change password</Text>
+                                </TouchableOpacity>
+                            </Animated.View>
+                            <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(800).duration(600).springify()}>
+                                <TouchableOpacity onPress={() => setEditPasswordModal(false)}>
+                                    <Text className="text-xl font-bold text-white text-center">Close</Text>
+                                </TouchableOpacity>
+                            </Animated.View>
                         </View>
                     </Modal>
                     <View className="p-4">
