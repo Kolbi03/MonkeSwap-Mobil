@@ -19,7 +19,6 @@ import {AuthContext} from "../../contexts/authContext";
 import Animated, {FadeIn, FadeInUp} from "react-native-reanimated";
 import * as ImagePicker from 'expo-image-picker';
 import axios from "../../axios";
-import priceTier from "../../components/priceTier";
 
 const categories = ["OTHER", "VEHICLE", "HOME", "HOUSEHOLD", "ELECTRONICS", "FREETIME", "SPORT", "FASHION", "COLLECTIBLES", "PETS" ]
 

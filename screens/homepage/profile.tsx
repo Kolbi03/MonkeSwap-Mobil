@@ -1,4 +1,3 @@
-import Styles from "../../Stylesheet";
 import {
     Dimensions,
     Image,
@@ -24,19 +23,11 @@ import {StatusBar} from "expo-status-bar";
 import Animated, {FadeIn, FadeInUp} from "react-native-reanimated";
 import {Icon} from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
-
-const styles = Styles;
+import updateUserDTO from "../../interfaces/updateUserDTO";
+import {Buffer} from "buffer";
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
-
-interface updateUserDTO {
-    fullName: string | undefined,
-    username: string | undefined,
-    dateOfBirth: string |undefined,
-    phoneNumber: string | undefined,
-    profilePicture: string |undefined,
-}
 
 const Profile = () => {
 
@@ -61,14 +52,11 @@ const Profile = () => {
 
     const [selectedItem, setSelectedItem] = useState<itemDataDTO>();
 
-    const [itemTitle, setItemTitle] = useState(selectedItem?.title);
-    const [itemDescription, setItemDescription] = useState(selectedItem?.description);
-    const [itemPriceTier, setItemPriceTier] = useState(selectedItem?.priceTier);
-    const [itemCategory, setItemCategory] = useState(selectedItem?.category);
-    const [itemPicture, setItemPicture] = useState(selectedItem?.itemPicture);
-
-    const [base64Icon, setBase64Icon] = useState('')
-    const [base64Profile, setBase64Profile] = useState('')
+    const [itemTitle, setItemTitle] = useState('');
+    const [itemDescription, setItemDescription] = useState('');
+    const [itemPriceTier, setItemPriceTier] = useState('');
+    const [itemCategory, setItemCategory] = useState('');
+    const [itemPicture, setItemPicture] = useState('');
 
     const [banana2, setBanana2] = useState(false);
     const [banana3, setBanana3] = useState(false);
@@ -106,16 +94,17 @@ const Profile = () => {
     }
 
     function editOpenHandler(item: itemDataDTO) {
+        setSelectedItem(item)
         setEditModalVisible(!editModalVisible)
         axios.get('/item/' + item.id, config)
             .then((response) => {
-                console.log(response.data)
-                setSelectedItem(response.data)
-                setItemPriceTier(selectedItem?.priceTier)
-                setItemTitle(selectedItem?.title)
-                setItemDescription(selectedItem?.description)
-                setItemPicture(selectedItem?.itemPicture)
-                setItemCategory(selectedItem?.category)
+                //console.log(response.data)
+
+                setItemPriceTier(response.data.priceTier.toString())
+                setItemTitle(response.data.title)
+                setItemDescription(response.data.description)
+                setItemPicture(Buffer.from(response.data.itemPicture as string, 'base64').toString('ascii'))
+                setItemCategory(response.data.category)
             })
             .catch((e) => console.log(e))
     }
@@ -127,7 +116,7 @@ const Profile = () => {
         formData.append('itemPicture', itemPicture as string);
         formData.append('description', itemDescription as string);
         formData.append('category', itemCategory as string);
-        formData.append('priceTier', itemPriceTier as string);
+        formData.append('priceTier', itemPriceTier?.toString());
 
         //console.log(formData)
 
@@ -143,20 +132,19 @@ const Profile = () => {
                 ToastAndroid.showWithGravity('Item updated!', 2000, 1)
                 setEditModalVisible(!editModalVisible)
             }).catch((e) => {
-            console.log(e)
+            console.log(e.response.data)
         });
     }
 
     const getUserData  = () => {
         axios.get('/user', config)
             .then((response) => {
-                //console.log(response.data);
                 setUserData(response.data)
-                setDateOfBirth(userData!.dateOfBirth)
+                setDateOfBirth(userData?.dateOfBirth)
                 setUsername(userData?.username)
                 setFullName(userData?.fullName)
                 setPhoneNumber(userData?.phoneNumber)
-
+                setProfilePicture(response.data.profilePicture as string)
             })
             .catch((e) => console.log(e))
     }
@@ -169,11 +157,6 @@ const Profile = () => {
             })
             .catch(e => console.log(e))
     }
-
-    useEffect(() => {
-        loadCards();
-        getUserData()
-    }, []);
 
     function updateUser() {
         axios.put('/user', updateUserData, config)
@@ -198,19 +181,25 @@ const Profile = () => {
             console.log('cancelled')
         } else {
             if(type === 'item') {
-                setItemPicture(result.assets![0].base64)
-                setBase64Icon(result.assets![0].base64 as string)
+                setItemPicture(result.assets![0].base64 as string)
             } else if(type === 'profile') {
                 setProfilePicture(result.assets![0].base64 as string)
-                setBase64Profile(result.assets![0].base64 as string)
-                profilePicChange()
+
+                const body = {
+                    profilePicture: result.assets![0].base64 as string
+                }
+
+                axios.put('/user/profilepicture', body, {headers: {
+                        "Content-Type": "multipart/form-data"
+                    }})
+                    .then(() => {
+                        ToastAndroid.showWithGravity('Profile picture updated', 2000, 1)
+                    }).catch((e) => {
+                    console.log(e)
+                });
             }
         }
     };
-
-    const body = {
-        profilePicture: profilePicture
-    }
 
     function deleteItem() {
         axios.delete('/item/' + selectedItem?.id, config)
@@ -221,18 +210,13 @@ const Profile = () => {
             .catch((e) => console.log(e))
     }
 
-    function profilePicChange() {
-        console.log(body.profilePicture)
+    useEffect(() => {
+        loadCards();
+    }, [editModalVisible]);
 
-        axios.put('/user/profilepicture', body, {headers: {
-            "Content-Type": "multipart/form-data"
-            }})
-            .then(() => {
-                ToastAndroid.showWithGravity('Profile picture updated', 2000, 1)
-            }).catch((e) => {
-            console.log(e)
-        });
-    }
+    useEffect(() => {
+        getUserData()
+    }, [profilePicture]);
 
     useEffect(() => {
         switch (itemPriceTier) {
@@ -279,10 +263,10 @@ const Profile = () => {
                     </Animated.View>
                     <Animated.View className="my-2" entering={FadeInUp.delay(200).duration(600).springify()}>
                         <Pressable onPress={() => pickImage('profile')}>
-                            { profilePicture ? <Image style={{width: 150, height: 150}} className="self-center rounded-full" source={{uri: "data:image/png;base64," + base64Profile}}/>
+                            { profilePicture ? <Image style={{width: 120, height: 120}} className="self-center rounded-full" source={{uri: "data:image/png;base64," + Buffer.from(profilePicture as string, 'base64').toString('ascii')}}/>
                                 :
                                 <View className="self-center">
-                                    <Icon size={100} source={"image"} color="#AAA"/>
+                                    <Icon size={120} source={"image"} color="#AAA"/>
                                 </View>
                             }
                         </Pressable>
@@ -387,7 +371,7 @@ const Profile = () => {
                         onRequestClose={() => {
                             setVisible(!visible);
                         }}>
-                        <View style={styles.container}>
+                        <View className="flex backdrop:bg-white p-2 items-center">
 
                             <View>
                                 <KeyboardAwareScrollView>
@@ -396,16 +380,16 @@ const Profile = () => {
                                     <View className="space-y-4">
 
                                         <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(200).duration(600).springify()}>
-                                            <TextInput placeholder={'Title'} defaultValue={selectedItem?.title} onChangeText={text => setItemTitle(text)} placeholderTextColor={'gray'}/>
+                                            <TextInput placeholder={'Title'} defaultValue={itemTitle} onChangeText={text => setItemTitle(text)} placeholderTextColor={'gray'}/>
                                         </Animated.View>
 
                                         <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(250).duration(600).springify()}>
-                                            <TextInput placeholder={'Description'} defaultValue={selectedItem?.description} onChangeText={text => setItemDescription(text)} placeholderTextColor={'gray'}/>
+                                            <TextInput placeholder={'Description'} defaultValue={itemDescription} onChangeText={text => setItemDescription(text)} placeholderTextColor={'gray'}/>
                                         </Animated.View>
 
-                                        <Animated.View className="backdrop:bg-gray-200 w-full h-40 justify-center rounded-2xl" entering={FadeInUp.delay(150).duration(600).springify()}>
+                                        <Animated.View className="backdrop:bg-gray-200 w-full h-40 justify-center rounded-2xl" entering={FadeInUp.delay(300).duration(600).springify()}>
                                             <Pressable onPress={() => pickImage('item')}>
-                                                { itemPicture ? <Image style={{width: 150, height: 150}} className="self-center rounded-xl" source={{uri: "data:image/png;base64," + base64Icon}}/>
+                                                { itemPicture ? <Image style={{width: 150, height: 150}} className="self-center rounded-xl" source={{uri: "data:image/png;base64," + itemPicture}}/>
                                                     :
                                                     <View className="self-center">
                                                         <Icon size={100} source={"image"} color="#AAA"/>
@@ -414,14 +398,14 @@ const Profile = () => {
                                             </Pressable>
                                         </Animated.View>
                                         <Animated.View className="w-full items-center" entering={FadeInUp.delay(350).duration(600).springify()}>
-                                            <SelectDropdown buttonStyle={{borderRadius: 14, backgroundColor: 'rgb(252 211 77)'}} buttonTextStyle={{color: "#FFF", fontWeight: "bold"}} defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories} defaultValue={selectedItem?.category} onSelect={(selectedItem) => {
+                                            <SelectDropdown buttonStyle={{borderRadius: 14, backgroundColor: 'rgb(252 211 77)'}} buttonTextStyle={{color: "#FFF", fontWeight: "bold"}} defaultButtonText={"Choose a category"} searchPlaceHolder={"Search"} data={categories} defaultValue={itemCategory} onSelect={(selectedItem) => {
                                                 setItemCategory(selectedItem);
                                             }}/>
                                         </Animated.View>
 
                                         <View className="flex-row w-full h-24">
 
-                                            <Animated.View entering={FadeInUp.delay(600).duration(600).springify()}>
+                                            <Animated.View entering={FadeInUp.delay(400).duration(600).springify()}>
                                                 <Pressable onPress={() => {
                                                     setItemPriceTier('1')
                                                 }}>
@@ -429,7 +413,7 @@ const Profile = () => {
                                                 </Pressable>
                                             </Animated.View>
 
-                                            <Animated.View entering={FadeInUp.delay(640).duration(600).springify()}>
+                                            <Animated.View entering={FadeInUp.delay(440).duration(600).springify()}>
                                                 <Pressable onPress={() => {
                                                     setItemPriceTier('2')
                                                 }}>
@@ -437,7 +421,7 @@ const Profile = () => {
                                                 </Pressable>
                                             </Animated.View>
 
-                                            <Animated.View entering={FadeInUp.delay(680).duration(600).springify()}>
+                                            <Animated.View entering={FadeInUp.delay(480).duration(600).springify()}>
                                                 <Pressable onPress={() => {
                                                     setItemPriceTier('3')
                                                 }}>
@@ -445,7 +429,7 @@ const Profile = () => {
                                                 </Pressable>
                                             </Animated.View>
 
-                                            <Animated.View entering={FadeInUp.delay(720).duration(600).springify()}>
+                                            <Animated.View entering={FadeInUp.delay(520).duration(600).springify()}>
                                                 <Pressable onPress={() => {
                                                     setItemPriceTier('4')
                                                 }}>
@@ -453,7 +437,7 @@ const Profile = () => {
                                                 </Pressable>
                                             </Animated.View>
 
-                                            <Animated.View entering={FadeInUp.delay(760).duration(600).springify()}>
+                                            <Animated.View entering={FadeInUp.delay(560).duration(600).springify()}>
                                                 <Pressable onPress={() => {
                                                     setItemPriceTier('5')
                                                 }}>
