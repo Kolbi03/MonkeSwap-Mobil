@@ -8,11 +8,10 @@ import {
     ToastAndroid,
     View,
     Modal,
-    TouchableOpacity
+    TouchableOpacity, ScrollView
 } from "react-native";
 import {StatusBar} from "expo-status-bar";
 import SelectDropdown from 'react-native-select-dropdown'
-import Styles from "../../Stylesheet";
 import {Icon, Provider, Text} from 'react-native-paper';
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {AuthContext} from "../../contexts/authContext";
@@ -27,7 +26,6 @@ const screenWidth = Dimensions.get('window').width;
 
 // @ts-ignore
 const ItemCreator = () => {
-    const styles = Styles;
 
     const {token} = useContext(AuthContext);
 
@@ -37,7 +35,6 @@ const ItemCreator = () => {
     const [image, setImage] = useState<string | null |undefined>('');
     const [category, setCategory] = useState('');
     const [price, setPrice] = useState('');
-    const [base64Icon, setBase64Icon] = useState('');
 
     const [banana2, setBanana2] = useState(false);
     const [banana3, setBanana3] = useState(false);
@@ -72,9 +69,7 @@ const ItemCreator = () => {
         if(result.canceled) {
             console.log('cancelled')
         } else {
-
             setImage(result.assets![0].base64)
-            setBase64Icon(result.assets![0].base64 as string)
         }
             /*console.log(base64Icon)
             console.log(itemPicture)*/
@@ -150,6 +145,7 @@ const ItemCreator = () => {
         }
     }, [price]);
 
+    const banana = <Image source={require('../../assets/peeled_banana.png')} className="h-8 w-8 m-0 p-0"/>
 
         return(
         <Provider>
@@ -199,15 +195,40 @@ const ItemCreator = () => {
                         onRequestClose={() => {
                             setVisible(!visible);
                         }}>
-                        <View style={styles.container}>
-                            <View>
-                            <Text style={styles.text}>Price categories placeholder</Text>
-                            <Pressable
-                                style={styles.pressButton}
-                                onPress={() => setVisible(!visible)}>
-                                <Text style={styles.text}>Back</Text>
-                            </Pressable>
-                            </View>
+                        <View className="h-full w-full p-3">
+                            <ScrollView className="space-y-3">
+                                <Text className="font-bold text-3xl text-center pt-2">
+                                    Price Tier Guide
+                                </Text>
+                                <Text className="p-2 pl-0 text-lg text-justify">Price tiers are purely indicational.
+                                    On creation you select a price category and it will show up on the card.
+                                </Text>
+                                <Text className="p-2 pl-0 text-xl font-bold">
+                                    The price tiers are as follows:
+                                </Text>
+                                <Text className="text-lg text-justify backdrop:bg-gray-300 rounded-2xl p-2">
+                                    {banana} Cheaper items, such as books, household items and food
+                                </Text>
+                                <Text className="text-lg text-justify backdrop:bg-gray-300 rounded-2xl p-2">
+                                    {banana} {banana} Medium-low value items, such as chargers, headphones and cologne/perfume
+                                </Text>
+                                <Text className="text-lg text-justify backdrop:bg-gray-300 rounded-2xl p-2">
+                                    {banana} {banana} {banana} Medium value items, such as wristwatches, television and suits
+                                </Text>
+                                <Text className="text-lg text-justify backdrop:bg-gray-300 rounded-2xl p-2">
+                                    {banana} {banana} {banana} {banana} Medium-high value items, such as furniture and old cars
+                                </Text>
+                                <Text className="text-lg text-justify backdrop:bg-gray-300 rounded-2xl p-2">
+                                    {banana} {banana} {banana} {banana} {banana} Expensive items, such as new cars, high-end watches and everything above
+                                </Text>
+                                <View className="w-full bg-amber-300 p-3 rounded-2xl">
+                                    <TouchableOpacity onPress={() => {
+                                        setVisible(!visible)
+                                    }}>
+                                        <Text className="text-xl font-bold text-white text-center">Close</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </ScrollView>
                         </View>
                     </Modal>
 
