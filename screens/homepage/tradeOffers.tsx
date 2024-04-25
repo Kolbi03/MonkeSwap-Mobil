@@ -60,7 +60,7 @@ const TradeOffers = () => {
     return (
         <View className="bg-white items-center h-full- w-full flex-1 p-2 pt-16">
             <StatusBar style="auto"/>
-            <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(150).duration(600).springify()}>
+            <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl mb-4" entering={FadeInUp.delay(150).duration(600).springify()}>
                 <TouchableOpacity onPress={ () =>
                      setVisible(!visible)
                 }>

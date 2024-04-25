@@ -503,7 +503,7 @@ const Profile = () => {
                             setEditMenuModal(false)
                         }}>
                         <View className="h-1/6 backdrop: bg-white mt-auto rounded-2xl w-full flex-row items-center space-x-4 justify-center">
-                            <Animated.View className="w-2/5 bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(150).duration(600).springify()}>
+                            <Animated.View className="w-2/5 bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(0).duration(600).springify()}>
                                 <TouchableOpacity onPress={() => {
                                     setVisible(true)
                                     setEditMenuModal(false)
@@ -511,7 +511,7 @@ const Profile = () => {
                                     <Text className="text-lg font-bold text-white text-center">Edit Profile</Text>
                                 </TouchableOpacity>
                             </Animated.View>
-                            <Animated.View className="w-2/5 bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(200).duration(600).springify()}>
+                            <Animated.View className="w-2/5 bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(0).duration(600).springify()}>
                                 <TouchableOpacity onPress={() => {
                                     setEditPasswordModal(true)
                                     setEditMenuModal(false)
@@ -543,7 +543,7 @@ const Profile = () => {
                                     <Text className="text-xl font-bold text-white text-center">Change password</Text>
                                 </TouchableOpacity>
                             </Animated.View>
-                            <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(800).duration(600).springify()}>
+                            <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(350).duration(600).springify()}>
                                 <TouchableOpacity onPress={() => setEditPasswordModal(false)}>
                                     <Text className="text-xl font-bold text-white text-center">Close</Text>
                                 </TouchableOpacity>
@@ -554,7 +554,7 @@ const Profile = () => {
                         <View className="flex-row flex-wrap">
                             {itemList?.map((item, i) =>
 
-                                <ItemCard key={i} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
+                                <ItemCard key={i} id={item.id} views={item.views} state={item.state} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
                                           category={item.category} priceTier={item.priceTier} buttonPressFunction={() => editOpenHandler(item)} buttonText={'Edit'}/>)}
                         </View>
                     </View>

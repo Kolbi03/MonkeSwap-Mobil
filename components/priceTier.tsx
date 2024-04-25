@@ -8,21 +8,17 @@ interface PriceTierProps {
 function PriceTier({ tier }: PriceTierProps) {
 
 
-    const asd = new Array(tier);
-    for(let i = 0; i<tier; i++) {
-        asd[i] = 0;
+    const priceTier = new Array(tier);
+    for(let i = 0; i < tier; i++) {
+        priceTier[i] = 0;
     }
     // @ts-ignore
     return (
-        <View className="flex-row flex-wrap">
-
-
-            {asd
+        <View className="flex-row flex-wrap pt-2 justify-center">
+            {priceTier
                 .map((item, index) => (
-                    <Image key={index} source={require('../assets/peeled_banana.png')} style={{height: 35, width: 35}}/>
+                    <Image key={index} source={require('../assets/peeled_banana.png')} style={{height: 29, width: 29}}/>
                 ))}
-
-
         </View>
     );
 }

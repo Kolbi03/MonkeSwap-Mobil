@@ -185,7 +185,7 @@ const Homepage = () => {
                                 <View className="flex-row flex-wrap backdrop:bg-gray-200 rounded-2xl">
                                     {ownItemList?.sort((itemA, itemB) => itemB.id - itemA.id)
                                         .map((item, i ) =>
-                                        <ItemCard key={i} userId={item.userId} buttonPressFunction={() => sendOffer(item.id)} id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
+                                        <ItemCard key={i} views={item.views} state={item.state} userId={item.userId} buttonPressFunction={() => sendOffer(item.id)} id={item.id} title={item.title} itemPicture={item.itemPicture} description={item.description}
                                                   category={item.category} priceTier={item.priceTier} buttonText={'Send Offer'}/>)}
                                 </View>
 
@@ -196,7 +196,7 @@ const Homepage = () => {
                 <View className="flex-row flex-wrap">
                     {itemList?.sort((itemA, itemB) => itemB.id - itemA.id)
                         .map((item, i) =>
-                        <ItemCard key={i} buttonPressFunction={() => modalHandler(item)} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
+                        <ItemCard key={i} views={item.views} state={item.state} buttonPressFunction={() => modalHandler(item)} id={item.id} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
                                   category={item.category} priceTier={item.priceTier} buttonText={'Details'}/>)}
                 </View>
             </ScrollView>

@@ -8,4 +8,6 @@ export  default interface itemDataDTO {
     userId: string,
     buttonText: string,
     buttonPressFunction: () => void,
+    state: "ENABLED" |"DISABLED",
+    views: number,
 }

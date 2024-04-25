@@ -1,5 +1,5 @@
-import {Card} from "react-native-paper";
-import {ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {Card, Icon} from "react-native-paper";
+import {ScrollView, Text, ToastAndroid, TouchableOpacity, View} from "react-native";
 import React, {useState} from "react";
 import Styles from '../Stylesheet';
 import itemDataDTO from "../interfaces/itemDataDTO";
@@ -17,14 +17,17 @@ function ItemCard(item: itemDataDTO) {
 
 
     return (
-        <Card onPress={() => setPressed(!pressed)} mode={"elevated"} style={styles.card}>
+        <Card onPress={() => { item.state === "ENABLED" ? setPressed(!pressed) : ToastAndroid.showWithGravity('This item is disabled', 2000, 1)}} mode={"elevated"}
+              className={`${item.state === "ENABLED" ? "opacity-100" : "opacity-60"}`} style={styles.card}>
             {pressed ?
                 <Animated.View entering={FadeIn.duration(250)}>
                     <Card.Title className="text-l font-bold" title={item.title}/>
                     <Card.Cover source={{uri: "data:image/png;base64," + image}}/>
                     <Card.Content>
-                        <View>
-                            <PriceTier tier={item.priceTier as number}/>
+                        <PriceTier tier={item.priceTier as number}/>
+                        <View className="align-middle pt-2 items-end pr-2">
+                            <Icon size={10} source={"eye"}/>
+                            <Text className="text-sm">{item.views}</Text>
                         </View>
                     </Card.Content>
                 </Animated.View>
@@ -43,7 +46,6 @@ function ItemCard(item: itemDataDTO) {
                                 <Text className="text-xl font-bold text-white text-center">Details</Text>
                             </TouchableOpacity>
                         </View>
-
                     </Card.Content>
                     </ScrollView>
                 </Animated.View>
