@@ -20,7 +20,6 @@ const TradeOffers = () => {
         axios.get('tradeoffer/incoming')
             .then((response) => {
                 setIncomingOffers(response.data)
-                //console.log(response.data)
             })
             .catch((e) => console.log(e))
     }
@@ -38,8 +37,6 @@ const TradeOffers = () => {
         getIncoming()
         setTradeOfferType(TradeOfferEnum.Incoming)
         setVisible(!visible)
-        /*console.log(tradeOfferType)
-        console.log(incomingOffers)*/
     }
 
     function sentOffersButton() {
@@ -51,7 +48,6 @@ const TradeOffers = () => {
     }
 
     useEffect(() => {
-        //setVisible(true)
         getOffered()
         getIncoming()
     }, [axios]);

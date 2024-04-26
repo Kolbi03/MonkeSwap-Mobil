@@ -1,12 +1,12 @@
-import {Image, Modal, Pressable, ScrollView, Text, View} from "react-native";
+import {Image, Modal, Pressable, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import TradeOfferDTO from "../interfaces/tradeOfferDTO";
 import React, {useContext, useEffect, useState} from "react";
 import {HttpContext} from "../provider/httpProvider";
 import itemDataDTO from "../interfaces/itemDataDTO";
-import Styles from "../Stylesheet";
 import Animated, {FadeInLeft} from "react-native-reanimated";
 import {Icon} from "react-native-paper";
 import {Buffer} from "buffer";
+import PriceTier from "./priceTier";
 
 const TradeOfferComponent = (item: TradeOfferDTO) => {
 
@@ -134,26 +134,42 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
                     //presentationStyle={"overFullScreen"}
                     visible={incomingVisible}
                     onRequestClose={() => setIncomingVisible(!incomingVisible)}>
-                    <ScrollView style={{backgroundColor: "#FFF", borderRadius: 0, flex: 1}}>
-                        <Image style={{width: 150, height: 150}} className="self-center rounded-xl" source={{uri: "data:image/png;base64," + Buffer.from(incomingImage as string, 'base64').toString('ascii')}} />
-                        <Text className="text-xl"> Name: {incomingItemData?.title}</Text>
-                        <Text className="text-xl"> Description: {incomingItemData?.description}</Text>
-                        <Text className="text-xl"> Category: {incomingItemData?.category}</Text>
-                        <Text className="text-xl"> Price Tier: {incomingItemData?.priceTier}</Text>
+                    <ScrollView className="backdrop:bg-white flex p-4">
+                        <Text className="text-center font-bold text-3xl">Incoming item:</Text>
+                        <Image style={{width: 150, height: 150}} className="self-center rounded-xl align-middle my-4" source={{uri: "data:image/png;base64," + Buffer.from(outgoingImage as string, 'base64').toString('ascii')}} />
+                        <View className="backdrop:bg-gray-300 my-4 rounded-2xl p-1 space-y-2">
+                            <Text className="text-2xl font-bold text-center">{offeredItemData?.title}</Text>
+                            <Text className="text-xl text-center">{offeredItemData?.description}</Text>
+                            <View className="flex-row pb-2 pl-4 w-full justify-between px-4">
+                                <PriceTier tier={offeredItemData?.priceTier as number}/>
+                                <Text className="text-lg text-gray-500 pt-2">{offeredItemData?.category}</Text>
+                            </View>
+                        </View>
 
-                        <Image style={{width: 150, height: 150}} className="self-center rounded-xl" source={{uri: "data:image/png;base64," + Buffer.from(outgoingImage as string, 'base64').toString('ascii')}} />
-                        <Text className="text-xl"> Name: {offeredItemData?.title}</Text>
-                        <Text className="text-xl"> Description: {offeredItemData?.description}</Text>
-                        <Text className="text-xl"> Category: {offeredItemData?.category}</Text>
-                        <Text className="text-xl"> Price Tier: {offeredItemData?.priceTier}</Text>
+                        <Text className="text-center font-bold text-3xl">Outgoing item:</Text>
+                        <Image style={{width: 150, height: 150}} className="self-center rounded-xl align-middle my-4" source={{uri: "data:image/png;base64," + Buffer.from(incomingImage as string, 'base64').toString('ascii')}} />
+                        <View className="backdrop:bg-gray-300 my-4 rounded-2xl p-1 space-y-2">
+                            <Text className="text-2xl font-bold text-center">{incomingItemData?.title}</Text>
+                            <Text className="text-xl text-center">{incomingItemData?.description}</Text>
+                            <View className="flex-row pb-2 pl-4 w-full justify-between px-4">
+                                <PriceTier tier={incomingItemData?.priceTier as number}/>
+                                <Text className="text-lg text-gray-500 pt-2">{incomingItemData?.category}</Text>
+                            </View>
+                        </View>
+                        <Text className="font-bold text-xl text-center pb-4">Sender's comment: {item.comment}</Text>
 
-
-                        <Pressable onPress={acceptOffer}>
-                            <Text style={Styles.pressButton}>Accept Offer</Text>
-                        </Pressable>
-                        <Pressable onPress={declineOffer}>
-                            <Text style={Styles.pressButton}>Decline Offer</Text>
-                        </Pressable>
+                        <View className="space-y-4">
+                            <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl">
+                                <TouchableOpacity onPress={acceptOffer}>
+                                    <Text className="text-xl font-bold text-white text-center">Accept offer</Text>
+                                </TouchableOpacity>
+                            </Animated.View>
+                            <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl mb-8">
+                                <TouchableOpacity onPress={declineOffer}>
+                                    <Text className="text-xl font-bold text-white text-center">Decline offer</Text>
+                                </TouchableOpacity>
+                            </Animated.View>
+                        </View>
                     </ScrollView>
                 </Modal>
             </>
@@ -183,23 +199,38 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
                         //presentationStyle={"overFullScreen"}
                         visible={offeredVisible}
                         onRequestClose={() => setOfferedVisible(!offeredVisible)}>
-                        <ScrollView style={{backgroundColor: "#FFF", borderRadius: 0, flex: 1}}>
-                            <Image style={{width: 150, height: 150}} className="self-center rounded-xl" source={{uri: "data:image/png;base64," + Buffer.from(incomingImage as string, 'base64').toString('ascii')}} />
-                            <Text className="text-xl"> Name: {incomingItemData?.title}</Text>
-                            <Text className="text-xl"> Description: {incomingItemData?.description}</Text>
-                            <Text className="text-xl"> Category: {incomingItemData?.category}</Text>
-                            <Text className="text-xl"> Price Tier: {incomingItemData?.priceTier}</Text>
+                        <ScrollView className="backdrop:bg-white flex p-4">
+                            <Text className="text-center font-bold text-3xl">Incoming item:</Text>
+                            <Image style={{width: 150, height: 150}} className="self-center rounded-xl align-middle my-4" source={{uri: "data:image/png;base64," + Buffer.from(outgoingImage as string, 'base64').toString('ascii')}} />
+                            <View className="backdrop:bg-gray-300 my-4 rounded-2xl p-1 space-y-2">
+                                <Text className="text-2xl font-bold text-center">{offeredItemData?.title}</Text>
+                                <Text className="text-xl text-center">{offeredItemData?.description}</Text>
+                                <View className="flex-row pb-2 pl-4 w-full justify-between px-4">
+                                    <PriceTier tier={offeredItemData?.priceTier as number}/>
+                                    <Text className="text-lg text-gray-500 pt-2">{offeredItemData?.category}</Text>
+                                </View>
+                            </View>
 
-                            <Image style={{width: 150, height: 150}} className="self-center rounded-xl" source={{uri: "data:image/png;base64," + Buffer.from(outgoingImage as string, 'base64').toString('ascii')}} />
-                            <Text className="text-xl"> Name: {offeredItemData?.title}</Text>
-                            <Text className="text-xl"> Description: {offeredItemData?.description}</Text>
-                            <Text className="text-xl"> Category: {offeredItemData?.category}</Text>
-                            <Text className="text-xl"> Price Tier: {offeredItemData?.priceTier}</Text>
+                            <Text className="text-center font-bold text-3xl">Outgoing item:</Text>
+                            <Image style={{width: 150, height: 150}} className="self-center rounded-xl align-middle my-4" source={{uri: "data:image/png;base64," + Buffer.from(incomingImage as string, 'base64').toString('ascii')}} />
+                            <View className="backdrop:bg-gray-300 my-4 rounded-2xl p-1 space-y-2">
+                                <Text className="text-2xl font-bold text-center">{incomingItemData?.title}</Text>
+                                <Text className="text-xl text-center">{incomingItemData?.description}</Text>
+                                <View className="flex-row pb-2 pl-4 w-full justify-between px-4">
+                                    <PriceTier tier={incomingItemData?.priceTier as number}/>
+                                    <Text className="text-lg text-gray-500 pt-2">{incomingItemData?.category}</Text>
+                                </View>
+                            </View>
+                            <Text className="font-bold text-xl text-center pb-4">Your comment: {item.comment}</Text>
 
+                            <View className="space-y-4">
+                                <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl mb-8">
+                                    <TouchableOpacity onPress={deleteOffer}>
+                                        <Text className="text-xl font-bold text-white text-center">Delete offer</Text>
+                                    </TouchableOpacity>
+                                </Animated.View>
 
-                            <Pressable onPress={deleteOffer}>
-                                <Text style={Styles.pressButton}>Delete Offer</Text>
-                            </Pressable>
+                            </View>
                         </ScrollView>
                     </Modal>
                 </>

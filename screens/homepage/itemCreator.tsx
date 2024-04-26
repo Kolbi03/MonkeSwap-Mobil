@@ -154,7 +154,6 @@ const ItemCreator = () => {
 
                 <View className="space-y-4">
 
-
                     <Animated.View className="items-center pb-4" entering={FadeIn.delay(100).duration(800)}>
                         <Text className="text-black font-bold text-4xl tracking-wider">Item Creation</Text>
                         <Text className="text-gray-500 font-bold text-xl tracking-wider">You can upload your items here</Text>
@@ -207,7 +206,7 @@ const ItemCreator = () => {
                                     The price tiers are as follows:
                                 </Text>
                                 <Text className="text-lg text-justify backdrop:bg-gray-300 rounded-2xl p-2">
-                                    {banana} Cheaper items, such as books, household items and food
+                                    {banana} Cheaper items, such as books, household items and bananas
                                 </Text>
                                 <Text className="text-lg text-justify backdrop:bg-gray-300 rounded-2xl p-2">
                                     {banana} {banana} Medium-low value items, such as chargers, headphones and cologne/perfume
