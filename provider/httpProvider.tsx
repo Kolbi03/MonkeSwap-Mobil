@@ -2,6 +2,7 @@ import React, {ReactNode, useContext, useMemo} from "react";
 import axios, {AxiosInstance} from "axios";
 import { AuthContext } from "../contexts/authContext";
 import authToken from "../interfaces/authToken";
+import BaseUrl from "../baseURL/baseURL";
 
 interface HttpContextProviderProps {
     children: ReactNode;
@@ -12,7 +13,7 @@ export const HttpContext = React.createContext<AxiosInstance>(axios);
 function createAxios(token: authToken | null){
     if (token?.token) {
         return axios.create({
-            baseURL: "http://192.168.0.144:8080",
+            baseURL: BaseUrl,
             headers: {
                 Authorization: 'Bearer ' + token?.token
             }
