@@ -7,7 +7,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/monke.png",
+      "image": "./assets/monkeswap_logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

@@ -6,7 +6,8 @@ interface TradeOfferDTO {
     incomingItem: string,
     comment: string,
     counter: number,
-    type: TradeOfferEnum
+    type: TradeOfferEnum,
+    getModalVisible: (incoming: boolean, offered: boolean) => void
 }
 
 export default TradeOfferDTO;

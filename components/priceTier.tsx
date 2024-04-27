@@ -14,10 +14,10 @@ function PriceTier({ tier }: PriceTierProps) {
     }
     // @ts-ignore
     return (
-        <View className="flex-row flex-wrap pt-2 justify-center">
+        <View className="flex-row flex-wrap h-10 pt-2 justify-center">
             {priceTier
                 .map((item, index) => (
-                    <Image key={index} source={require('../assets/peeled_banana.png')} style={{height: 29, width: 29, paddingBottom: 8}}/>
+                    <Image key={index} source={require('../assets/peeled_banana.png')} className="h-8 w-5 mx-1 p-0"/>
                 ))}
         </View>
     );

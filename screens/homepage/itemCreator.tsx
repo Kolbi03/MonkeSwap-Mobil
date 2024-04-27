@@ -1,9 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {
-    Dimensions,
     Image,
     Pressable,
-    StyleSheet,
     TextInput,
     ToastAndroid,
     View,
@@ -20,9 +18,6 @@ import * as ImagePicker from 'expo-image-picker';
 import axios from "../../axios";
 
 const categories = ["OTHER", "VEHICLE", "HOME", "HOUSEHOLD", "ELECTRONICS", "FREETIME", "SPORT", "FASHION", "COLLECTIBLES", "PETS" ]
-
-const screenHeight = Dimensions.get('window').height;
-const screenWidth = Dimensions.get('window').width;
 
 // @ts-ignore
 const ItemCreator = () => {
@@ -106,7 +101,7 @@ const ItemCreator = () => {
             .then(() => {
                 ToastAndroid.showWithGravity('Item created!', 2000, 1)
             }).catch((e) => {
-                ToastAndroid.showWithGravity(e, 2000, 1)
+                console.log(e)
             });
     }
 
@@ -145,7 +140,7 @@ const ItemCreator = () => {
         }
     }, [price]);
 
-    const banana = <Image source={require('../../assets/peeled_banana.png')} className="h-8 w-8 m-0 p-0"/>
+    const banana = <Image source={require('../../assets/peeled_banana.png')} className="h-9 w-6 m-0 p-0"/>
 
         return(
         <Provider>
@@ -231,7 +226,8 @@ const ItemCreator = () => {
                         </View>
                     </Modal>
 
-                    <Animated.View entering={FadeInUp.delay(550).duration(600).springify()}>
+                    <Animated.View className="flex-row w-full justify-center" entering={FadeInUp.delay(550).duration(600).springify()}>
+                        <Text className="text-lg font-bold mr-0.5">Price Tier</Text>
                         <Pressable onPress={() => setVisible(!visible)}>
                             <Icon size={20} source={"information-outline"}/>
                         </Pressable>
@@ -239,13 +235,13 @@ const ItemCreator = () => {
                 </View>
             </View>
 
-            <View className="flex-row w-full h-24">
+            <View className="flex-row w-full h-24 space-x-8 items-center justify-center mb-2">
 
                 <Animated.View entering={FadeInUp.delay(600).duration(600).springify()}>
                     <Pressable onPress={() => {
                         setPrice('1')
                     }}>
-                        <Image source={require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
+                        <Image source={require('../../assets/peeled_banana.png')} className="w-11 h-16 m-0 p-0 my-2"/>
                     </Pressable>
                 </Animated.View>
 
@@ -253,7 +249,7 @@ const ItemCreator = () => {
                     <Pressable onPress={() => {
                         setPrice('2')
                     }}>
-                        <Image source={!banana2 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
+                        <Image source={!banana2 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} className="w-9 h-14 m-0 p-0 my-2"/>
                     </Pressable>
                 </Animated.View>
 
@@ -261,7 +257,7 @@ const ItemCreator = () => {
                     <Pressable onPress={() => {
                         setPrice('3')
                     }}>
-                        <Image source={!banana3 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
+                        <Image source={!banana3 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} className="w-9 h-14 m-0 p-0 my-2"/>
                     </Pressable>
                 </Animated.View>
 
@@ -269,7 +265,7 @@ const ItemCreator = () => {
                     <Pressable onPress={() => {
                         setPrice('4')
                     }}>
-                        <Image source={!banana4 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
+                        <Image source={!banana4 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} className="w-9 h-14 m-0 p-0 my-2"/>
                     </Pressable>
                 </Animated.View>
 
@@ -277,7 +273,7 @@ const ItemCreator = () => {
                     <Pressable onPress={() => {
                         setPrice('5')
                     }}>
-                        <Image source={!banana5 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
+                        <Image source={!banana5 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} className="w-9 h-14 m-0 p-0 my-2"/>
                     </Pressable>
                 </Animated.View>
             </View>
@@ -296,20 +292,3 @@ const ItemCreator = () => {
 )}
 
 export default ItemCreator;
-
-const localStyles = StyleSheet.create({
-    categoryImage: {
-        height: screenHeight * 0.07,
-        width: screenWidth * 0.14,
-        margin: screenWidth * 0.02,
-    },
-
-    priceCategoryContainer: {
-        flexDirection: "row",
-    },
-
-    infoImage: {
-        height: screenHeight * 0.04,
-        width: screenWidth * 0.08,
-    }
-})

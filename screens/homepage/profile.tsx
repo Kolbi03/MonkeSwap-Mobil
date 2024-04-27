@@ -552,9 +552,17 @@ const Profile = () => {
                     </Modal>
                     <View className="p-4">
                         <View className="flex-row flex-wrap">
-                            {itemList?.map((item, i) =>
-
-                                <ItemCard key={i} id={item.id} views={item.views} state={item.state} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
+                            {itemList?.sort((itemA, itemB) => {
+                                if (itemA.state === 'DISABLED' && itemB.state !== 'DISABLED') {
+                                    return 1; // itemA comes after itemB
+                                } else if (itemA.state !== 'DISABLED' && itemB.state === 'DISABLED') {
+                                    return -1; // itemA comes before itemB
+                                } else {
+                                    return itemB.id - itemA.id; // default sorting by id
+                                }
+                            })
+                                .map((item, i) =>
+                                    <ItemCard key={i} id={item.id} views={item.views} state={item.state} userId={item.userId} title={item.title} itemPicture={item.itemPicture} description={item.description}
                                           category={item.category} priceTier={item.priceTier} buttonPressFunction={() => editOpenHandler(item)} buttonText={'Edit'}/>)}
                         </View>
                     </View>

@@ -43,7 +43,7 @@ function ItemCard(item: itemDataDTO) {
                             <TouchableOpacity className="bg-amber-300 p-2 rounded-2xl" onPress={() => {
                                 item.buttonPressFunction()
                             }}>
-                                <Text className="text-xl font-bold text-white text-center">Details</Text>
+                                <Text className="text-lg font-bold text-white text-center">{item.buttonText}</Text>
                             </TouchableOpacity>
                         </View>
                     </Card.Content>

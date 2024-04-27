@@ -41,11 +41,18 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
     }
 
     function onClickIncoming() {
-        setIncomingVisible(!incomingVisible)
+        setIncomingVisible(true)
+        asd()
     }
 
     function onClickOffered() {
-        setOfferedVisible(!offeredVisible)
+        setOfferedVisible(true)
+        asd()
+    }
+
+    function asd() {
+        //console.log(offeredVisible)
+        item.getModalVisible(incomingVisible, offeredVisible)
     }
 
     function getUserData() {
@@ -58,21 +65,27 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
 
     function acceptOffer() {
         axios.delete('/tradeoffer/accept/' + item.id)
-            .then(() => setIncomingVisible(false))
+            .then(() => {
+                item.getModalVisible(incomingVisible, offeredVisible)
+                setIncomingVisible(false)
+            })
             .catch((e) => console.log(e))
 
         axios.post('/notification',
             {
                 message: `Your trade offer has been accepted: ${offeredItemData?.title} for ${incomingItemData?.title}`,
                 type: 'NOTIFICATION',
-                userId: incomingItemData?.userId,
+                userId: offeredItemData?.userId,
             }).then(() => {
         });
     }
 
     function declineOffer() {
         axios.delete('/tradeoffer/decline/' + item.id)
-            .then(() => setIncomingVisible(false))
+            .then(() => {
+                item.getModalVisible(incomingVisible, offeredVisible)
+                setIncomingVisible(false)
+            })
             .catch((e) => console.log(e))
 
         axios.post('/notification',
@@ -85,8 +98,10 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
     }
 
     function deleteOffer() {
-        axios.delete('tradeoffer/decline/' + item.id)
+        axios.delete('/tradeoffer/decline/' + item.id)
             .then(() => {
+                setOfferedVisible(false);
+                item.getModalVisible(incomingVisible, offeredVisible)
                 axios.post('/notification',
                     {
                         message: `${username} deleted a trade offer: ${offeredItemData?.title} for ${incomingItemData?.title}`,
@@ -95,7 +110,6 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
                     }).then(() => {
                 });
             });
-        setOfferedVisible(false);
     }
 
     useEffect(() => {

@@ -4,20 +4,18 @@ import React, {useContext, useEffect, useState} from "react";
 import {StatusBar} from "expo-status-bar";
 import {HttpContext} from "../../provider/httpProvider";
 import Animated, {FadeInUp} from "react-native-reanimated";
-import notificationDataDTO from "../../interfaces/notificationDataDTO";
+import notificationDTO from "../../interfaces/notificationDTO";
 
 const Notifications = () => {
 
     const axios = useContext(HttpContext)
 
-    const [notificationList, setNotificationList] = useState<notificationDataDTO[]>()
+    const [notificationList, setNotificationList] = useState<notificationDTO[]>()
 
     function loadNotifications() {
         axios.get('/notification')
             .then((response) => {
                 setNotificationList(response.data)
-                //console.log(response.data)
-                //console.log(notificationList)
             })
             .catch((e) => console.log(e.response.data))
     }
@@ -44,7 +42,8 @@ const Notifications = () => {
                         </TouchableOpacity>
                     </Animated.View>
                 <View className="h-full w-full">
-                    {notificationList?.map((notification, i ) =>
+                    {notificationList?.sort((itemA, itemB) => itemB.id - itemA.id)
+                        .map((notification, i ) =>
                         <NotificationComponent key={i} counter={i} message={notification.message} id={notification.id} type={notification.type}/>)}
                 </View>
             </ScrollView>

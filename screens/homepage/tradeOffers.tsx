@@ -11,10 +11,12 @@ const TradeOffers = () => {
 
     const axios = useContext(HttpContext)
 
-    const [visible, setVisible] = useState(true);
+    const [visible, setVisible] = useState(false);
     const [tradeOfferType, setTradeOfferType] = useState<TradeOfferEnum>(TradeOfferEnum.Incoming)
     const [incomingOffers, setIncomingOffers] = useState<TradeOfferDTO[]>()
     const [offeredOffers, setOfferedOffers] = useState<TradeOfferDTO[]>()
+    const [incomingVisible, setIncomingVisible] = useState(false)
+    const [offeredVisible, setOfferedVisible] = useState(false)
 
     function getIncoming() {
         axios.get('tradeoffer/incoming')
@@ -33,6 +35,13 @@ const TradeOffers = () => {
             .catch((e) => console.log(e))
     }
 
+    function getModalsVisible(incoming: boolean, offered: boolean) {
+        setIncomingVisible(incoming)
+        setOfferedVisible(offered)
+        console.log(incomingVisible)
+        console.log(offeredVisible)
+    }
+
     function incomingOffersButton() {
         getIncoming()
         setTradeOfferType(TradeOfferEnum.Incoming)
@@ -43,20 +52,18 @@ const TradeOffers = () => {
         getOffered()
         setTradeOfferType(TradeOfferEnum.Outgoing)
         setVisible(!visible)
-        console.log(tradeOfferType)
-        console.log(offeredOffers)
     }
 
     useEffect(() => {
         getOffered()
         getIncoming()
-    }, [axios]);
+    }, [incomingVisible, offeredVisible]);
 
 
     return (
         <View className="bg-white items-center h-full- w-full flex-1 p-2 pt-16">
             <StatusBar style="auto"/>
-            <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl mb-4" entering={FadeInUp.delay(150).duration(600).springify()}>
+            <Animated.View className="w-full bg-amber-300 p-3 rounded-2xl mb-4" entering={FadeInUp.delay(100).duration(600).springify()}>
                 <TouchableOpacity onPress={ () =>
                      setVisible(!visible)
                 }>
@@ -67,11 +74,11 @@ const TradeOffers = () => {
                     {tradeOfferType === "OUTGOING" ?
                         offeredOffers?.sort((itemA, itemB) => itemB.id - itemA.id)
                             .map((item, i) =>
-                            <TradeOfferComponent key={i} counter={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
+                            <TradeOfferComponent key={i} getModalVisible={getModalsVisible} counter={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
                                                 comment={item.comment} type={tradeOfferType}/>) :
                         incomingOffers?.sort((itemA, itemB) => itemB.id - itemA.id)
                             .map((item, i) =>
-                            <TradeOfferComponent key={i} counter={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
+                            <TradeOfferComponent key={i} getModalVisible={getModalsVisible} counter={i} id={item.id} offeredItem={item.offeredItem} incomingItem={item.incomingItem}
                                                  comment={item.comment} type={tradeOfferType}/>)
                     }
                 </ScrollView>
@@ -83,14 +90,14 @@ const TradeOffers = () => {
                         ToastAndroid.showWithGravity('You must choose the type of offers!', 2000, 1)
                     }}>
                         <View className="h-1/6 backdrop: bg-white mt-auto rounded-2xl w-full flex-row items-center space-x-4 justify-center">
-                            <Animated.View className="w-2/5 bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(150).duration(600).springify()}>
+                            <Animated.View className="w-2/5 bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(100).duration(600).springify()}>
                                 <TouchableOpacity onPress={() => {
                                     sentOffersButton()
                                 }}>
                                     <Text className="text-xl font-bold text-white text-center">Outgoing</Text>
                                 </TouchableOpacity>
                             </Animated.View>
-                            <Animated.View className="w-2/5 bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(200).duration(600).springify()}>
+                            <Animated.View className="w-2/5 bg-amber-300 p-3 rounded-2xl" entering={FadeInUp.delay(100).duration(600).springify()}>
                                 <TouchableOpacity onPress={() => {
                                     incomingOffersButton()
                                 }}>

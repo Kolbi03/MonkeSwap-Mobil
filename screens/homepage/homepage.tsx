@@ -6,7 +6,7 @@ import ItemCard from "../../components/itemCard";
 import SelectDropdown from "react-native-select-dropdown";
 import {HttpContext} from "../../provider/httpProvider";
 import {StatusBar} from "expo-status-bar";
-import Animated, {FadeInUp} from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 import {Buffer} from "buffer";
 import {Icon} from "react-native-paper";
 
@@ -23,7 +23,6 @@ const Homepage = () => {
     const [incomingItemId, setIncomingItemId] = useState<number>(0)
     const [incomingItem, setIncomingItem] = useState<itemDataDTO>()
     const [username, setUsername] = useState('');
-    const [userId, setUserId] = useState('');
     const [tradeOfferComment, setTradeOfferComment] = useState('')
 
     const config = {
@@ -35,14 +34,12 @@ const Homepage = () => {
     const getUserData  = () => {
         axios.get('/user', config)
             .then((response) => {
-                //console.log('username: ' + response.data.username);
                 setUsername(response.data.username)
             })
             .catch((e) => console.log(e))
     }
 
     function loadCards() {
-        //console.log(token)
         axios.get('/items')
             .then((response) => {
                 setItemList(response.data);
@@ -63,43 +60,41 @@ const Homepage = () => {
         if(offeredItemId === null) {
             ToastAndroid.showWithGravity('NO ITEM SELECTED', 2000, 1)
         } else {
-            /*console.log('Offered item id: ' + offeredItemId)
-            console.log('Incoming item id: ' + incomingItemId)*/
+            axios.post('/tradeoffer', {
+                offeredItem: offeredItemId,
+                incomingItem: incomingItemId,
+                comment: tradeOfferComment
+            }, config)
+                .then(() => {
+                    ToastAndroid.showWithGravity('Trade offer sent!', 2000, 1)
+                    setTradeOfferComment('');
+                    axios.post('/notification', {
+                        message: username + ' sent you a trade request!',
+                        type: 'NOTIFICATION',
+                        userId: incomingItem?.userId
+                    }, config)
+                        /*.then((response) => {
+                            console.log(response.data)
+                            console.log(username + ' ' + userId)
+                        })*/
+                        .catch((e) => console.log('Notification error: ' + e.response.data))
+
+
+                })
+                .catch((e) => ToastAndroid.showWithGravity(e.response.data, 2000, 1))
         }
-
-        axios.post('/tradeoffer', {offeredItem: offeredItemId, incomingItem: incomingItemId, comment: tradeOfferComment} , config)
-            .then(() => {
-                console.log('offeredItem: '  + offeredItemId + 'incomingItem: ' + incomingItemId)
-                ToastAndroid.showWithGravity('Trade offer sent!', 2000, 1)
-                setTradeOfferComment('');
-                axios.post('/notification', {message: username + ' sent you a trade request!', type: 'NOTIFICATION', userId: incomingItem?.userId}, config)
-                    /*.then((response) => {
-                        console.log(response.data)
-                        console.log(username + ' ' + userId)
-                    })*/
-                    .catch((e) => console.log('Notification error: ' + e.response.data))
-
-
-            })
-            .catch((e) => ToastAndroid.showWithGravity(e.response.data, 2000, 1))
-
-
-
     }
 
     function modalHandler(item: itemDataDTO) {
-        console.log(item)
         if(item.id === null) {
             ToastAndroid.showWithGravity('NO ITEM SELECTED', 2000, 1)
         } else {
             setVisible(() => !visible)
             setIncomingItem(item)
             setIncomingItemId(item.id)
-            setUserId(item.userId)
             axios.put('/item/views/' + item.id, {})
                 .then((response) => console.log(response.data))
                 .catch((e) => console.log('Incoming item error:' + e))
-            console.log('incoming item id: ' + item.id)
         }
 
     }
@@ -120,7 +115,7 @@ const Homepage = () => {
 
     function reportHandler(itemId: number) {
         axios.put('/item/reports/' + itemId, {})
-            .then()
+            .then(() =>ToastAndroid.showWithGravity('Item successfully reported', 2000, 1))
             .catch((e) => ToastAndroid.showWithGravity(e.response.data, 2000, 1))
     }
 
@@ -170,13 +165,13 @@ const Homepage = () => {
                                     <Text className="text-xl py-2">Price Tier: {incomingItem?.priceTier}</Text>
 
                                     <View>
-                                        <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14" entering={FadeInUp.delay(100).duration(600)}>
+                                        <Animated.View className="w-full bg-black/5 rounded-2xl p-5 h-14">
                                             <TextInput placeholder='Comment' onChangeText={text => setTradeOfferComment(text)} placeholderTextColor={'gray'}/>
                                         </Animated.View>
                                     </View>
                                 </View>
 
-                                <Animated.View className="w-80 self-center bg-red-500 p-3 rounded-2xl my-4" entering={FadeInUp.delay(800).duration(600).springify()}>
+                                <Animated.View className="w-80 self-center bg-red-500 p-3 rounded-2xl my-4">
                                     <TouchableOpacity onPress={() => reportHandler(incomingItemId)}>
                                         <Text className="text-xl font-bold text-white text-center">Report</Text>
                                     </TouchableOpacity>

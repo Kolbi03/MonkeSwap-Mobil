@@ -1,5 +1,5 @@
 interface notificationDTO {
-    id: string,
+    id: number,
     type: 'WARNING' | 'NOTIFICATION',
     message: string,
     counter: number,

@@ -15,7 +15,7 @@ const NotificationComponent = (input: notificationDTO) => {
                         <Icon size={60} source={"alert-outline"} color={"#F00"} /> : <Icon size={50} source={"bell"}/>}
                 </View>
             </View>
-            <View className={` pr-1 font-bold text-xl ml-6 ${input.type ? 'text-red-700' : 'text-black'}`}>
+            <View className={` pr-16 font-bold text-xl ml-6 ${input.type ? 'text-red-700' : 'text-black'}`}>
                 <Text className={`text-xl font-bold ${input.type === "WARNING" ? "text-red-700" : "text-black"}`}>
                     {input.message}
                 </Text>
