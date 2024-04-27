@@ -65,7 +65,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
             {
                 message: `Your trade offer has been accepted: ${offeredItemData?.title} for ${incomingItemData?.title}`,
                 type: 'NOTIFICATION',
-                userId: offeredItemData?.userId,
+                userId: incomingItemData?.userId,
             }).then(() => {
         });
     }
@@ -119,7 +119,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
                                 <Icon size={60} source={"arrow-down"} color={"#080"} />
                             </View>
                         </View>
-                        <View className={`ml-6 ${item.type ? 'text-red-700' : 'text-black'}`}>
+                        <View className={'pr-16 ml-6 text-black'}>
                             <Text className={'text-lg font-bold text-justify'}>
                                 Your {incomingItemData?.title} has an offer for a {offeredItemData?.title}
                             </Text>
@@ -185,7 +185,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
                                 </View>
                             </View>
                             <View className={'ml-6'}>
-                                <Text className={`text-lg font-bold text-justify text-black`}>
+                                <Text className={`text-lg pr-16 font-bold text-justify text-black`}>
                                     You offered a {offeredItemData?.title} for a {incomingItemData?.title}
                                 </Text>
                             </View>

@@ -6,7 +6,7 @@ import notificationDTO from "../interfaces/notificationDTO";
 
 const NotificationComponent = (input: notificationDTO) => {
     return (
-        <Animated.View className={` rounded-2xl p-4 mx-0.5 my-1.5 flex-row justify-start items-center h-24
+        <Animated.View className={` rounded-2xl p-4 mx-0.5 my-1.5 flex-row justify-start items-center h-32
                     ${input.type === 'WARNING' ? 'bg-red-300' : 'bg-gray-300'}`}
                        entering={FadeInLeft.delay(input.counter *  50).duration(600).springify()}>
             <View className="w-2/12">
@@ -15,7 +15,7 @@ const NotificationComponent = (input: notificationDTO) => {
                         <Icon size={60} source={"alert-outline"} color={"#F00"} /> : <Icon size={50} source={"bell"}/>}
                 </View>
             </View>
-            <View className={`font-bold text-xl ml-6 ${input.type ? 'text-red-700' : 'text-black'}`}>
+            <View className={` pr-1 font-bold text-xl ml-6 ${input.type ? 'text-red-700' : 'text-black'}`}>
                 <Text className={`text-xl font-bold ${input.type === "WARNING" ? "text-red-700" : "text-black"}`}>
                     {input.message}
                 </Text>

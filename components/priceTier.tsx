@@ -17,7 +17,7 @@ function PriceTier({ tier }: PriceTierProps) {
         <View className="flex-row flex-wrap pt-2 justify-center">
             {priceTier
                 .map((item, index) => (
-                    <Image key={index} source={require('../assets/peeled_banana.png')} style={{height: 29, width: 29}}/>
+                    <Image key={index} source={require('../assets/peeled_banana.png')} style={{height: 29, width: 29, paddingBottom: 8}}/>
                 ))}
         </View>
     );

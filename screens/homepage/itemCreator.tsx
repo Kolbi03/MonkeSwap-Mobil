@@ -106,7 +106,7 @@ const ItemCreator = () => {
             .then(() => {
                 ToastAndroid.showWithGravity('Item created!', 2000, 1)
             }).catch((e) => {
-                console.log(e)
+                ToastAndroid.showWithGravity(e, 2000, 1)
             });
     }
 
