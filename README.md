@@ -7,9 +7,9 @@ After you clone the code:
 
 ### `npx expo start`
 
-This command runs the application in developement mode. \
+This command runs the application in developement mode. 
 
-Connect to the same network with your computer and mobile device. \
-The command line will display a qr code, scan it with the expo go application. \
+Connect to the same network with your computer and mobile device. 
+The command line will display a qr code, scan it with the expo go application. 
 
 The application has a file called [baseURL](https://github.com/Kolbi03/MonkeSwap-Mobil/blob/master/baseURL/baseURL.ts), you need to modify it to your own backend url.
