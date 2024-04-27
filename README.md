@@ -3,7 +3,8 @@ After you clone the code:
   1. Set up and start [backend](https://github.com/Toccskefir/MonkeSwap_Backend) application
   2. Download the [expo go](https://expo.dev/go) application
   3. Run `npm install` in the project directory
-  4. Now you can run:
+  4. run `npm install -g expo-cli`
+  5. Now you can run:
 
 ### `npx expo start`
 
