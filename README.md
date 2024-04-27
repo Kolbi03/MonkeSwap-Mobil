@@ -10,6 +10,7 @@ After you clone the code:
 This command runs the application in developement mode. 
 
 Connect to the same network with your computer and mobile device. \
-The command line will display a qr code, scan it with the expo go application. 
+The command line will display a qr code, scan it with the expo go application. \
+If you did all the steps correctly, the MonkeSwap Mobile application should start on your device.
 
 The application has a file called [baseURL](https://github.com/Kolbi03/MonkeSwap-Mobil/blob/master/baseURL/baseURL.ts), you need to modify it to your own backend url.
