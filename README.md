@@ -42,3 +42,8 @@ https://github.com/Kolbi03/MonkeSwap-Mobil/assets/144032511/6b9ae5d4-d62e-4d2b-9
 
 https://github.com/Kolbi03/MonkeSwap-Mobil/assets/144032511/8b174da9-0ebd-4972-a448-841b4317cffb
 
+## Documentation
+
+### Tester's documentation
+
+The tester's documentation can be found [here](https://github.com/Kolbi03/MonkeSwap-Mobil/blob/master/MonkeSwap-Mobil%20tesztel%C5%91i%20dokument%C3%A1ci%C3%B3.pdf)
