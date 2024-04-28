@@ -36,22 +36,6 @@ const ItemCreator = () => {
     const [banana4, setBanana4] = useState(false);
     const [banana5, setBanana5] = useState(false);
 
-    /*interface newItemDataDTO {
-        title: string,
-        itemPicture: string | undefined | null,
-        description: string,
-        category: string,
-        priceTier: string,
-    }*/
-
-    /*const data: newItemDataDTO = {
-        title: title,
-        itemPicture: image,
-        description: description,
-        category: category,
-        priceTier: price,
-    }*/
-
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -66,8 +50,6 @@ const ItemCreator = () => {
         } else {
             setImage(result.assets![0].base64)
         }
-            /*console.log(base64Icon)
-            console.log(itemPicture)*/
     };
 
     const body = {
@@ -87,8 +69,6 @@ const ItemCreator = () => {
         formData.append('description', description);
         formData.append('category', category as string);
         formData.append('priceTier', price.toString());
-
-        //console.log(formData)
 
         axios.post('/item', body, {
             headers: {
@@ -241,7 +221,7 @@ const ItemCreator = () => {
                     <Pressable onPress={() => {
                         setPrice('1')
                     }}>
-                        <Image source={require('../../assets/peeled_banana.png')} className="w-11 h-16 m-0 p-0 my-2"/>
+                        <Image source={require('../../assets/peeled_banana.png')} className="w-9 h-14 m-0 p-0 my-2"/>
                     </Pressable>
                 </Animated.View>
 

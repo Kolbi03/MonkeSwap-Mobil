@@ -73,10 +73,6 @@ const Homepage = () => {
                         type: 'NOTIFICATION',
                         userId: incomingItem?.userId
                     }, config)
-                        /*.then((response) => {
-                            console.log(response.data)
-                            console.log(username + ' ' + userId)
-                        })*/
                         .catch((e) => console.log('Notification error: ' + e.response.data))
 
 

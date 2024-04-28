@@ -1,10 +1,8 @@
 import {
-    Dimensions,
     Image,
     Modal,
     Pressable,
     ScrollView,
-    StyleSheet,
     Text,
     TextInput,
     ToastAndroid, TouchableOpacity,
@@ -25,9 +23,6 @@ import {Icon} from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import updateUserDTO from "../../interfaces/updateUserDTO";
 import {Buffer} from "buffer";
-
-const height = Dimensions.get('window').height;
-const width = Dimensions.get('window').width;
 
 const Profile = () => {
 
@@ -76,9 +71,7 @@ const Profile = () => {
     function loadCards() {
         axios.get('/user/items')
             .then((response) => {
-                //console.log(response.data);
                 setItemList(response.data);
-                //console.log('itemList: ' + itemList)
             })
             .catch((e) => console.log(e.response.data))
     }
@@ -88,8 +81,6 @@ const Profile = () => {
         setEditModalVisible(!editModalVisible)
         axios.get('/item/' + item.id)
             .then((response) => {
-                //console.log(response.data)
-
                 setItemPriceTier(response.data.priceTier.toString())
                 setItemTitle(response.data.title)
                 setItemDescription(response.data.description)
@@ -107,8 +98,6 @@ const Profile = () => {
         formData.append('description', itemDescription as string);
         formData.append('category', itemCategory as string);
         formData.append('priceTier', itemPriceTier?.toString());
-
-        //console.log(formData)
 
         axios.put('/item/' + selectedItem?.id, formData, {
             headers: {
@@ -163,8 +152,7 @@ const Profile = () => {
                 ToastAndroid.showWithGravity('Profile data updated!', 2000, ToastAndroid.CENTER)
                 getUserData()
             })
-            .catch((e) => console.log(e.response.data))
-        //console.log(updateUserData)
+            .catch((e) => ToastAndroid.showWithGravity(e, 2000, 1))
     }
 
     function changePassword() {
@@ -225,6 +213,7 @@ const Profile = () => {
         axios.delete('/item/' + selectedItem?.id)
             .then(() => {
                 setEditModalVisible(!editModalVisible)
+                ToastAndroid.showWithGravity('Item deleted', 2000, 1)
                 loadCards()
             })
             .catch((e) => console.log(e))
@@ -423,45 +412,45 @@ const Profile = () => {
                                             }}/>
                                         </Animated.View>
 
-                                        <View className="flex-row w-full h-24">
+                                        <View className="flex-row w-full h-24 space-x-8 items-center justify-center mb-2">
 
-                                            <Animated.View entering={FadeInUp.delay(400).duration(600).springify()}>
+                                            <Animated.View entering={FadeInUp.delay(600).duration(600).springify()}>
                                                 <Pressable onPress={() => {
                                                     setItemPriceTier('1')
                                                 }}>
-                                                    <Image source={require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
+                                                    <Image source={require('../../assets/peeled_banana.png')} className="w-9 h-14 m-0 p-0 my-2"/>
                                                 </Pressable>
                                             </Animated.View>
 
-                                            <Animated.View entering={FadeInUp.delay(440).duration(600).springify()}>
+                                            <Animated.View entering={FadeInUp.delay(640).duration(600).springify()}>
                                                 <Pressable onPress={() => {
                                                     setItemPriceTier('2')
                                                 }}>
-                                                    <Image source={!banana2 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
+                                                    <Image source={!banana2 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} className="w-9 h-14 m-0 p-0 my-2"/>
                                                 </Pressable>
                                             </Animated.View>
 
-                                            <Animated.View entering={FadeInUp.delay(480).duration(600).springify()}>
+                                            <Animated.View entering={FadeInUp.delay(680).duration(600).springify()}>
                                                 <Pressable onPress={() => {
                                                     setItemPriceTier('3')
                                                 }}>
-                                                    <Image source={!banana3 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
+                                                    <Image source={!banana3 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} className="w-9 h-14 m-0 p-0 my-2"/>
                                                 </Pressable>
                                             </Animated.View>
 
-                                            <Animated.View entering={FadeInUp.delay(520).duration(600).springify()}>
+                                            <Animated.View entering={FadeInUp.delay(720).duration(600).springify()}>
                                                 <Pressable onPress={() => {
                                                     setItemPriceTier('4')
                                                 }}>
-                                                    <Image source={!banana4 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
+                                                    <Image source={!banana4 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} className="w-9 h-14 m-0 p-0 my-2"/>
                                                 </Pressable>
                                             </Animated.View>
 
-                                            <Animated.View entering={FadeInUp.delay(560).duration(600).springify()}>
+                                            <Animated.View entering={FadeInUp.delay(760).duration(600).springify()}>
                                                 <Pressable onPress={() => {
                                                     setItemPriceTier('5')
                                                 }}>
-                                                    <Image source={!banana5 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} style={localStyles.categoryImage}/>
+                                                    <Image source={!banana5 ? require('../../assets/banana.png') : require('../../assets/peeled_banana.png')} className="w-9 h-14 m-0 p-0 my-2"/>
                                                 </Pressable>
                                             </Animated.View>
                                         </View>
@@ -572,12 +561,3 @@ const Profile = () => {
     )};
 
 export default Profile;
-
-const localStyles = StyleSheet.create({
-    categoryImage: {
-        height: height * 0.07,
-        width: width * 0.14,
-        margin: width * 0.02,
-    },
-
-})

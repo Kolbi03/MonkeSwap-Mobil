@@ -1,4 +1,4 @@
-import {Image, Modal, Pressable, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {Image, Modal, Pressable, ScrollView, Text, ToastAndroid, TouchableOpacity, View} from "react-native";
 import TradeOfferDTO from "../interfaces/tradeOfferDTO";
 import React, {useContext, useEffect, useState} from "react";
 import {HttpContext} from "../provider/httpProvider";
@@ -25,7 +25,6 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
             .then((response) => {
                 setIncomingItemData(response.data)
                 setIncomingImage(response.data.itemPicture)
-                //console.log(incomingItemData)
             })
             .catch((e) => console.log(e))
     }
@@ -35,7 +34,6 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
             .then((response) => {
                 setOfferedItemData(response.data)
                 setOutgoingImage(response.data.itemPicture)
-                //console.log(incomingItemData)
             })
             .catch((e) => console.log(e))
     }
@@ -51,7 +49,6 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
     }
 
     function asd() {
-        //console.log(offeredVisible)
         item.getModalVisible(incomingVisible, offeredVisible)
     }
 
@@ -68,6 +65,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
             .then(() => {
                 item.getModalVisible(incomingVisible, offeredVisible)
                 setIncomingVisible(false)
+                ToastAndroid.showWithGravity('Trade offer accepted', 2000, 1)
             })
             .catch((e) => console.log(e))
 
@@ -85,6 +83,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
             .then(() => {
                 item.getModalVisible(incomingVisible, offeredVisible)
                 setIncomingVisible(false)
+                ToastAndroid.showWithGravity('Trade offer declined', 2000, 1)
             })
             .catch((e) => console.log(e))
 
@@ -102,6 +101,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
             .then(() => {
                 setOfferedVisible(false);
                 item.getModalVisible(incomingVisible, offeredVisible)
+                ToastAndroid.showWithGravity('Trade offer deleted', 2000, 1)
                 axios.post('/notification',
                     {
                         message: `${username} deleted a trade offer: ${offeredItemData?.title} for ${incomingItemData?.title}`,
