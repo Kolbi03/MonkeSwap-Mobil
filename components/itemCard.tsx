@@ -9,6 +9,10 @@ import PriceTier from "./priceTier";
 
 const styles = Styles;
 
+/*
+Component for displaying item cards
+*/
+
 function ItemCard(item: itemDataDTO) {
 
     const [pressed, setPressed] = useState(true);

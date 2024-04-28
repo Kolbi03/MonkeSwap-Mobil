@@ -20,6 +20,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
     const [incomingImage, setIncomingImage] = useState('')
     const [outgoingImage, setOutgoingImage] = useState('')
 
+    /*Pulls the incoming item's data and puts it into a useState*/
     function getIncomingItemData() {
         axios.get('/item/' + item.incomingItem)
             .then((response) => {
@@ -29,6 +30,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
             .catch((e) => console.log(e))
     }
 
+    /*Pulls the offered item's data and puts it into a useState*/
     function getOfferedItemData() {
         axios.get('/item/' + item.offeredItem)
             .then((response) => {
@@ -38,20 +40,24 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
             .catch((e) => console.log(e))
     }
 
+    /*Runs when the user clicks on the incoming trade offer button, checks if the page needs a re-render using the modal's 'visible' parameter*/
     function onClickIncoming() {
         setIncomingVisible(true)
-        asd()
+        modalChecker()
     }
 
+    /*Runs when the user clicks on the outgoing trade offer button, checks if the page needs a re-render using the modal's 'visible' parameter*/
     function onClickOffered() {
         setOfferedVisible(true)
-        asd()
+        modalChecker()
     }
 
-    function asd() {
+    /*Checks if the trade offer modal is visible*/
+    function modalChecker() {
         item.getModalVisible(incomingVisible, offeredVisible)
     }
 
+    /*Pulls the user's data*/
     function getUserData() {
         axios.get('/user')
             .then((response) => {
@@ -60,6 +66,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
             .catch((e) => console.log(e))
     }
 
+    /*Accepts the currently opened offer, then sends a notification to the sender*/
     function acceptOffer() {
         axios.delete('/tradeoffer/accept/' + item.id)
             .then(() => {
@@ -78,6 +85,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
         });
     }
 
+    /*Declines the currently opened offer, then sends a notification to the sender*/
     function declineOffer() {
         axios.delete('/tradeoffer/decline/' + item.id)
             .then(() => {
@@ -96,6 +104,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
         });
     }
 
+    /*Deletes the currently opened offer, then sends a notification to the receiver*/
     function deleteOffer() {
         axios.delete('/tradeoffer/decline/' + item.id)
             .then(() => {
@@ -112,10 +121,12 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
             });
     }
 
+    /*Pulls the user's data on render*/
     useEffect(() => {
         getUserData()
     }, []);
 
+    /*Pulls the user's incoming and outgoing offers, and updates it when the user's token updates*/
     useEffect(() => {
         getIncomingItemData()
         getOfferedItemData()
@@ -142,6 +153,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
 
                 </Pressable>
 
+                                                    {/*Incoming offer modal start*/}
                 <Modal
                     animationType="slide"
                     transparent={true}
@@ -186,6 +198,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
                         </View>
                     </ScrollView>
                 </Modal>
+                    {/*Incoming offer modal end*/}
             </>
 
                     :
@@ -204,9 +217,9 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
                                 </Text>
                             </View>
                         </Animated.View>
-
                     </Pressable>
 
+                                                                            {/*Outgoing offers modal start*/}
                     <Modal
                         animationType="slide"
                         transparent={true}
@@ -247,6 +260,7 @@ const TradeOfferComponent = (item: TradeOfferDTO) => {
                             </View>
                         </ScrollView>
                     </Modal>
+                    {/*Outgoing offer modal end*/}
                 </>
             }
         </View>

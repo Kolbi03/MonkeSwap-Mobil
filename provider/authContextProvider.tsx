@@ -23,6 +23,7 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
         }
     }
 
+    /*Sets the user's token, if there is one*/
     const setTokenIfExists = async ()=> {
 
         const token = await AsyncStorage.getItem('token').catch((e)=>{console.log(e)});
@@ -36,7 +37,7 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
         setTokenIfExists().then()
     },[])
 
-
+    /*Login method, stores the token in async storage*/
     const login = (user: loginDataDTO) => {
 
         axios.post('/auth/login', {email: user.email, password: user.password})
@@ -62,6 +63,7 @@ const AuthContextProvider: React.FC<authContextProviderProps> = ({children}: aut
         return userData;
     }
 
+    /*Logout, deletes the user's token from the async storage, and sets it to null*/
     const logout = async () => {
         setToken(null);
         await AsyncStorage.removeItem('token');

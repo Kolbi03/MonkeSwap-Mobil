@@ -68,6 +68,7 @@ const Profile = () => {
         getUserData();
     }
 
+    /*Loads the user's own items*/
     function loadCards() {
         axios.get('/user/items')
             .then((response) => {
@@ -76,6 +77,7 @@ const Profile = () => {
             .catch((e) => console.log(e.response.data))
     }
 
+    /*Opens the user edit modal and sets its text input values to the user's data*/
     function editOpenHandler(item: itemDataDTO) {
         setSelectedItem(item)
         setEditModalVisible(!editModalVisible)
@@ -90,6 +92,7 @@ const Profile = () => {
             .catch((e) => console.log(e))
     }
 
+    /*Sends an update request for an item*/
     function handleEditEvent() {
 
         const formData = new FormData();
@@ -115,6 +118,7 @@ const Profile = () => {
         });
     }
 
+    /*Loads the user's data*/
     const getUserData  = () => {
         axios.get('/user')
             .then((response) => {
@@ -128,6 +132,7 @@ const Profile = () => {
             .catch((e) => console.log(e))
     }
 
+    /*Sends a delete request for the current user*/
     function userDeleteHandler() {
         axios.delete('/user')
             .then(response => {
@@ -137,6 +142,7 @@ const Profile = () => {
             .catch(e => console.log(e))
     }
 
+    /*Updates the current user's data with the given parameters*/
     function updateUser() {
 
         const updateUserData: updateUserDTO = {
@@ -155,6 +161,7 @@ const Profile = () => {
             .catch((e) => ToastAndroid.showWithGravity(e, 2000, 1))
     }
 
+    /*Changes the current user's password*/
     function changePassword() {
         if(password.trim() === '' || passwordAgain.trim() === '') {
             ToastAndroid.showWithGravity('Password field can not be empty', 2000, 1)
@@ -176,6 +183,7 @@ const Profile = () => {
         }
     }
 
+    /*Opens the built in image picker, then changes the useState to the selected image*/
     const pickImage = async (type: string) => {
             let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -209,6 +217,7 @@ const Profile = () => {
         }
     };
 
+    /*Deletes the selected item*/
     function deleteItem() {
         axios.delete('/item/' + selectedItem?.id)
             .then(() => {
@@ -227,6 +236,7 @@ const Profile = () => {
         getUserData()
     }, [profilePicture]);
 
+    /*Sets the price tier to default, and when it is changed updates it to the new value*/
     useEffect(() => {
         switch (itemPriceTier) {
             case '1':

@@ -5,8 +5,9 @@ interface PriceTierProps {
     tier: number,
 }
 
-function PriceTier({ tier }: PriceTierProps) {
+/*Component for price tier selector*/
 
+function PriceTier({ tier }: PriceTierProps) {
 
     const priceTier = new Array(tier);
     for(let i = 0; i < tier; i++) {

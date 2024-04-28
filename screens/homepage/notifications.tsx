@@ -12,6 +12,7 @@ const Notifications = () => {
 
     const [notificationList, setNotificationList] = useState<notificationDTO[]>()
 
+    /*Loads the notifications*/
     function loadNotifications() {
         axios.get('/notification')
             .then((response) => {
@@ -20,6 +21,7 @@ const Notifications = () => {
             .catch((e) => console.log(e.response.data))
     }
 
+    /*Deletes all notifications*/
     function deleteNotifications() {
         axios.delete('/notification')
             .then((response) => console.log(response.data))

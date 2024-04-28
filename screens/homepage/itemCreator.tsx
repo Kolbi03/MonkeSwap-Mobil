@@ -36,6 +36,7 @@ const ItemCreator = () => {
     const [banana4, setBanana4] = useState(false);
     const [banana5, setBanana5] = useState(false);
 
+    /*Opens the built in image picker, then changes the useState to the selected image*/
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -52,6 +53,7 @@ const ItemCreator = () => {
         }
     };
 
+    /*Request body for creating an item*/
     const body = {
         title: title,
         itemPicture: image as string,
@@ -61,6 +63,7 @@ const ItemCreator = () => {
     }
 
 
+    /*Creates the item with the given parameters*/
     function handleSubmitEvent() {
 
         const formData = new FormData();
@@ -85,6 +88,7 @@ const ItemCreator = () => {
             });
     }
 
+    /*Sets the price tier to default, and when it is changed updates it to the new value*/
     useEffect(() => {
         switch (price) {
             case '1':

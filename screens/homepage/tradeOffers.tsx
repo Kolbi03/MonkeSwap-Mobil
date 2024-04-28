@@ -18,6 +18,7 @@ const TradeOffers = () => {
     const [incomingVisible, setIncomingVisible] = useState(false)
     const [offeredVisible, setOfferedVisible] = useState(false)
 
+    /*Loads the incoming trade offers*/
     function getIncoming() {
         axios.get('tradeoffer/incoming')
             .then((response) => {
@@ -26,6 +27,7 @@ const TradeOffers = () => {
             .catch((e) => console.log(e))
     }
 
+    /*Loads the outgoing trade offers*/
     function getOffered() {
         axios.get('tradeoffer/offered')
             .then((response) => {
@@ -34,25 +36,27 @@ const TradeOffers = () => {
             .catch((e) => console.log(e))
     }
 
+    /*Checks if a trade offer's modal is visible*/
     function getModalsVisible(incoming: boolean, offered: boolean) {
         setIncomingVisible(incoming)
         setOfferedVisible(offered)
-        console.log(incomingVisible)
-        console.log(offeredVisible)
     }
 
+    /*Switches to Incoming offers*/
     function incomingOffersButton() {
         getIncoming()
         setTradeOfferType(TradeOfferEnum.Incoming)
         setVisible(!visible)
     }
 
+    /*Switches to Sent offers*/
     function sentOffersButton() {
         getOffered()
         setTradeOfferType(TradeOfferEnum.Outgoing)
         setVisible(!visible)
     }
 
+    /*Loads all offers*/
     useEffect(() => {
         getOffered()
         getIncoming()

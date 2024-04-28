@@ -10,6 +10,7 @@ interface HttpContextProviderProps {
 
 export const HttpContext = React.createContext<AxiosInstance>(axios);
 
+/*Creates an axios instance with the user's token*/
 function createAxios(token: authToken | null){
     if (token?.token) {
         return axios.create({

@@ -31,6 +31,7 @@ const Homepage = () => {
         }
     }
 
+    /*Pulls the user's data*/
     const getUserData  = () => {
         axios.get('/user', config)
             .then((response) => {
@@ -39,6 +40,7 @@ const Homepage = () => {
             .catch((e) => console.log(e))
     }
 
+    /*Loads the cards for viewing, the user's own cards are not loaded here*/
     function loadCards() {
         axios.get('/items')
             .then((response) => {
@@ -47,6 +49,7 @@ const Homepage = () => {
             .catch((e) => console.log(e))
     }
 
+    /*Loads the user's own cards for sending trade offers*/
     const loadOwnCards = () => {
         axios.get('/user/items')
             .then((response) => {
@@ -55,6 +58,7 @@ const Homepage = () => {
             .catch((e) => console.log(e))
     }
 
+    /*Sends a trade offer, when it is successful sends a notification to the receiver*/
     function sendOffer(offeredItemId: number) {
         setVisible(() => !visible)
         if(offeredItemId === null) {
@@ -81,6 +85,7 @@ const Homepage = () => {
         }
     }
 
+    /*Opens the modal of the item with the given parameters, also adds a view to the viewed item*/
     function modalHandler(item: itemDataDTO) {
         if(item.id === null) {
             ToastAndroid.showWithGravity('NO ITEM SELECTED', 2000, 1)
@@ -95,6 +100,7 @@ const Homepage = () => {
 
     }
 
+    /*Searches items by category, only the items with the searched category will show up*/
     const searchByCategory = (category: string) => {
         if(category === '') {
             ToastAndroid.showWithGravity('You have to chose a category!', 2000, 1)
@@ -109,12 +115,14 @@ const Homepage = () => {
         }
     }
 
+    /*Reports an item*/
     function reportHandler(itemId: number) {
         axios.put('/item/reports/' + itemId, {})
             .then(() =>ToastAndroid.showWithGravity('Item successfully reported', 2000, 1))
             .catch((e) => ToastAndroid.showWithGravity(e.response.data, 2000, 1))
     }
 
+    /*Opens/closes the modal*/
     function cardFlipHandler() {
         setVisible(!visible);
     }

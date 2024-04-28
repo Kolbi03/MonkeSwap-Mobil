@@ -4,6 +4,8 @@ import Animated, {FadeInLeft} from "react-native-reanimated";
 import {Icon} from "react-native-paper";
 import notificationDTO from "../interfaces/notificationDTO";
 
+/*Component for notifications*/
+
 const NotificationComponent = (input: notificationDTO) => {
     return (
         <Animated.View className={` rounded-2xl p-4 mx-0.5 my-1.5 flex-row justify-start items-center h-32
